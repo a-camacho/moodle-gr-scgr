@@ -50,12 +50,12 @@ $PAGE->set_title($header);
 	// FIX : Needs to be set dynamically
 	// $PAGE->set_heading(fullname($report->user));
 	$PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
-
+    
 echo $OUTPUT->header();
 
 echo '<h1>Title</h1>';
 
-var_dump($var);
+// var_dump($var);
 
 echo '<p>Text paragraph</p>';
 
