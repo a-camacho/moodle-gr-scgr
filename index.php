@@ -26,7 +26,6 @@
 require_once '../../../config.php';
 require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
-require_once $CFG->dirroot.'/grade/report/user/lib.php';
 
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
@@ -34,14 +33,12 @@ $userview = optional_param('userview', 0, PARAM_INT);
 
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
 
-/// basic access checks
-if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-    print_error('invalidcourseid');
-}
-require_login($course);
-
 $PAGE->set_pagelayout('report');
 
-echo $OUTPUT->heading(get_string('pluginname', 'gradereport_scgr'));
+echo $OUTPUT->header();
 
-echo 'bla bla';
+echo '<h1>Title</h1>';
+
+echo '<p>Text paragraph</p>';
+
+echo $OUTPUT->footer();
