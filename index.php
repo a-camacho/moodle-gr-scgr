@@ -34,4 +34,15 @@ $userview = optional_param('userview', 0, PARAM_INT);
 
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
 
-var_dump($courseid);
+if ($userview == 0) {
+    $userview = get_user_preferences('gradereport_user_view_user', GRADE_REPORT_USER_VIEW_USER);
+} else {
+    set_user_preference('gradereport_user_view_user', $userview);
+}
+
+/// basic access checks
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+    print_error('invalidcourseid');
+}
+require_login($course);
+$PAGE->set_pagelayout('report');
