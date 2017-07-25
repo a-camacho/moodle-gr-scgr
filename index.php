@@ -39,8 +39,13 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 // Set page moodle layout
 $PAGE->set_pagelayout('report');
 
-// Set page title
+// Set page header
+	// FIX : Needs to be set dynamically
+	$header = get_string('grades', 'grades') . ': Social Comparison GR';
 $PAGE->set_title($header);
+$PAGE->set_heading('xxxxxx'); // fullname($report->user)
+
+var_dump($PAGE);
 
 echo $OUTPUT->header();
 
