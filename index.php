@@ -37,26 +37,30 @@ $userview = optional_param('userview', 0, PARAM_INT);
 // Set URL of plugin page
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
 
-// Set page moodle layout
-$PAGE->set_pagelayout('report');
+    // Create a report instance
+    // $report = new grade_report_scgr_overview($userid, $gpr, $context);
 
-// Set page header
+	// Set page moodle layout
+	$PAGE->set_pagelayout('standard');
 	
-	// FIX : Needs to be set dynamically
-	$header = get_string('grades', 'grades') . ': Social Comparison GR';
-
-$PAGE->set_title($header);
+	// Set page header
+		
+		// FIX : Needs to be set dynamically
+		$header = get_string('grades', 'grades') . ': Social Comparison GR';
 	
-	// FIX : Needs to be set dynamically
-	// $PAGE->set_heading(fullname($report->user));
-	$PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
-    
-echo $OUTPUT->header();
-
-echo '<h1>Title</h1>';
-
-// var_dump($var);
-
-echo '<p>Text paragraph</p>';
-
-echo $OUTPUT->footer();
+	$PAGE->set_title($header);
+		
+		// FIX : Needs to be set dynamically
+		// $PAGE->set_heading(fullname($report->user));
+		$PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
+	    
+	echo $OUTPUT->header();
+	
+	echo '<h1>Title</h1>';
+	echo '<p>Text paragraph</p>';
+	
+	echo html_writer::tag('h3', 'hello darling');
+	
+	echo $OUTPUT->notification('waaaaaaaarning', 'notifymessage');
+	
+	echo $OUTPUT->footer();

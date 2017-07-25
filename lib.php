@@ -24,3 +24,65 @@
  */
  
 $var = 1;
+
+/**
+ * Class providing an API for the overview report building and displaying.
+ * @uses grade_report
+ * @package gradereport_scgr
+ */
+class grade_report_scgr_overview extends grade_report {
+
+    /**
+     * The user.
+     * @var object $user
+     */
+    public $user;
+
+    /**
+     * The user's courses
+     * @var array $courses
+     */
+    public $courses;
+
+    /**
+     * A flexitable to hold the data.
+     * @var object $table
+     */
+    public $table;
+
+    /**
+     * Show student ranks within each course.
+     * @var array $showrank
+     */
+    public $showrank;
+
+    /**
+     * show course/category totals if they contain hidden items
+     */
+    var $showtotalsifcontainhidden;
+
+    /**
+     * An array of course ids that the user is a student in.
+     * @var array $studentcourseids
+     */
+    public $studentcourseids;
+
+    /**
+     * An array of courses that the user is a teacher in.
+     * @var array $teachercourses
+     */
+    public $teachercourses;
+
+    /**
+     * Constructor. Sets local copies of user preferences and initialises grade_tree.
+     * @param int $userid
+     * @param object $gpr grade plugin return tracking object
+     * @param string $context
+     */
+    public function __construct($userid, $gpr, $context) {
+        global $CFG, $COURSE, $DB;
+        parent::__construct($COURSE->id, $gpr, $context);
+    
+    }
+
+}
