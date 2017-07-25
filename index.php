@@ -23,17 +23,24 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+// Requirements
 require_once '../../../config.php';
 require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 
+// Parameters
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
 $userview = optional_param('userview', 0, PARAM_INT);
 
+// Set URL of plugin page
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
 
+// Set page moodle layout
 $PAGE->set_pagelayout('report');
+
+// Set page title
+$PAGE->set_title($header);
 
 echo $OUTPUT->header();
 
