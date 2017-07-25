@@ -34,4 +34,4 @@ $userview = optional_param('userview', 0, PARAM_INT);
 
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
 
-echo $OUTPUT->heading( 'bla bla' );
+var_dump($courseid);
