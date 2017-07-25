@@ -39,6 +39,13 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 // Set page moodle layout
 $PAGE->set_pagelayout('report');
 
+
+/// return tracking object
+$gpr = new grade_plugin_return(array('type'=>'report', 'plugin'=>'scgr', 'courseid'=>$course->id, 'userid'=>$userid));
+
+// Create a report instance
+$report = new grade_report_overview($userid, $gpr, $context);
+
 // Set page header
 	// FIX : Needs to be set dynamically
 	$header = get_string('grades', 'grades') . ': Social Comparison GR';
