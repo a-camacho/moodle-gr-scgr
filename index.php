@@ -27,6 +27,7 @@
 require_once '../../../config.php';
 require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
+require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
 
 // Parameters
 $courseid = required_param('id', PARAM_INT);
@@ -44,7 +45,7 @@ $PAGE->set_pagelayout('report');
 $gpr = new grade_plugin_return(array('type'=>'report', 'plugin'=>'scgr', 'courseid'=>$course->id, 'userid'=>$userid));
 
 // Create a report instance
-$report = new grade_report_overview($userid, $gpr, $context);
+$report = new grade_report_scgr_overview($userid, $gpr, $context);
 
 // Set page header
 	// FIX : Needs to be set dynamically
