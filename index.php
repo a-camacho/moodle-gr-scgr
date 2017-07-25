@@ -40,22 +40,22 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 // Set page moodle layout
 $PAGE->set_pagelayout('report');
 
-
-/// return tracking object
-$gpr = new grade_plugin_return(array('type'=>'report', 'plugin'=>'scgr', 'courseid'=>$course->id, 'userid'=>$userid));
-
-// Create a report instance
-$report = new grade_report_scgr_overview($userid, $gpr, $context);
-
 // Set page header
+	
 	// FIX : Needs to be set dynamically
 	$header = get_string('grades', 'grades') . ': Social Comparison GR';
+
 $PAGE->set_title($header);
-$PAGE->set_heading(fullname($report->user));
+	
+	// FIX : Needs to be set dynamically
+	// $PAGE->set_heading(fullname($report->user));
+	$PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
 
 echo $OUTPUT->header();
 
 echo '<h1>Title</h1>';
+
+var_dump($var);
 
 echo '<p>Text paragraph</p>';
 
