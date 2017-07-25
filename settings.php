@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The social comparison grade report
+ * Defines site settings for the social comparison grade report (scgr)
  *
  * @package   gradereport_scgr
  * @copyright 2017 onwards André Camacho http://www.camacho.pt
@@ -23,15 +23,4 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once '../../../config.php';
-require_once $CFG->libdir.'/gradelib.php';
-require_once $CFG->dirroot.'/grade/lib.php';
-require_once $CFG->dirroot.'/grade/report/user/lib.php';
-
-$courseid = required_param('id', PARAM_INT);
-$userid   = optional_param('userid', $USER->id, PARAM_INT);
-$userview = optional_param('userview', 0, PARAM_INT);
-
-$PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
-
-echo $OUTPUT->heading( 'bla bla' );
+defined('MOODLE_INTERNAL') || die;
