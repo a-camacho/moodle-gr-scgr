@@ -43,9 +43,7 @@ $PAGE->set_pagelayout('report');
 	// FIX : Needs to be set dynamically
 	$header = get_string('grades', 'grades') . ': Social Comparison GR';
 $PAGE->set_title($header);
-$PAGE->set_heading('xxxxxx'); // fullname($report->user)
-
-var_dump($PAGE);
+$PAGE->set_heading(fullname($report->user));
 
 echo $OUTPUT->header();
 
