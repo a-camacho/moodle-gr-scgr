@@ -61,7 +61,7 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	
 	echo html_writer::tag('h3', 'hello darling');
 	
-	echo $OUTPUT->notification('waaaaaaaarning updated', 'notifymessage');
+	echo $OUTPUT->notification('waaaaaaaarning test updated', 'notifymessage');
 	echo $OUTPUT->notification('success', 'notifymessage');
 	
 	echo $OUTPUT->footer();
