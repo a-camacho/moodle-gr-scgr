@@ -66,25 +66,73 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	$courseid = $PAGE->course->id;
 	$course = $DB->get_record('course', array('id' => $courseid));
 	
-	print_r('Course id is = ' . $courseid . '</br>');
-	echo ('Course name is = ' . $course->fullname . '</br>');
-	echo ('Course shortname is = ' . $course->shortname . '</br></br>');
-	
-	echo html_writer::tag('h2', 'Get context');
-	
 	// Define context
 	$context = context_course::instance($courseid);
 	
-	// var_dump($context);
+	print_r('Course id is = ' . $courseid . '</br>');
+	echo ('Course name is = ' . $course->fullname . '</br>');
+	echo ('Course shortname is = ' . $course->shortname . '</br>');
+	
+	echo '<br />';
+	
+	echo html_writer::tag('h2', 'Course sections');
+	
+	// SQL Query to know the sections of the course
+	$sql = "SELECT *
+          FROM unitice_course_sections";
+		 
+	$records = $DB->get_records_sql($sql);
+	
+	foreach ( $records as $record ) {
+		echo 'Section #' . $record->section . ' : ' . $record->name . ' (id=' . $record->id . ')';
+		echo '<br />';
+		// id / section / name
+	}
+	
+	echo '<br />';
+	
+	echo html_writer::tag('h2', 'Course information');
 	
 	$enrolled_users_number = count_enrolled_users($context);
 	$enrolled_users = get_enrolled_users($context);
 	
-	echo ('Number of enrolled users = ' . $enrolled_users_number . '</br></br><hr /></br>');
+	echo ('Number of enrolled users = ' . $enrolled_users_number . '</br></br>');
 	
+	echo '<ul>';
 	foreach ($enrolled_users as $enrolled_user) {
-		echo '<li>' . $enrolled_user->firstname . ' ' . $enrolled_user->lastname . ' (' . $enrolled_user->username . ')</li>';
+		
+		echo '<li>' . $enrolled_user->firstname . ' ' . $enrolled_user->lastname . ' (' . $enrolled_user->username . ' - ' . $enrolled_user->id . ')</li>';
+	
 	}
+	echo '</ul>';
+	
+	echo '<hr />';
+	
+	echo html_writer::tag('h4', 'Get exercices from course (courseid=2, categoryid=2)');
+	
+	$courseid = 2;
+	$categoryid = 2;
+	
+	$sql = "SELECT *
+          FROM unitice_grade_items WHERE courseid = " . $courseid . " AND categoryid = " . $categoryid;
+		 
+	$records = $DB->get_records_sql($sql);
+	
+	echo '<ul>';
+	foreach ( $records as $record ) {
+		
+		echo '<li>' . $record->iteminstance . ' : ' . $record->itemname . ' (id=' . $record->id . ')</li>';
+		
+	}
+	echo '</ul>';
+	
+	echo '<hr />';
+		
+	// var_dump($courseid);
+	
+	// User grades
+	// $resultkrb = grade_get_course_grades(2, 1);
+	// print_object( $resultkrb );
 	
 	// print_r($course);
 	
