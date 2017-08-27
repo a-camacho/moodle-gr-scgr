@@ -57,7 +57,7 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	echo $OUTPUT->header();
 	
 	// One way of writing HTML
-	echo '<h1>Example of title</h1>';
+	echo '<h1>Course information</h1>';
 	
 	// Other way of writing HTML
 	echo html_writer::tag('p', 'Example of text paragraph');
@@ -78,8 +78,13 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	// var_dump($context);
 	
 	$enrolled_users_number = count_enrolled_users($context);
+	$enrolled_users = get_enrolled_users($context);
 	
-	echo ('Number of enrolled users = ' . $enrolled_users_number . '</br>');
+	echo ('Number of enrolled users = ' . $enrolled_users_number . '</br></br><hr /></br>');
+	
+	foreach ($enrolled_users as $enrolled_user) {
+		echo '<li>' . $enrolled_user->firstname . ' ' . $enrolled_user->lastname . ' (' . $enrolled_user->username . ')</li>';
+	}
 	
 	// print_r($course);
 	
