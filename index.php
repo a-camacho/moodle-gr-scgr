@@ -122,10 +122,10 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	$sql = "SELECT *
           FROM unitice_grade_items WHERE courseid = " . $courseid . " AND categoryid = " . $categoryid;
 		 
-	$records = $DB->get_records_sql($sql);
+	$exercices_records = $DB->get_records_sql($sql);
 	
 	echo '<ul>';
-	foreach ( $records as $record ) {
+	foreach ( $exercices_records as $record ) {
 		
 		echo '<li>' . $record->iteminstance . ' : ' . $record->itemname . ' (id=' . $record->id . ')</li>';
 		
@@ -136,12 +136,72 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	
 	echo html_writer::tag('h4', 'Let\'s take exercice 3 (id=5) what did students do ?');
 	
-	$sql = "SELECT *
-          FROM unitice_grade_grades WHERE `aggregationstatus` LIKE 'used'";
-		 
-	$records = $DB->get_records_sql($sql);
+	echo '<hr />';
 	
-	var_dump($records);
+	echo html_writer::tag('h5', 'Exercice 3 : ' . $exercices_records[5]->itemname . ' (id=5)');
+	
+	$sql = "SELECT *
+          FROM unitice_grade_grades WHERE `aggregationstatus` LIKE 'used' AND `itemid` = 5";
+		 
+	$ex3usergrades = $DB->get_records_sql($sql);
+	
+	echo '<ul>';
+	foreach ( $ex3usergrades as $record ) {
+		echo '<li>User ' . $record->userid . ' = ' . $record->rawgrade . '/' . $record->rawgrademax . '</li>';
+		// var_dump($record);
+	}
+	echo '</ul>';
+	
+	echo '<div style="max-width: 600px;">';
+	
+	$chart = new \core\chart_bar(); // Create a bar chart instance.
+	
+	// Grades arrays for users
+	$users_formatted = array();
+	$users_rawgrades = array(); 
+	
+	foreach ( $ex3usergrades as $ex3usergrade ) {
+		array_push($users_formatted, 'User ' . $ex3usergrade->userid);
+		array_push($users_rawgrades, $ex3usergrade->rawgrade);
+	}
+	
+	$series1 = new \core\chart_series('Note de l\'exercice', $users_rawgrades);	
+	$series2 = new \core\chart_series('Participation au forum', [90, 90, 90]);
+	$series3 = new \core\chart_series('Moyenne', [ 90, 90, 90]);
+	
+	$series3->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
+	$series3->set_xaxis(0);
+	$series3->set_smooth(true); // Calling set_smooth() passing true as parameter, will display smooth lines.
+	
+	var_dump($series3);
+	
+	$chart->add_series($series3);
+	$chart->add_series($series2);
+	$chart->add_series($series1);
+	$chart->set_labels($users_formatted);
+
+	echo $OUTPUT->render($chart);
+	
+	echo '</div>';
+	
+	echo '<hr />';
+	
+	echo html_writer::tag('h2', 'Charts test (using Moodle API)');
+	
+	echo '<div style="max-width: 600px;">';
+	
+	$chart = new \core\chart_bar(); // Create a bar chart instance.
+	
+	$series1 = new \core\chart_series('Series 1 (Bar)', [1000, 1170, 660, 1030]);
+	$series2 = new \core\chart_series('Series 2 (Line)', [400, 460, 1120, 540]);
+	$series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
+	$chart->add_series($series2);
+	$chart->add_series($series1);
+	$chart->set_labels(['2004', '2005', '2006', '2007']);
+
+	echo $OUTPUT->render($chart);
+	
+	echo '</div>';
 	
 	// echo $OUTPUT->notification('wa222arning bla bla bla updated', 'notifymessage');
 	// echo $OUTPUT->notification('success', 'notifymessage');
