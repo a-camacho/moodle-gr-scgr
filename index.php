@@ -64,12 +64,18 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	
 	/* Trying to pull of data of moodle database */
 	$courseid = $PAGE->course->id;
-	$course = $DB->get_record('course', array('id' => $courseid));
+	$courseid_in_db = 2;
+	
+	$course = $DB->get_record('course', array('id' => $courseid_in_db));
+	
+	echo '<p style="color:red;">Pourquoi est-ce que le $context me donne un id de cours = 1, et dans la base de données l\'id est 2</p>';
 	
 	// Define context
 	$context = context_course::instance($courseid);
 	
-	print_r('Course id is = ' . $courseid . '</br>');
+	// echo '<br /><br />';
+	
+	print_r('Course id is = ' . $courseid . ' (' . $course->id . ' in the database)</br>');
 	echo ('Course name is = ' . $course->fullname . '</br>');
 	echo ('Course shortname is = ' . $course->shortname . '</br>');
 	
@@ -108,9 +114,9 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	
 	echo '<hr />';
 	
-	echo html_writer::tag('h4', 'Get exercices from course (courseid=2, categoryid=2)');
+	echo html_writer::tag('h4', 'Get exercices from course');
 	
-	$courseid = 2;
+	$courseid = $courseid_in_db;
 	$categoryid = 2;
 	
 	$sql = "SELECT *
@@ -127,14 +133,15 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	echo '</ul>';
 	
 	echo '<hr />';
-		
-	// var_dump($courseid);
 	
-	// User grades
-	// $resultkrb = grade_get_course_grades(2, 1);
-	// print_object( $resultkrb );
+	echo html_writer::tag('h4', 'Let\'s take exercice 3 (id=5) what did students do ?');
 	
-	// print_r($course);
+	$sql = "SELECT *
+          FROM unitice_grade_grades WHERE `aggregationstatus` LIKE 'used'";
+		 
+	$records = $DB->get_records_sql($sql);
+	
+	var_dump($records);
 	
 	// echo $OUTPUT->notification('wa222arning bla bla bla updated', 'notifymessage');
 	// echo $OUTPUT->notification('success', 'notifymessage');
