@@ -29,6 +29,7 @@ require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
 
+
 // Parameters
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
@@ -36,6 +37,9 @@ $userview = optional_param('userview', 0, PARAM_INT);
 
 // Set URL of plugin page
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
+$PAGE->requires->js('/grade/report/scgr/js/chartjs-plugin-annotation.js', true);
+$PAGE->requires->js('/grade/report/scgr/js/custom.js', false);
+$PAGE->requires->css('/grade/report/scgr/js/custom.css');
 
     // Create a report instance
     // $report = new grade_report_scgr_overview($userid, $gpr, $context);
@@ -173,8 +177,6 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	$series3->set_xaxis(0);
 	$series3->set_smooth(true); // Calling set_smooth() passing true as parameter, will display smooth lines.
 	
-	var_dump($series3);
-	
 	$chart->add_series($series3);
 	$chart->add_series($series2);
 	$chart->add_series($series1);
@@ -189,19 +191,54 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	echo html_writer::tag('h2', 'Charts test (using Moodle API)');
 	
 	echo '<div style="max-width: 600px;">';
-	
 	$chart = new \core\chart_bar(); // Create a bar chart instance.
-	
 	$series1 = new \core\chart_series('Series 1 (Bar)', [1000, 1170, 660, 1030]);
 	$series2 = new \core\chart_series('Series 2 (Line)', [400, 460, 1120, 540]);
 	$series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
 	$chart->add_series($series2);
 	$chart->add_series($series1);
 	$chart->set_labels(['2004', '2005', '2006', '2007']);
-
 	echo $OUTPUT->render($chart);
-	
 	echo '</div>';
+	
+	echo html_writer::tag('h2', 'Tests with tabs');
+	
+	echo '<div class="tabs">
+	<input name="tabs" type="radio" id="tab-1" checked="checked" class="input"/>
+	<label for="tab-1" class="label">Orange</label>
+	<div class="panel">';
+		
+	echo '<div style="width: 100%;">';
+	$chart = new \core\chart_bar(); // Create a bar chart instance.
+	$series1 = new \core\chart_series('Series 1 (Bar)', [1000, 1170, 660, 1030]);
+	$series2 = new \core\chart_series('Series 2 (Line)', [400, 460, 1120, 540]);
+	$series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
+	$chart->add_series($series2);
+	$chart->add_series($series1);
+	$chart->set_labels(['2004', '2005', '2006', '2007']);
+	echo $OUTPUT->render($chart);
+	echo '</div>';
+		
+	echo'</div>
+
+	<input name="tabs" type="radio" id="tab-2" class="input"/>
+	<label for="tab-2" class="label">Tangerine</label>
+	<div class="panel">
+		<h1>Tangerine</h1>
+		<p>The tangerine (Citrus tangerina) is an orange-colored citrus fruit that is closely related to, or possibly a type of, mandarin orange (Citrus reticulata).</p>
+		<p>The name was first used for fruit coming from Tangier, Morocco, described as a mandarin variety. Under the Tanaka classification system, Citrus tangerina is considered a separate species.</p>
+	</div>
+
+	<input name="tabs" type="radio" id="tab-3" class="input"/>
+	<label for="tab-3" class="label">Clemantine</label>
+	<div class="panel">
+		<h1>Clemantine</h1>
+		<p>A clementine (Citrus ×clementina) is a hybrid between a mandarin orange and a sweet orange, so named in 1902. The exterior is a deep orange colour with a smooth, glossy appearance. Clementines can be separated into 7 to 14 segments. Similarly to tangerines, they tend to be easy to peel.</p>
+	</div>
+</div>';
+
+	echo "<canvas id='myChart' width='400' height='400'></canvas>";
+	echo "<canvas id='myChart2' width='400' height='400'></canvas>";
 	
 	// echo $OUTPUT->notification('wa222arning bla bla bla updated', 'notifymessage');
 	// echo $OUTPUT->notification('success', 'notifymessage');
