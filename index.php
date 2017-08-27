@@ -56,12 +56,33 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	    
 	echo $OUTPUT->header();
 	
-	echo '<h1>Title</h1>';
-	echo '<p>Text paragraph</p>';
+	// One way of writing HTML
+	echo '<h1>Example of title</h1>';
 	
-	echo html_writer::tag('h3', 'hello darling');
+	// Other way of writing HTML
+	echo html_writer::tag('p', 'Example of text paragraph');
 	
-	echo $OUTPUT->notification('wa222arning bla bla bla updated', 'notifymessage');
-	echo $OUTPUT->notification('success', 'notifymessage');
+	/* Trying to pull of data of moodle database */
+	$courseid = $PAGE->course->id;
+	$course = $DB->get_record('course', array('id' => $courseid));
+	
+	print_r('Course id is = ' . $courseid . '</br>');
+	echo ('Course name is = ' . $course->fullname . '</br>');
+	echo ('Course shortname is = ' . $course->shortname . '</br></br>');
+	
+	var_dump($course);
+	
+	echo '</hr>';
+	
+	$context = course_context::instance($courseid);
+	
+	var_dump($context);
+	
+	// $submissioncandidates = get_enrolled_users($modcontext, 'mod/assignment:submit');
+	
+	// print_r($course);
+	
+	// echo $OUTPUT->notification('wa222arning bla bla bla updated', 'notifymessage');
+	// echo $OUTPUT->notification('success', 'notifymessage');
 	
 	echo $OUTPUT->footer();
