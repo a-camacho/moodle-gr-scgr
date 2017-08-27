@@ -70,15 +70,16 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 	echo ('Course name is = ' . $course->fullname . '</br>');
 	echo ('Course shortname is = ' . $course->shortname . '</br></br>');
 	
-	var_dump($course);
+	echo html_writer::tag('h2', 'Get context');
 	
-	echo '</hr>';
+	// Define context
+	$context = context_course::instance($courseid);
 	
-	$context = course_context::instance($courseid);
+	// var_dump($context);
 	
-	var_dump($context);
+	$enrolled_users_number = count_enrolled_users($context);
 	
-	// $submissioncandidates = get_enrolled_users($modcontext, 'mod/assignment:submit');
+	echo ('Number of enrolled users = ' . $enrolled_users_number . '</br>');
 	
 	// print_r($course);
 	
