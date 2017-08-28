@@ -37,9 +37,8 @@ $userview = optional_param('userview', 0, PARAM_INT);
 
 // Set URL of plugin page
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
-$PAGE->requires->js('/grade/report/scgr/js/chartjs-plugin-annotation.js', true);
-$PAGE->requires->js('/grade/report/scgr/js/custom.js', false);
-$PAGE->requires->css('/grade/report/scgr/js/custom.css');
+$PAGE->requires->js('/grade/report/scgr/lib/custom.js', false);
+$PAGE->requires->css('/grade/report/scgr/lib/custom.css');
 
     // Create a report instance
     // $report = new grade_report_scgr_overview($userid, $gpr, $context);
@@ -132,6 +131,44 @@ $PAGE->requires->css('/grade/report/scgr/js/custom.css');
 	foreach ( $exercices_records as $record ) {
 		
 		echo '<li>' . $record->iteminstance . ' : ' . $record->itemname . ' (id=' . $record->id . ')</li>';
+		
+	}
+	echo '</ul>';
+	
+	echo '<hr />';
+	
+	echo html_writer::tag('h4', 'Get groups from course');
+	
+	$groupmode = groups_get_course_groupmode($course);
+	
+	switch ($groupmode) {
+		case 0:
+			$message = 'No groups - The course or activity has no groups';	
+		case 1:
+			$message = 'Separate groups - Teachers and students can normally only see information relevant to that group';	
+		case 2:
+			$message = 'Visible groups - Teachers and students are separated into groups but can still see all information';	
+	}
+	
+	echo '<p>Le mode de groupage de ce cours est <ul><li>' . $message . ' (' . $groupmode . ')</li></ul></p>';
+	
+	echo '<h6>=> Groupes</h6>';
+	
+	$groups = groups_get_all_groups($courseid);
+	
+	echo '<ul>';
+	foreach ( $groups as $group ) {
+		
+		$group_members = groups_get_members($group->id, $fields='u.*', $sort='lastname ASC');
+		$group_members_items = array();
+		
+		foreach ( $group_members as $item ) {
+			array_push($group_members_items, $item->id);
+		}
+		
+		echo '<li>' . $group->name . ' (' . $group->id . ')';
+		echo '<ul><li>' . count($group_members) . ' user(s) inside : ' . implode(', ', $group_members_items) . '</li></ul>';
+		echo '</li>';
 		
 	}
 	echo '</ul>';
