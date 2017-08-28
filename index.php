@@ -134,6 +134,12 @@ $PAGE->requires->css('/grade/report/scgr/lib/custom.css');
 		
 	}
 	echo '</ul>';
+		
+	$contextx = context_module::instance(3);
+	var_dump($contextx);
+	
+	$varx = has_capability('mod/assign:view', $contextx, 5);
+	var_dump($varx);
 	
 	echo '<hr />';
 	
@@ -150,7 +156,13 @@ $PAGE->requires->css('/grade/report/scgr/lib/custom.css');
 			$message = 'Visible groups - Teachers and students are separated into groups but can still see all information';	
 	}
 	
-	echo '<p>Le mode de groupage de ce cours est <ul><li>' . $message . ' (' . $groupmode . ')</li></ul></p>';
+	$yourgroups = groups_get_user_groups($courseid, 4);
+	// User groups are in the first column of array (in form of array)
+	$yourgroups = $yourgroups[0];
+	$yourgroups = implode(', ', $yourgroups);
+	
+	echo '<p>Your group(s) : ' . $yourgroups . '<br />';
+	echo 'Course groups mode : ' . $groupmode . '<ul><li>' . $message . '</li></ul></p>';
 	
 	echo '<h6>=> Groupes</h6>';
 	
@@ -174,6 +186,34 @@ $PAGE->requires->css('/grade/report/scgr/lib/custom.css');
 	echo '</ul>';
 	
 	echo '<hr />';
+	
+	echo html_writer::tag('h4', 'Get grades from students ids and course module');
+	echo html_writer::tag('p', 'I\'m trying to get grades for a certain "course module" = 27 (ex 5).');
+	
+	// We have our course module
+	$course_module_id = 27;
+	$users = array (3,4,5);
+	$course_module = get_coursemodule_from_id('assign', $course_module_id);
+	
+	echo html_writer::tag('p', 'Name = ' . $course_module->name . '<br />UserIDs = ' . implode(",", $users));
+	
+	$grading_info = grade_get_grades($courseid, 'mod', $course_module->modname, $course_module->instance, $users);
+	$grading_info = $grading_info->items[0];
+	$grading_info = $grading_info->grades;
+	
+	$i = 0;
+	foreach ( $grading_info as $item ) {
+		echo 'User ' . $users[$i] . ' = ' . $item->grade . '<br />';
+		$i++;		
+	}
+	
+	echo '<hr />';
+	
+	 
+	/* $grade_item_grademax = $grading_info->items[0]->grademax;
+	foreach ($users as $user) {
+	    $user_final_grade = $grading_info->items[0]->grades[$user->id];
+	} */
 	
 	echo html_writer::tag('h4', 'Let\'s take exercice 3 (id=5) what did students do ?');
 	
