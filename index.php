@@ -60,7 +60,7 @@ $PAGE->requires->css('/grade/report/scgr/lib/custom.css');
 	echo $OUTPUT->header();
 	
 	// One way of writing HTML
-	echo '<h1>Course information</h1>';
+	echo '<h1>Course information Booze</h1>';
 	
 	// Other way of writing HTML
 	echo html_writer::tag('p', 'Example of text paragraph');
