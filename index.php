@@ -57,6 +57,8 @@ $PAGE->requires->css('/grade/report/scgr/lib/custom.css');
 		// $PAGE->set_heading(fullname($report->user));
 		$PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
 	    
+	var_dump($OUTPUT->header);
+	    
 	echo $OUTPUT->header();
 	
 	// One way of writing HTML
@@ -118,6 +120,8 @@ foreach ( $records as $record ) {
 	echo '<hr />';
 	
 	echo html_writer::tag('h4', 'Get exercices from course');
+	
+	echo html_writer::tag('p', 'Soit on chope les activités qu\'on veut, et on récupère les grade dans gradebook. Soit on prends le gradebook, on exporte toutes les activités qui ont une note, et on filtre ce qu\'on veut (deuxième méthode mieux) ');
 	
 	$courseid = $courseid_in_db;
 	$categoryid = 2;
