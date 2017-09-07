@@ -20,16 +20,22 @@ class simplehtml_form extends moodleform {
                                     'activity' => get_string('form_simple_value_tempo_activity', 'gradereport_scgr'));
         $mform->addElement('select', 'temporality', get_string('form_simple_label_temporality', 'gradereport_scgr'), $TEMPORALITY_TYPES);
 
-        $sections_list = array( 1, 2, 3, 4, 5);
+        // Initialize array
+        $SECTIONS_LIST = $this->_customdata[0];                                 // Item 0 in array is SECTIONS
+        $mform->addElement( 'select',
+                            'section',
+                            get_string('form_simple_label_section',
+                            'gradereport_scgr'),
+                            $SECTIONS_LIST);
 
-        $SECTIONS = $sections_list;
-        $mform->addElement('select', 'sections', get_string('form_simple_label_section', 'gradereport_scgr'), $SECTIONS);
+        $ACTIVITIES_LIST = $this->_customdata[1];                                    // Item 1 in array is SECTIONS
+        $mform->addElement( 'select',
+                            'activity',
+                            get_string('form_simple_label_activity',
+                            'gradereport_scgr'),
+                            $ACTIVITIES_LIST);
 
-        $activities_list = array( 1, 2, 3, 4, 5);
-
-        $ACTIVITIES = $activities_list;
-        $mform->addElement('select', 'activities', get_string('form_simple_label_activity', 'gradereport_scgr'), $ACTIVITIES);
-
+        // Add buttons
         $this->add_action_buttons(false, get_string('form_simple_button_submit', 'gradereport_scgr') );
 
     }

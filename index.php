@@ -37,6 +37,7 @@ require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
 $userview = optional_param('userview', 0, PARAM_INT);
+$categoryid = 2;                                                        // Why hard-coded ????
 
 // Context
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
@@ -114,6 +115,13 @@ $PAGE->requires->css('/grade/report/scgr/styles.css');
 
 $forms_action_url = new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid));
 
+/* ################################################################################################################ */
+/* ###################################      COURSE SETTINGS        ################################################ */
+/* ################################################################################################################ */
+
+// Get course records
+$course = $DB->get_record('course', array('id' => $courseid));
+
 
 /* ################################################################################################################ */
 /* #####################################      PAGE OUTPUT        ################################################## */
@@ -126,21 +134,41 @@ echo $OUTPUT->header();
 // Create a report instance
 // $report = new grade_report_scgr_overview($userid, $gpr, $context);
 
-    // Form that allows user to choose data to be included
+    // Initialize sections query and activities arrays
 
+    // Sections
+    $sql = "SELECT * FROM unitice_course_sections";         // SQL Query
+    $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
+    $sections_list = array();                               // Initialize sections array (empty)
+    foreach ( $records as $record ) {                       // This loop populates sections array
+        $sections_list[$record->id] = $record->name . ' (' . $record->id . ')';
+    }
+
+    // Activities
+    $sql = "SELECT * FROM unitice_grade_items
+                    WHERE courseid = " . $courseid . "
+                    AND categoryid = " . $categoryid;       // SQL Query
+    $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
+    $activities_list = array();                             // Initialize sections array (empty)
+    foreach ( $records as $record ) {
+        $activities_list[$record->id] = $record->itemname . ' (' . $record->id . ')';
+    }
+
+    // Form that allows user to choose data to be included
     echo '<div class="form-box simple">';
 
+        // Include title and subtitle
         echo html_writer::tag('h3', get_string('form_simple_title', 'gradereport_scgr') );
         echo html_writer::tag('p', get_string('form_simple_subtitle', 'gradereport_scgr') );
         echo html_writer::tag('hr');
 
-        //include simplehtml_form.php
+        // Include the form
         require_once('form_simple_html.php');
 
-        //Instantiate simplehtml_form
-        $mform = new simplehtml_form( $forms_action_url );
+        // Instantiate simplehtml_form
+        $mform = new simplehtml_form( $forms_action_url, array( $sections_list, $activities_list ) );
 
-        //Form processing and displaying is done here
+        // Form processing and displaying is done here
         if ($mform->is_cancelled()) {
             //Handle form cancel operation, if cancel button is present on form
         } else if ($fromform = $mform->get_data()) {
@@ -168,6 +196,7 @@ echo $OUTPUT->header();
     echo html_writer::tag('hr');
     echo html_writer::tag('hr');
     echo html_writer::tag('hr');
+
     echo html_writer::tag('hr');
 
 
@@ -175,17 +204,12 @@ echo $OUTPUT->header();
 /* ######################################      OLD TESTS        ################################################### */
 /* ################################################################################################################ */
 
-
-	/* Trying to pull of data of moodle database */
-	$courseid = $PAGE->course->id;
-	$courseid_in_db = 2;
-	
-	$course = $DB->get_record('course', array('id' => $courseid_in_db));
+/*
+    // Define context
+    $context = context_course::instance($courseid);
 	
 	echo '<p style="color:red;">Pourquoi est-ce que le $context me donne un id de cours = 1, et dans la base de données l\'id est 2</p>';
-	
-	// Define context
-	$context = context_course::instance($courseid);
+
 	
 	// echo '<br /><br />';
 	
@@ -323,10 +347,10 @@ foreach ( $records as $record ) {
 	echo '<hr />';
 	
 	 
-	/* $grade_item_grademax = $grading_info->items[0]->grademax;
+	$grade_item_grademax = $grading_info->items[0]->grademax;
 	foreach ($users as $user) {
 	    $user_final_grade = $grading_info->items[0]->grades[$user->id];
-	} */
+	}
 	
 	echo html_writer::tag('h4', 'Let\'s take exercice 3 (id=5) what did students do ?');
 	
@@ -396,5 +420,8 @@ foreach ( $records as $record ) {
 	
 	// echo $OUTPUT->notification('wa222arning bla bla bla updated', 'notifymessage');
 	// echo $OUTPUT->notification('success', 'notifymessage');
+
+
+    */
 	
 	echo $OUTPUT->footer();
