@@ -39,6 +39,7 @@ $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$cours
 
 // Include custom JS and CSS
 $PAGE->requires->css('/grade/report/scgr/styles.css');
+$PAGE->requires->js_call_amd('formcontrol', 'init');
 
 // Create a report instance
 // $report = new grade_report_scgr_overview($userid, $gpr, $context);
@@ -83,14 +84,14 @@ $PAGE->requires->css('/grade/report/scgr/styles.css');
             <div class="form-group">
                 <label for="selectTemporality">Temporalité</label>
                 <select class="form-control" id="selectTemporality">
-                <option>Tout (jusqu\'ici)</option>
-                <option>Une section particulière</option>
-                <option>Une activité particulière</option>
+                <option value="tempoAll">Tout (jusqu\'ici)</option>
+                <option value="tempoSection">Une section particulière</option>
+                <option value="tempoActivity">Une activité particulière</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="selectSection">Choisir une section</label>
-                <select class="form-control" id="selectSection">
+                <select class="form-control" id="selectSection" disabled>
                 <option>Section 1</option>
                 <option>Section 2</option>
                 <option>Section 3</option>
@@ -98,7 +99,7 @@ $PAGE->requires->css('/grade/report/scgr/styles.css');
             </div>
             <div class="form-group">
                 <label for="selectActivity">Choisir une activité</label>
-                <select class="form-control" id="selectActivity">
+                <select class="form-control" id="selectActivity" disabled>
                 <option>Activity 1</option>
                 <option>Activity 2</option>
                 <option>Activity 3</option>
