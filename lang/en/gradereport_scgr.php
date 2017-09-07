@@ -33,6 +33,7 @@ $string['form_simple_button_submit'] = 'Submit';
 
 $string['form_simple_title'] = 'Simple Graph';
 $string['form_simple_subtitle'] = 'Generate a graph using one value (grade or average) for one entity (person or group)';
+$string['form_simple_subtitle2'] = 'Use INTRA + ACTIVITY + ACT.ID.5 for example';
 
 $string['form_simple_label_modality'] = 'Modality';
 $string['form_simple_label_temporality'] = 'Temporality';
@@ -48,4 +49,10 @@ $string['form_simple_value_tempo_activity'] = 'A particular activity';
 $string['form_simple_label_section'] = 'Choose a section';
 $string['form_simple_label_activity'] = 'Choose an activity';
 
+// Form Result
 
+$string['form_result_default_result'] = 'S-';
+$string['form_result_default_phrase'] = 'You want to see an ';
+
+$string['form_result_modality_all_result'] = '';
+$string['form_result_modality_all_phrase'] = '';

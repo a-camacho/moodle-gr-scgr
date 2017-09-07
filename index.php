@@ -33,6 +33,8 @@ require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
 
+require_once $CFG->dirroot.'/grade/report/scgr/functions.php';
+
 // Parameters
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
@@ -160,7 +162,8 @@ echo $OUTPUT->header();
         // Include title and subtitle
         echo html_writer::tag('h3', get_string('form_simple_title', 'gradereport_scgr') );
         echo html_writer::tag('p', get_string('form_simple_subtitle', 'gradereport_scgr') );
-        echo html_writer::tag('hr');
+        echo html_writer::tag('p', get_string('form_simple_subtitle2', 'gradereport_scgr') );
+        echo html_writer::tag('hr', '');
 
         // Include the form
         require_once('form_simple_html.php');
@@ -181,11 +184,58 @@ echo $OUTPUT->header();
                 echo html_writer::tag('p', 'Section is : ' . $data->section);
                 echo html_writer::tag('p', 'Activity is : ' . $data->activity);
 
+                echo html_writer::tag('hr', '');
+
+                echo $data333;
+
+                /* a mettre dans une fonction (pas reussi) */
+                /* a mettre dans une fonction (pas reussi) */
+                /* a mettre dans une fonction (pas reussi) */
+
+                    // Parameters
+                    $users = array(3, 4, 5);
+                    $course_item_id = 5;
+                    $course_module_id = 27;
+                    $course_module = get_coursemodule_from_id('assign', $course_module_id);
+
+                    // Grades arrays for users
+                    $users_formatted = array();
+                    $users_rawgrades = array();
+
+                    $sql = "SELECT *
+                    FROM unitice_grade_grades WHERE `aggregationstatus`
+                    LIKE 'used' AND `itemid` = 5";
+
+                    $usergrades = $DB->get_records_sql($sql);
+
+                    foreach ($usergrades as $usergrade) {
+
+                        echo 'user id ' . $usergrade->userid . ' has grade ' . $usergrade->rawgrade . '<br />';
+
+                        array_push($users_formatted, 'User ' . $usergrade->userid);
+                        array_push($users_rawgrades, $usergrade->rawgrade);
+                    }
+
+                    echo '<hr />';
+
+                    $chart = new \core\chart_bar(); // Create a bar chart instance.
+                    $series1 = new \core\chart_series('Note de l\'exercice', $users_rawgrades);
+
+                    $chart->add_series($series1);
+                    $chart->set_labels($users_formatted);
+
+                    echo $OUTPUT->render_chart($chart);
+
+                /* a mettre dans une fonction (pas reussi) */
+                /* a mettre dans une fonction (pas reussi) */
+                /* a mettre dans une fonction (pas reussi) */
+
         } else {
             // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
             // or on the first display of the form.
 
             //Set default data (if any)
+            $toform = '';
             $mform->set_data($toform);
             //displays the form
             $mform->display();
@@ -193,18 +243,13 @@ echo $OUTPUT->header();
 
     echo '</div>';
 
-    echo html_writer::tag('hr');
-    echo html_writer::tag('hr');
-    echo html_writer::tag('hr');
-
-    echo html_writer::tag('hr');
-
 
 /* ################################################################################################################ */
 /* ######################################      OLD TESTS        ################################################### */
 /* ################################################################################################################ */
 
 /*
+
     // Define context
     $context = context_course::instance($courseid);
 	
@@ -253,32 +298,6 @@ foreach ( $records as $record ) {
 	echo '<hr />';
 	
 	echo html_writer::tag('h4', 'Get exercices from course');
-	
-	echo html_writer::tag('p', 'Soit on chope les activités qu\'on veut, et on récupère les grade dans gradebook. Soit on prends le gradebook, on exporte toutes les activités qui ont une note, et on filtre ce qu\'on veut (deuxième méthode mieux) ');
-	
-	$courseid = $courseid_in_db;
-	$categoryid = 2;
-	
-	$sql = "SELECT *
-          FROM unitice_grade_items WHERE courseid = " . $courseid . " AND categoryid = " . $categoryid;
-		 
-	$exercices_records = $DB->get_records_sql($sql);
-	
-	echo '<ul>';
-	foreach ( $exercices_records as $record ) {
-		
-		echo '<li>' . $record->iteminstance . ' : ' . $record->itemname . ' (id=' . $record->id . ')</li>';
-		
-	}
-	echo '</ul>';
-		
-	$contextx = context_module::instance(3);
-	var_dump($contextx);
-	
-	$varx = has_capability('mod/assign:view', $contextx, 5);
-	var_dump($varx);
-	
-	echo '<hr />';
 	
 	echo html_writer::tag('h4', 'Get groups from course');
 	
@@ -420,7 +439,6 @@ foreach ( $records as $record ) {
 	
 	// echo $OUTPUT->notification('wa222arning bla bla bla updated', 'notifymessage');
 	// echo $OUTPUT->notification('success', 'notifymessage');
-
 
     */
 	
