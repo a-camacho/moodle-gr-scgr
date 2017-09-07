@@ -23,6 +23,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/* ################################################################################################################ */
+/* ###############################      REQUIREMENTS AND CONTEXT        ########################################### */
+/* ################################################################################################################ */
+
 // Requirements
 require_once '../../../config.php';
 require_once $CFG->libdir.'/gradelib.php';
@@ -34,111 +38,140 @@ $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
 $userview = optional_param('userview', 0, PARAM_INT);
 
+// Context
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+    print_error('invalidcourseid');
+}
+require_login(null, false);
+$PAGE->set_course($course);
+
+// Set page moodle layout
+$PAGE->set_pagelayout('report');
+
+// Context
+$context = context_course::instance($course->id);
+require_capability('gradereport/user:view', $context);
+
+if (empty($userid)) {
+    require_capability('moodle/grade:viewall', $context);
+
+} else {
+    if (!$DB->get_record('user', array('id'=>$userid, 'deleted'=>0)) or isguestuser($userid)) {
+        print_error('invaliduser');
+    }
+}
+
+
+/* ################################################################################################################ */
+/* #######################################      SECURITY        ################################################### */
+/* ################################################################################################################ */
+
+
+/// Basic access checks
+$access = false;
+if (has_capability('moodle/grade:viewall', $context)) {
+    //ok - can view all course grades
+    $access = true;
+
+} else if ($userid == $USER->id and has_capability('moodle/grade:view', $context) and $course->showgrades) {
+    //ok - can view own grades
+    $access = true;
+
+} else if (has_capability('moodle/grade:viewall', context_user::instance($userid)) and $course->showgrades) {
+    // ok - can view grades of this user- parent most probably
+    $access = true;
+}
+
+if (!$access) {
+    // no access to grades!
+    print_error('nopermissiontoviewgrades', 'error',  $CFG->wwwroot.'/course/view.php?id='.$courseid);
+}
+
+/// return tracking object
+$gpr = new grade_plugin_return(array('type'=>'report', 'plugin'=>'scgr', 'courseid'=>$courseid, 'userid'=>$userid));
+
+
+/* ################################################################################################################ */
+/* ####################################      PAGE SETTINGS        ################################################# */
+/* ################################################################################################################ */
+
+
 // Set URL of plugin page
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
 
+// Set page header
+    // FIX : Needs to be set dynamically
+    $header = get_string('grades', 'grades') . ': Social Comparison GR';
+$PAGE->set_title($header);
+
+// Set page heading
+    // FIX : Needs to be set dynamically
+$PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
+
 // Include custom JS and CSS
 $PAGE->requires->css('/grade/report/scgr/styles.css');
-$PAGE->requires->js_call_amd('formcontrol', 'init');
+// $PAGE->requires->js_call_amd('formcontrol', 'init');
+
+
+/* ################################################################################################################ */
+/* #####################################      PAGE OUTPUT        ################################################## */
+/* ################################################################################################################ */
+
+
+// Print header
+echo $OUTPUT->header();
 
 // Create a report instance
 // $report = new grade_report_scgr_overview($userid, $gpr, $context);
-
-	// Set page moodle layout
-	$PAGE->set_pagelayout('standard');
-	
-	// Set page header
-		
-		// FIX : Needs to be set dynamically
-		$header = get_string('grades', 'grades') . ': Social Comparison GR';
-	
-	$PAGE->set_title($header);
-		
-		// FIX : Needs to be set dynamically
-		// $PAGE->set_heading(fullname($report->user));
-		$PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
-	    
-	var_dump($OUTPUT->header);
-	    
-	echo $OUTPUT->header();
 	
 	// One way of writing HTML
 	echo '<h1>Course information</h1>';
 	
 	// Other way of writing HTML
-	echo html_writer::tag('p', 'Example of text paragraph');
+	echo html_writer::tag('p', 'variable $access is set to ' . $access);
 
     // Form that allows user to choose data to be included
 
-    echo '<div class="form-box simple">
-            <h3>Simple graph generator</h3><hr />';
+    echo '<div class="form-box simple">';
 
-    echo '<form>
-            <div class="form-group">
-                <label for="selectModality">Modalité</label>
-                <select class="form-control" id="selectModality">
-                <option>inter-groupe (groupes)</option>
-                <option>intra-groupe (élèves d\'un groupe)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="selectTemporality">Temporalité</label>
-                <select class="form-control" id="selectTemporality">
-                <option value="tempoAll">Tout (jusqu\'ici)</option>
-                <option value="tempoSection">Une section particulière</option>
-                <option value="tempoActivity">Une activité particulière</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="selectSection">Choisir une section</label>
-                <select class="form-control" id="selectSection" disabled>
-                <option>Section 1</option>
-                <option>Section 2</option>
-                <option>Section 3</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="selectActivity">Choisir une activité</label>
-                <select class="form-control" id="selectActivity" disabled>
-                <option>Activity 1</option>
-                <option>Activity 2</option>
-                <option>Activity 3</option>
-                <option>Activity 4</option>
-                <option>Activity 5</option>
-                <option>Activity 6</option>
-                </select>
-            </div>
-          </form>';
+        echo html_writer::tag('h3', get_string('form_simple_title', 'gradereport_scgr') );
+        echo html_writer::tag('p', get_string('form_simple_subtitle', 'gradereport_scgr') );
+        echo html_writer::tag('hr');
+
+        //include simplehtml_form.php
+        require_once('form_simple_html.php');
+
+        //Instantiate simplehtml_form
+        $mform = new simplehtml_form();
+
+        //Form processing and displaying is done here
+        if ($mform->is_cancelled()) {
+            //Handle form cancel operation, if cancel button is present on form
+        } else if ($fromform = $mform->get_data()) {
+            //In this case you process validated data. $mform->get_data() returns data posted in form.
+        } else {
+            // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+            // or on the first display of the form.
+
+            //Set default data (if any)
+            $mform->set_data($toform);
+            //displays the form
+            $mform->display();
+        }
 
     echo '</div>';
 
-    echo '<div class="form-box double">
-                <h3>Double graph generator</h3><hr />';
+    echo html_writer::tag('hr');
+    echo html_writer::tag('hr');
+    echo html_writer::tag('hr');
+    echo html_writer::tag('hr');
 
-    echo '<form>
-                <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We\'ll never share your email with anyone else.</small>
-                </div>
-                <div class="form-group">
-                <label for="exampleSelect1">Example select</label>
-                <select class="form-control" id="exampleSelect1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                </select>
-                </div>
-              </form>';
 
-    echo '</div>';
+/* ################################################################################################################ */
+/* ######################################      OLD TESTS        ################################################### */
+/* ################################################################################################################ */
 
-    echo '<hr />';
 
-    echo '<hr />';
-	
 	/* Trying to pull of data of moodle database */
 	$courseid = $PAGE->course->id;
 	$courseid_in_db = 2;
@@ -353,42 +386,6 @@ foreach ( $records as $record ) {
 	$chart->set_labels(['2004', '2005', '2006', '2007']);
 	echo $OUTPUT->render($chart);
 	echo '</div>';
-	
-	echo html_writer::tag('h2', 'Tests with tabs');
-	
-	echo '<div class="tabs">
-	<input name="tabs" type="radio" id="tab-1" checked="checked" class="input"/>
-	<label for="tab-1" class="label">Orange</label>
-	<div class="panel">';
-		
-	echo '<div style="width: 100%;">';
-	$chart = new \core\chart_bar(); // Create a bar chart instance.
-	$series1 = new \core\chart_series('Series 1 (Bar)', [1000, 1170, 660, 1030]);
-	$series2 = new \core\chart_series('Series 2 (Line)', [400, 460, 1120, 540]);
-	$series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
-	$chart->add_series($series2);
-	$chart->add_series($series1);
-	$chart->set_labels(['2004', '2005', '2006', '2007']);
-	echo $OUTPUT->render($chart);
-	echo '</div>';
-		
-	echo'</div>
-
-	<input name="tabs" type="radio" id="tab-2" class="input"/>
-	<label for="tab-2" class="label">Tangerine</label>
-	<div class="panel">
-		<h1>Tangerine</h1>
-		<p>The tangerine (Citrus tangerina) is an orange-colored citrus fruit that is closely related to, or possibly a type of, mandarin orange (Citrus reticulata).</p>
-		<p>The name was first used for fruit coming from Tangier, Morocco, described as a mandarin variety. Under the Tanaka classification system, Citrus tangerina is considered a separate species.</p>
-	</div>
-
-	<input name="tabs" type="radio" id="tab-3" class="input"/>
-	<label for="tab-3" class="label">Clemantine</label>
-	<div class="panel">
-		<h1>Clemantine</h1>
-		<p>A clementine (Citrus ×clementina) is a hybrid between a mandarin orange and a sweet orange, so named in 1902. The exterior is a deep orange colour with a smooth, glossy appearance. Clementines can be separated into 7 to 14 segments. Similarly to tangerines, they tend to be easy to peel.</p>
-	</div>
-</div>';
 
 	echo "<canvas id='myChart' width='400' height='400'></canvas>";
 	echo "<canvas id='myChart2' width='400' height='400'></canvas>";

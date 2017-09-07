@@ -9,7 +9,7 @@ define(['jquery'], function($) {
     var t = {
         init : function() {
 
-            // your code
+            // your codes
 
         }
 
