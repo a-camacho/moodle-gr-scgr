@@ -29,7 +29,6 @@ require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
 
-
 // Parameters
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
@@ -37,11 +36,12 @@ $userview = optional_param('userview', 0, PARAM_INT);
 
 // Set URL of plugin page
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
-$PAGE->requires->js('/grade/report/scgr/lib/custom.js', false);
-$PAGE->requires->css('/grade/report/scgr/lib/custom.css');
 
-    // Create a report instance
-    // $report = new grade_report_scgr_overview($userid, $gpr, $context);
+// Include custom JS and CSS
+$PAGE->requires->css('/grade/report/scgr/styles.css');
+
+// Create a report instance
+// $report = new grade_report_scgr_overview($userid, $gpr, $context);
 
 	// Set page moodle layout
 	$PAGE->set_pagelayout('standard');
@@ -66,6 +66,77 @@ $PAGE->requires->css('/grade/report/scgr/lib/custom.css');
 	
 	// Other way of writing HTML
 	echo html_writer::tag('p', 'Example of text paragraph');
+
+    // Form that allows user to choose data to be included
+
+    echo '<div class="form-box simple">
+            <h3>Simple graph generator</h3><hr />';
+
+    echo '<form>
+            <div class="form-group">
+                <label for="selectModality">Modalité</label>
+                <select class="form-control" id="selectModality">
+                <option>inter-groupe (groupes)</option>
+                <option>intra-groupe (élèves d\'un groupe)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="selectTemporality">Temporalité</label>
+                <select class="form-control" id="selectTemporality">
+                <option>Tout (jusqu\'ici)</option>
+                <option>Une section particulière</option>
+                <option>Une activité particulière</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="selectSection">Choisir une section</label>
+                <select class="form-control" id="selectSection">
+                <option>Section 1</option>
+                <option>Section 2</option>
+                <option>Section 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="selectActivity">Choisir une activité</label>
+                <select class="form-control" id="selectActivity">
+                <option>Activity 1</option>
+                <option>Activity 2</option>
+                <option>Activity 3</option>
+                <option>Activity 4</option>
+                <option>Activity 5</option>
+                <option>Activity 6</option>
+                </select>
+            </div>
+          </form>';
+
+    echo '</div>';
+
+    echo '<div class="form-box double">
+                <h3>Double graph generator</h3><hr />';
+
+    echo '<form>
+                <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We\'ll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                <label for="exampleSelect1">Example select</label>
+                <select class="form-control" id="exampleSelect1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                </select>
+                </div>
+              </form>';
+
+    echo '</div>';
+
+    echo '<hr />';
+
+    echo '<hr />';
 	
 	/* Trying to pull of data of moodle database */
 	$courseid = $PAGE->course->id;

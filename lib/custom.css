@@ -1,53 +1,42 @@
-.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 700px;
-  background: #e5e5e5;
-  box-shadow: 0 48px 80px -32px rgba(0,0,0,0.3);
+.scgr-tabs .tabs {
+  position: relative;
+  min-height: 200px; /* This part sucks */
+  clear: both;
+  margin: 25px 0;
 }
-.input {
+.tab {
+  float: left;
+}
+.tab label {
+  background: #eee;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-left: -1px;
+  position: relative;
+  left: 1px;
+}
+.tab [type=radio] {
+  display: none;
+}
+.content {
   position: absolute;
-  opacity: 0;
+  top: 28px;
+  left: 0;
+  background: white;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  border: 1px solid #ccc;
 }
-.label {
-  width: 100%;
-  padding: 20px 30px;
-  background: #e5e5e5;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 18px;
-  color: #7f7f7f;
-  transition: background 0.1s, color 0.1s;
+[type=radio]:checked ~ label {
+  background: white;
+  border-bottom: 1px solid white;
+  z-index: 2;
 }
-.label:hover {
-  background: #d8d8d8;
-}
-.label:active {
-  background: #ccc;
-}
-.input:focus + .label {
-  box-shadow: inset 0px 0px 0px 3px #2aa1c0;
+[type=radio]:checked ~ label ~ .content {
   z-index: 1;
 }
-.input:checked + .label {
-  background: #fff;
-  color: #000;
-}
-@media (min-width: 600px) {
-  .label {
-    width: auto;
-  }
-}
-.panel {
-  display: none;
-  padding: 20px 30px 30px;
-  background: #fff;
-}
-@media (min-width: 600px) {
-  .panel {
-    order: 99;
-  }
-}
-.input:checked + .label + .panel {
-  display: block;
+
+.scgr-tabs {
+    border: 3px solid black;
 }
