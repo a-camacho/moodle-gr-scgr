@@ -13,22 +13,24 @@ class simplehtml_form extends moodleform {
 
         $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),
                                     'intra' => get_string('form_simple_value_mod_intra', 'gradereport_scgr'));
-        $mform->addElement('select', 'type', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES);
+        $mform->addElement('select', 'modality', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES);
 
         $TEMPORALITY_TYPES = array( 'all' => get_string('form_simple_value_tempo_all', 'gradereport_scgr'),
             'section' => get_string('form_simple_value_tempo_section', 'gradereport_scgr'),
                                     'activity' => get_string('form_simple_value_tempo_activity', 'gradereport_scgr'));
-        $mform->addElement('select', 'type', get_string('form_simple_label_temporality', 'gradereport_scgr'), $TEMPORALITY_TYPES);
+        $mform->addElement('select', 'temporality', get_string('form_simple_label_temporality', 'gradereport_scgr'), $TEMPORALITY_TYPES);
 
         $sections_list = array( 1, 2, 3, 4, 5);
 
         $SECTIONS = $sections_list;
-        $mform->addElement('select', 'type', get_string('form_simple_label_section', 'gradereport_scgr'), $SECTIONS);
+        $mform->addElement('select', 'sections', get_string('form_simple_label_section', 'gradereport_scgr'), $SECTIONS);
 
         $activities_list = array( 1, 2, 3, 4, 5);
 
         $ACTIVITIES = $activities_list;
-        $mform->addElement('select', 'type', get_string('form_simple_label_activity', 'gradereport_scgr'), $ACTIVITIES);
+        $mform->addElement('select', 'activities', get_string('form_simple_label_activity', 'gradereport_scgr'), $ACTIVITIES);
+
+        $this->add_action_buttons(false, get_string('form_simple_button_submit', 'gradereport_scgr') );
 
     }
 

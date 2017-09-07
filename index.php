@@ -112,6 +112,8 @@ $PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
 $PAGE->requires->css('/grade/report/scgr/styles.css');
 // $PAGE->requires->js_call_amd('formcontrol', 'init');
 
+$forms_action_url = new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid));
+
 
 /* ################################################################################################################ */
 /* #####################################      PAGE OUTPUT        ################################################## */
@@ -123,12 +125,6 @@ echo $OUTPUT->header();
 
 // Create a report instance
 // $report = new grade_report_scgr_overview($userid, $gpr, $context);
-	
-	// One way of writing HTML
-	echo '<h1>Course information</h1>';
-	
-	// Other way of writing HTML
-	echo html_writer::tag('p', 'variable $access is set to ' . $access);
 
     // Form that allows user to choose data to be included
 
@@ -142,13 +138,21 @@ echo $OUTPUT->header();
         require_once('form_simple_html.php');
 
         //Instantiate simplehtml_form
-        $mform = new simplehtml_form();
+        $mform = new simplehtml_form( $forms_action_url );
 
         //Form processing and displaying is done here
         if ($mform->is_cancelled()) {
             //Handle form cancel operation, if cancel button is present on form
         } else if ($fromform = $mform->get_data()) {
             //In this case you process validated data. $mform->get_data() returns data posted in form.
+
+                $data = $mform->get_data();
+
+                echo html_writer::tag('p', 'Modality is : ' . $data->modality);
+                echo html_writer::tag('p', 'Temporality is : ' . $data->temporality);
+                echo html_writer::tag('p', 'Section is : ' . $data->section);
+                echo html_writer::tag('p', 'Activity is : ' . $data->activity);
+
         } else {
             // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
             // or on the first display of the form.

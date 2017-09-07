@@ -25,6 +25,10 @@
 
 $string['pluginname'] = 'Social comparison grade report';
 
+// Buttons
+
+$string['form_simple_button_submit'] = 'Submit';
+
 // Forms
 
 $string['form_simple_title'] = 'Simple Graph';
