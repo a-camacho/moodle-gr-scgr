@@ -4,6 +4,61 @@ function getTempResultz() {
     generateSimpleGraph( 'intra', 'activity', null, 5);
 }
 
+function getGrades($users, $courseid, $course_item_id) {
+
+    $grading_info = grade_get_grades($courseid, 'mod', 'assign', $course_item_id, $users);
+    $grades = array();
+
+    foreach ($users as $user) {
+
+        $grade = $grading_info->items[0]->grades[$user]->grade;
+        array_push($grades, floatval($grade));
+
+    }
+
+    return $grades;
+}
+
+// Returns an array with users from the group
+function getUsersFromGroup($groupid) {
+
+    $fields = 'u.id, u.username';              //return these fields
+    $users = groups_get_members($groupid, $fields, $sort='lastname ASC');
+    $users_array = array();
+
+    foreach ( $users as $user ) {
+        array_push($users_array, intval($user->id));
+    }
+
+    return $users_array;
+}
+
+function getUsernamesFromGroup($groupid) {
+
+    $fields = 'u.username';              //return these fields
+    $users = groups_get_members($groupid, $fields, $sort='lastname ASC');
+
+    $usernames = array();
+
+    foreach ( $users as $user ) {
+        array_push($usernames, $user->username);
+    }
+
+    return $usernames;
+}
+
+// Returns an array with Groups names (parameter : int courseID)
+function getGroups($courseid) {
+    $groups = groups_get_all_groups($courseid);
+    $groups_array = array();
+
+    foreach ( $groups as $group ) {
+        $groups_array[$group->id] = $group->name;
+    }
+
+    return $groups_array;
+}
+
 function getTempResults( $data ) {
 
     $result = get_string('form_result_default_result', 'gradereport_scgr');

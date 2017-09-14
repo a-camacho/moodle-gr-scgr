@@ -156,6 +156,9 @@ echo $OUTPUT->header();
         $activities_list[$record->id] = $record->itemname . ' (' . $record->id . ')';
     }
 
+    // Groups
+    $groups = getGroups($courseid);
+
     // Form that allows user to choose data to be included
     echo '<div class="form-box simple">';
 
@@ -169,7 +172,7 @@ echo $OUTPUT->header();
         require_once('form_simple_html.php');
 
         // Instantiate simplehtml_form
-        $mform = new simplehtml_form( $forms_action_url, array( $sections_list, $activities_list ) );
+        $mform = new simplehtml_form( $forms_action_url, array( $sections_list, $activities_list, $groups ) );
 
         // Form processing and displaying is done here
         if ($mform->is_cancelled()) {
@@ -180,49 +183,47 @@ echo $OUTPUT->header();
                 $data = $mform->get_data();
 
                 echo html_writer::tag('p', 'Modality is : ' . $data->modality);
+                echo html_writer::tag('p', 'Group choice is : ' . $data->group);
+                echo '<br />';
                 echo html_writer::tag('p', 'Temporality is : ' . $data->temporality);
                 echo html_writer::tag('p', 'Section is : ' . $data->section);
                 echo html_writer::tag('p', 'Activity is : ' . $data->activity);
 
-                echo html_writer::tag('hr', '');
-
-                echo $data333;
+                echo html_writer::tag('hr', ' ');
 
                 /* a mettre dans une fonction (pas reussi) */
                 /* a mettre dans une fonction (pas reussi) */
                 /* a mettre dans une fonction (pas reussi) */
+
+                echo html_writer::tag('p', 'Whatever you choose up there, the varibles taken for graph generation will
+                                                be : courseid = 2, modality = intra, group = 10, module_id = 27)');
 
                     // Parameters
-                    $users = array(3, 4, 5);
-                    $course_item_id = 5;
-                    $course_module_id = 27;
+                    $groupid = 7;                           // Groups have to have ID on Moodle
+
+                    $course_item_id = 3;                    // Get item ID (activity 3)
+                    $course_module_id = 27;                 // Get module ID
                     $course_module = get_coursemodule_from_id('assign', $course_module_id);
 
-                    // Grades arrays for users
-                    $users_formatted = array();
-                    $users_rawgrades = array();
+                    // Get users from choosen group
+                    echo '<h5>Users</h5>';
+                    $users = getUsersFromGroup($groupid);           // Get users from this group
+                    $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
+                    var_dump($usernames);
 
-                    $sql = "SELECT *
-                    FROM unitice_grade_grades WHERE `aggregationstatus`
-                    LIKE 'used' AND `itemid` = 5";
+                    // Get grades from user array and item_id
+                    echo '<br /><br /><h5>Grades</h5>';
+                    $grades = getGrades($users, $courseid, $course_item_id);
+                    var_dump($grades);
 
-                    $usergrades = $DB->get_records_sql($sql);
-
-                    foreach ($usergrades as $usergrade) {
-
-                        echo 'user id ' . $usergrade->userid . ' has grade ' . $usergrade->rawgrade . '<br />';
-
-                        array_push($users_formatted, 'User ' . $usergrade->userid);
-                        array_push($users_rawgrades, $usergrade->rawgrade);
-                    }
-
-                    echo '<hr />';
+                    echo html_writer::tag('hr', ' ');
+                    echo html_writer::tag('h3', 'Graph');
 
                     $chart = new \core\chart_bar(); // Create a bar chart instance.
-                    $series1 = new \core\chart_series('Note de l\'exercice', $users_rawgrades);
+                    $series1 = new \core\chart_series('Note de l\'exercice', $grades);
 
                     $chart->add_series($series1);
-                    $chart->set_labels($users_formatted);
+                    $chart->set_labels($usernames);
 
                     echo $OUTPUT->render_chart($chart);
 
@@ -249,6 +250,29 @@ echo $OUTPUT->header();
 /* ################################################################################################################ */
 
 /*
+
+                    // Grades arrays for users
+
+                    $users_formatted = array();
+                    $users_rawgrades = array();
+
+                    $sql = "SELECT *
+                    FROM unitice_grade_grades WHERE `aggregationstatus`
+                    LIKE 'used' AND `itemid` = 5";
+
+                    $usergrades = $DB->get_records_sql($sql);
+
+                    foreach ($usergrades as $usergrade) {
+
+                        // echo 'user id ' . $usergrade->userid . ' has grade ' . $usergrade->rawgrade . '<br />';
+
+                        array_push($users_formatted, 'User ' . $usergrade->userid);
+                        array_push($users_rawgrades, $usergrade->rawgrade);
+                    }
+
+                    var_dump($users_rawgrades);
+
+
 
     // Define context
     $context = context_course::instance($courseid);

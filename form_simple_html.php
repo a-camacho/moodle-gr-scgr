@@ -35,6 +35,13 @@ class simplehtml_form extends moodleform {
                             'gradereport_scgr'),
                             $ACTIVITIES_LIST);
 
+        $GROUPS_LIST = $this->_customdata[2];                                    // Item 1 in array is SECTIONS
+        $mform->addElement( 'select',
+            'group',
+            get_string('form_simple_label_group',
+                'gradereport_scgr'),
+            $GROUPS_LIST);
+
         // Add buttons
         $this->add_action_buttons(false, get_string('form_simple_button_submit', 'gradereport_scgr') );
 
