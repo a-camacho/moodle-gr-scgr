@@ -33,8 +33,6 @@ require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
 
-require_once $CFG->dirroot.'/grade/report/scgr/functions.php';
-
 // Parameters
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
@@ -153,7 +151,7 @@ echo $OUTPUT->header();
         echo html_writer::tag('hr', '');
 
         // Include the form
-        require_once('form_simple_html.php');
+        require_once('forms/form_simple_html.php');
 
         // Instantiate simplehtml_form
         $mform = new simplehtml_form( $forms_action_url, array( $sections, $activities, $groups ) );
