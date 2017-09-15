@@ -113,6 +113,27 @@ function getGrades($users, $courseid, $activity) {
 
 }
 
+
+// Get courses ID's
+function getCoursesIDandNames() {
+    $courses = get_courses();
+    $courses_array = array();
+
+    foreach ( $courses as $course ) {
+
+        if ( $course->format != 'site' ) {
+
+            $courses_array[$course->id] = $course->fullname;
+
+            // array_push( $courses_array, intval($course->id) );
+            // array_push( $courses_array, $course->fullname );
+
+        }
+    }
+
+    return $courses_array;
+}
+
 // Get sections from courseID
 function getSectionsFromCourseID($courseid) {
     global $DB;

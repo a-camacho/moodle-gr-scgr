@@ -23,4 +23,17 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
+
 defined('MOODLE_INTERNAL') || die;
+
+if ($ADMIN->fulltree) {
+
+    // Course plugin activation choice
+
+    $options = array();
+    $values = getCoursesIDandNames();
+    $settings->add(new admin_setting_configmultiselect(  'grade_report_scgr/course_activation_choice', 'Activate report on these courses',
+                                                    'Choose in which courses you want the SCGR report to be avalaible.', $options, $values ));
+
+}
