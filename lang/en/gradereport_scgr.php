@@ -35,7 +35,12 @@ $string['page_not_active_on_this_course_description'] = 'Before being able to us
 
 $string['form_simple_button_submit'] = 'Submit';
 
-// Forms
+
+/* ################################################################################################################ */
+/* ##############################################      FORMS        ############################################### */
+/* ################################################################################################################ */
+
+// Forms - Simple
 
 $string['form_simple_title'] = 'Simple Graph';
 $string['form_simple_subtitle'] = 'Generate a graph using one value (grade or average) for one entity (person or group)';
@@ -58,6 +63,11 @@ $string['form_simple_label_group'] = 'Choose a group';
 
 $string['form_simple_label_no_groups'] = 'This course has no user groups. Field deactivated.';
 
+// Forms - Double
+
+$string['form_double_title'] = 'Double Graph';
+$string['form_double_subtitle'] = 'Generate a graph using two values (grades from two activities) comparing users in a group, or groups in a course.';
+
 // Form Result
 
 $string['form_result_default_result'] = 'S-';
@@ -65,6 +75,10 @@ $string['form_result_default_phrase'] = 'You want to see an ';
 
 $string['form_result_modality_all_result'] = '';
 $string['form_result_modality_all_phrase'] = '';
+
+/* ################################################################################################################ */
+/* #############################################      SETTINGS        ############################################# */
+/* ################################################################################################################ */
 
 // Settings Page
 
