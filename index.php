@@ -39,7 +39,6 @@ require_once $CFG->dirroot.'/grade/report/scgr/functions.php';
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
 $userview = optional_param('userview', 0, PARAM_INT);
-$categoryid = 2;                                                        // Why hard-coded ????
 
 // Context
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
@@ -117,12 +116,16 @@ $PAGE->requires->css('/grade/report/scgr/styles.css');
 
 $forms_action_url = new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid));
 
+
 /* ################################################################################################################ */
 /* ###################################      COURSE SETTINGS        ################################################ */
 /* ################################################################################################################ */
 
 // Get course records
-$course = $DB->get_record('course', array('id' => $courseid));
+// $course = $DB->get_record('course', array('id' => $courseid));
+// $modinfo = get_fast_modinfo($courseid);
+
+$categoryid = $courseid;                 // Same as courseID ? In database, each course has an ID, and they are both in category 1
 
 
 /* ################################################################################################################ */
@@ -133,30 +136,11 @@ $course = $DB->get_record('course', array('id' => $courseid));
 // Print header
 echo $OUTPUT->header();
 
-// Create a report instance
-// $report = new grade_report_scgr_overview($userid, $gpr, $context);
+/* ######################  SIMPLE GENERATION FORM  ###################### */
 
     // Initialize sections query and activities arrays
-
-    // Sections
-    $sql = "SELECT * FROM unitice_course_sections";         // SQL Query
-    $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
-    $sections_list = array();                               // Initialize sections array (empty)
-    foreach ( $records as $record ) {                       // This loop populates sections array
-        $sections_list[$record->id] = $record->name . ' (' . $record->id . ')';
-    }
-
-    // Activities
-    $sql = "SELECT * FROM unitice_grade_items
-                    WHERE courseid = " . $courseid . "
-                    AND categoryid = " . $categoryid;       // SQL Query
-    $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
-    $activities_list = array();                             // Initialize sections array (empty)
-    foreach ( $records as $record ) {
-        $activities_list[$record->id] = $record->itemname . ' (' . $record->id . ')';
-    }
-
-    // Groups
+    $sections = getSectionsFromCourseID($courseid);                         // Sections
+    $activities = getActivitiesFromCourseID($courseid, $categoryid);        // Activites
     $groups = getGroups($courseid);
 
     // Form that allows user to choose data to be included
@@ -172,64 +156,59 @@ echo $OUTPUT->header();
         require_once('form_simple_html.php');
 
         // Instantiate simplehtml_form
-        $mform = new simplehtml_form( $forms_action_url, array( $sections_list, $activities_list, $groups ) );
+        $mform = new simplehtml_form( $forms_action_url, array( $sections, $activities, $groups ) );
 
         // Form processing and displaying is done here
         if ($mform->is_cancelled()) {
             //Handle form cancel operation, if cancel button is present on form
+
+        /* ######################  CHART RESULT  ###################### */
+
         } else if ($fromform = $mform->get_data()) {
-            //In this case you process validated data. $mform->get_data() returns data posted in form.
 
-                $data = $mform->get_data();
+            $data = $mform->get_data();
 
-                echo html_writer::tag('p', 'Modality is : ' . $data->modality);
-                echo html_writer::tag('p', 'Group choice is : ' . $data->group);
-                echo '<br />';
-                echo html_writer::tag('p', 'Temporality is : ' . $data->temporality);
-                echo html_writer::tag('p', 'Section is : ' . $data->section);
-                echo html_writer::tag('p', 'Activity is : ' . $data->activity);
+            echo html_writer::tag('p', 'Whatever you choose up there, the form uses INTER + ACTIVITY.');
 
-                echo html_writer::tag('hr', ' ');
+            echo '<hr />';
 
-                /* a mettre dans une fonction (pas reussi) */
-                /* a mettre dans une fonction (pas reussi) */
-                /* a mettre dans une fonction (pas reussi) */
+            printGraph( $courseid, 'inter', 'all', 0,
+                        $data->group, $data->activity );
 
-                echo html_writer::tag('p', 'Whatever you choose up there, the varibles taken for graph generation will
-                                                be : courseid = 2, modality = intra, group = 10, module_id = 27)');
+            echo '<hr />';
 
-                    // Parameters
-                    $groupid = 7;                           // Groups have to have ID on Moodle
+            /*
 
-                    $course_item_id = 3;                    // Get item ID (activity 3)
-                    $course_module_id = 27;                 // Get module ID
-                    $course_module = get_coursemodule_from_id('assign', $course_module_id);
+            $groupid = $data->group;
+            $course_item_id = 3;                    // Get item ID (activity 3)
+            $course_module_id = 27;                 // Get module ID
+            $course_module = get_coursemodule_from_id('assign', $course_module_id);
 
-                    // Get users from choosen group
-                    echo '<h5>Users</h5>';
-                    $users = getUsersFromGroup($groupid);           // Get users from this group
-                    $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
-                    var_dump($usernames);
+            // Get users from choosen group
+            echo '<h5>Users</h5>';
+            $users = getUsersFromGroup($groupid);           // Get users from this group
+            $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
+            var_dump($usernames);
 
-                    // Get grades from user array and item_id
-                    echo '<br /><br /><h5>Grades</h5>';
-                    $grades = getGrades($users, $courseid, $course_item_id);
-                    var_dump($grades);
+            // Get grades from user array and item_id
+            echo '<br /><br /><h5>Grades</h5>';
+            $grades = getGrades($users, $courseid, $course_item_id);
+            var_dump($grades);
 
-                    echo html_writer::tag('hr', ' ');
-                    echo html_writer::tag('h3', 'Graph');
+            echo html_writer::tag('hr', ' ');
+            echo html_writer::tag('h3', 'Graph');
 
-                    $chart = new \core\chart_bar(); // Create a bar chart instance.
-                    $series1 = new \core\chart_series('Note de l\'exercice', $grades);
+            $chart = new \core\chart_bar(); // Create a bar chart instance.
+            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
 
-                    $chart->add_series($series1);
-                    $chart->set_labels($usernames);
+            $chart->add_series($series1);
+            $chart->set_labels($usernames);
 
-                    echo $OUTPUT->render_chart($chart);
+            echo $OUTPUT->render_chart($chart);
 
-                /* a mettre dans une fonction (pas reussi) */
-                /* a mettre dans une fonction (pas reussi) */
-                /* a mettre dans une fonction (pas reussi) */
+            */
+
+        /* ######################  END RESULT  ###################### */
 
         } else {
             // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
@@ -243,6 +222,8 @@ echo $OUTPUT->header();
         }
 
     echo '</div>';
+
+/* ######################  END SIMPLE GENERATION FORM  ###################### */
 
 
 /* ################################################################################################################ */

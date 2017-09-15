@@ -16,3 +16,10 @@
 .double {
     border-color: red;
 }
+
+/* Graph CSS */
+
+h4.scgr-graph-title {
+    text-align: center;
+    font-size: 4em;
+}
