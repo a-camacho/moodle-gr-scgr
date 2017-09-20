@@ -7,8 +7,7 @@ $sections = getSectionsFromCourseID($courseid);                         // Secti
 $activities = getActivitiesFromCourseID($courseid, $categoryid);        // Activites
 $groups = getGroups($courseid);
 
-// Form that allows user to choose data to be included
-echo '<div class="form-box simple">';
+echo '<div class="temp">';
 
     // Include title and subtitle
     echo html_writer::tag('h3', get_string('form_simple_title', 'gradereport_scgr') );
@@ -26,38 +25,50 @@ echo '<div class="form-box simple">';
     if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
 
-
-    /* ######################  CHART RESULT  ###################### */
-
-
     } else if ($fromform = $mform->get_data()) {
 
-    $data = $mform->get_data();
+        /* ######################  CHART RESULT  ###################### */
 
-    echo html_writer::tag('p', 'Whatever you choose up there, the form uses INTER + ACTIVITY.');
+        $data = $mform->get_data();
 
-    echo '<hr />';
+        // echo html_writer::tag('p', 'Whatever you choose up there, the form uses INTER + ACTIVITY.');
+        // echo '<hr />';
 
-    printGraph( $courseid, 'inter', 'all', 0,
-    $data->group, $data->activity );
+        if ( isset($data->modality) && $data->modality == 'inter' ) {
 
-    echo '<hr />';
+            printOptions( $courseid, $data->modality, 'all', 0, $data->activity );
 
+            printGraph( $courseid, $data->modality, 'all', 0, $data->activity );
 
-    /* ######################  END RESULT  ###################### */
+        } elseif ( isset($data->modality) && $data->modality == 'intra' ) {
 
+            printOptions( $courseid, $data->modality, 'all', 0,
+                $data->group, $data->activity );
+
+            printGraph( $courseid, $data->modality, 'all', 0,
+                $data->group, $data->activity );
+
+        } else {
+            echo 'Error : modality not set';
+        }
+
+        /* ####################  END CHART RESULT  #################### */
 
     } else {
     // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
     // or on the first display of the form.
 
-    //Set default data (if any)
-    $toform = '';
-    $mform->set_data($toform);
-    //displays the form
-    $mform->display();
-    }
+        /* ######################  FORM DISPLAY  ###################### */
 
-    echo '</div>';
+        //Set default data (if any)
+        $toform = '';
+        $mform->set_data($toform);
+        //displays the form
+        $mform->display();
+        }
+
+        /* ####################  END FORM DISPLAY  #################### */
+
+echo '</div>';
 
 /* ######################  END SIMPLE GENERATION FORM  ###################### */

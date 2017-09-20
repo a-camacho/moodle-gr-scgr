@@ -13,8 +13,7 @@ class simplehtml_form extends moodleform {
 
         $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),
                                     'intra' => get_string('form_simple_value_mod_intra', 'gradereport_scgr'));
-        $mform->addElement('select', 'modality', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES,
-                            array('disabled'));
+        $mform->addElement('select', 'modality', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES);
 
         $TEMPORALITY_TYPES = array( 'all' => get_string('form_simple_value_tempo_all', 'gradereport_scgr'),
             'section' => get_string('form_simple_value_tempo_section', 'gradereport_scgr'),
@@ -49,6 +48,9 @@ class simplehtml_form extends moodleform {
                 $GROUPS_LIST);
 
         }
+
+        // Conditional disable
+        $mform->disabledIf('group', 'modality', $condition = 'eq', $value='inter');
 
         // Add buttons
         $this->add_action_buttons(false, get_string('form_simple_button_submit', 'gradereport_scgr') );

@@ -14,73 +14,92 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function printGraph( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity = NULL ) {
-    global $OUTPUT;
+function printOptions( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity = NULL ) {
 
-    // Get users from choosen group
-    $users = getUsersFromGroup($groupid);           // Get users from this group
-    $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
     $groupname = groups_get_group_name($groupid);
 
     // Options
-    echo html_writer::tag('h1', 'Graph');
-    echo html_writer::tag('h6', 'Group chosen : ' . $groupname . ' (#' . $groupid . ')');
+    echo html_writer::tag('h1', 'Options');
 
-    if ( $modality ) {
-        echo html_writer::tag('h6', 'Modality : ' . $modality);
+    echo '<ul>';
+
+    if ( $groupname ) {
+        echo html_writer::tag('li', 'Group name : ' . $groupname . '(#' . $groupid . ')');
     } else {
-        echo html_writer::tag('h6', 'Modality : ignored');
+        echo html_writer::tag('li', 'Group name : ignored');
     }
 
+    if ( $modality ) {
+        echo html_writer::tag('li', 'Modality : ' . $modality);
+    } else {
+        echo html_writer::tag('li', 'Modality : ignored');
+    }
 
     if ( $temporality ) {
-        echo html_writer::tag('h6', 'Temporality : ' . $temporality);
+        echo html_writer::tag('li', 'Temporality : ' . $temporality);
     }else {
-        echo html_writer::tag('h6', 'Temporality : ignored');
+        echo html_writer::tag('li', 'Temporality : ignored');
     }
 
     if ( $section ) {
-        echo html_writer::tag('h6', 'Section : ' . $section);
+        echo html_writer::tag('li', 'Section : ' . $section);
     } else {
-        echo html_writer::tag('h6', 'Section : ignored');
+        echo html_writer::tag('li', 'Section : ignored');
     }
 
     if ( $activity ) {
-        echo html_writer::tag('h6', 'Activity : ' . getActivityName( $activity ) . ' (#' . $activity . ')');
+        echo html_writer::tag('li', 'Activity : ' . getActivityName( $activity ) . ' (#' . $activity . ')');
     } else {
-        echo html_writer::tag('h6', 'Activity : ignored');
+        echo html_writer::tag('li', 'Activity : ignored');
     }
+
+    echo '</ul>';
 
     echo '<hr>';
 
-    echo html_writer::tag('h4', getActivityName( $activity ), array( 'class' => 'scgr-graph-title') );
+}
 
-    // Get grades from user array and item_id
-    $grades = getGrades($users, $courseid, $activity);
+function printGraph( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity = NULL ) {
+    global $OUTPUT;
 
-    if ( $grades && $usernames ) {
+    if ( isset($modality) && $modality == 'intra' ) {
 
-        $chart = new \core\chart_bar(); // Create a bar chart instance.
-        $series1 = new \core\chart_series('Note de l\'exercice', $grades);
+        // Get users from choosen group
+        $users = getUsersFromGroup($groupid);           // Get users from this group
+        $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
 
-        $chart->add_series($series1);
-        $chart->set_labels($usernames);
+        echo html_writer::tag('h1', getActivityName( $activity ), array( 'class' => 'scgr-graph-title2') );
+        echo html_writer::tag('h4', groups_get_group_name($groupid) );
 
-        echo $OUTPUT->render_chart($chart);
+        // Get grades from user array and item_id
+        $grades = getGrades($users, $courseid, $activity);
 
-        echo '<hr />';
-        echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+        if ( $grades && $usernames ) {
 
-    } else {
+            $chart = new \core\chart_bar(); // Create a bar chart instance.
+            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
 
-        echo html_writer::tag('h3', 'Error');
-        echo html_writer::tag('p', 'users or grades not avalaible.');
-        echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+            $chart->add_series($series1);
+            $chart->set_labels($usernames);
+
+            echo $OUTPUT->render_chart($chart);
+
+            echo '<hr />';
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+
+        } else {
+
+            echo html_writer::tag('h3', 'Error');
+            echo html_writer::tag('p', 'users or grades not avalaible.');
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+
+        }
+
+    } elseif ( isset($modality) && $modality == 'inter' ) {
+
+        echo 'Error : inter graphs still not avalaible';
 
     }
-
-    echo html_writer::tag('p', 'Actuellement on peut sélectionner le groupe et les informations sont chargées. Par
-                                contre l\'exercice est toujours en dur et il faudrait réussir à le charger à la volée.');
 
 }
 

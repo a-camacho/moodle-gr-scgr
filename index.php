@@ -147,7 +147,7 @@ if ( !in_array( $courseid, $activated_on , false )  ) {
 
 } else {
 
-    if ( $_GET["graph"] == 'double' ) {
+    if ( isset($_GET["graph"]) && $_GET["graph"] == 'double' ) {
 
         echo html_writer::tag('p', '<a href="?id=' . $courseid . '&graph=simple">Simple graph (1 value)</a><br /><b>You are here</b> : Complex Graph (2 values)');
 
