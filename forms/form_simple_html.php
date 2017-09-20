@@ -7,16 +7,16 @@ class simplehtml_form extends moodleform {
 
     //Add elements to form
     public function definition() {
-        global $CFG;
+        global $CFG, $config;
 
         $mform = $this->_form; // Don't forget the underscore!
 
         $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),
-                                    'intra' => get_string('form_simple_value_mod_intra', 'gradereport_scgr'));
+            'intra' => get_string('form_simple_value_mod_intra', 'gradereport_scgr'));
         $mform->addElement('select', 'modality', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES);
 
         $TEMPORALITY_TYPES = array( 'all' => get_string('form_simple_value_tempo_all', 'gradereport_scgr'),
-            'section' => get_string('form_simple_value_tempo_section', 'gradereport_scgr'),
+                                    'section' => get_string('form_simple_value_tempo_section', 'gradereport_scgr'),
                                     'activity' => get_string('form_simple_value_tempo_activity', 'gradereport_scgr'));
         $mform->addElement('select', 'temporality', get_string('form_simple_label_temporality', 'gradereport_scgr'),
                             $TEMPORALITY_TYPES, array('disabled'));

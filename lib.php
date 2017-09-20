@@ -26,7 +26,6 @@ function printOptions( $courseid, $modality, $temporality, $section = NULL, $gro
     if ( $groupname ) {
         echo html_writer::tag('li', 'Group name : ' . $groupname . '(#' . $groupid . ')');
     } else {
-        echo html_writer::tag('li', 'Group name : ignored');
     }
 
     if ( $modality ) {
@@ -97,9 +96,78 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
     } elseif ( isset($modality) && $modality == 'inter' ) {
 
-        echo 'Error : inter graphs still not avalaible';
+        $grades = getGradesFromGroups($courseid, $activity);
+        $groupnames = getGroupNames($courseid);                                 // Get groupnames
+
+        echo html_writer::tag('h1', getActivityName( $activity ), array( 'class' => 'scgr-graph-title2') );
+
+        // Output graph if $groupnames and $grades
+        if ( $grades && $groupnames ) {
+
+            $chart = new \core\chart_bar(); // Create a bar chart instance.
+            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
+
+            $chart->add_series($series1);
+            $chart->set_labels($groupnames);
+
+            echo $OUTPUT->render_chart($chart);
+
+            echo '<hr />';
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+
+        } else {
+
+            echo html_writer::tag('h3', 'Error');
+            echo html_writer::tag('p', 'users or grades not avalaible.');
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+
+        }
 
     }
+
+}
+
+function getGradesFromGroups( $courseid, $activity ) {
+
+    $groups = getGroupsIDS($courseid);
+    $groups_grades = array();
+
+    foreach ( $groups as $groupid ) {
+
+        $users = getUsersFromGroup($groupid);
+        $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $users);
+        $users_grades = array();
+        $total = 0;
+
+        foreach ($users as $user) {
+
+            $user_grade = $grading_info->items[0]->grades[$user]->grade;
+            array_push( $users_grades, floatval($user_grade) );
+
+            $total = $total + floatval($user_grade);
+        }
+
+        $count = count( $users_grades );
+        $average = $total / $count;
+
+        // Push average grade of group in array
+        array_push($groups_grades, $average);
+
+    }
+
+    return $groups_grades;
+
+}
+
+function getGroupsIDS( $courseid ) {
+    $groups = groups_get_all_groups($courseid);
+    $groups_array = array();
+
+    foreach ( $groups as $group ) {
+        array_push( $groups_array, intval($group->id) );
+    }
+
+    return $groups_array;
 
 }
 
@@ -221,6 +289,18 @@ function getGroups($courseid) {
 
     foreach ( $groups as $group ) {
         $groups_array[$group->id] = $group->name;
+    }
+
+    return $groups_array;
+}
+
+// Returns an array with Groups names (parameter : int courseID)
+function getGroupNames($courseid) {
+    $groups = groups_get_all_groups($courseid);
+    $groups_array = array();
+
+    foreach ( $groups as $group ) {
+        array_push($groups_array, $group->name);
     }
 
     return $groups_array;

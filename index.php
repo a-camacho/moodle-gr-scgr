@@ -128,13 +128,14 @@ $categoryid = $courseid;                 // Same as courseID ? In database, each
 // Load plugin configuration
 $config = get_config('grade_report_scgr');
 
-
 /* ################################################################################################################ */
 /* #####################################      PAGE OUTPUT        ################################################## */
 /* ################################################################################################################ */
 
 // Print header
 echo $OUTPUT->header();
+
+var_dump($config);
 
 // Check if plugin is activated for this course
 $activated_on = explode(",", $config->course_activation_choice);

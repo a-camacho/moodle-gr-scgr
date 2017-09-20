@@ -19,7 +19,19 @@ echo '<div class="temp">';
     require_once('forms/form_simple_html.php');
 
     // Instantiate simplehtml_form
-    $mform = new simplehtml_form( $forms_action_url, array( $sections, $activities, $groups ) );
+
+    var_dump($config);
+
+    $activated_on = explode(",", $config->course_group_feature_activation_choice);
+    if ( in_array( $courseid, $activated_on , false )  ) {
+
+        $mform = new simplehtml_form( $forms_action_url, array( $sections, $activities, $groups ) );
+
+    } else {
+
+        $mform = new simplehtml_form( $forms_action_url, array( $sections, $activities ) );
+
+    }
 
     // Form processing and displaying is done here
     if ($mform->is_cancelled()) {
@@ -36,9 +48,9 @@ echo '<div class="temp">';
 
         if ( isset($data->modality) && $data->modality == 'inter' ) {
 
-            printOptions( $courseid, $data->modality, 'all', 0, $data->activity );
+            printOptions( $courseid, $data->modality, 'all', 0, NULL, $data->activity );
 
-            printGraph( $courseid, $data->modality, 'all', 0, $data->activity );
+            printGraph( $courseid, $data->modality, 'all', 0, NULL, $data->activity );
 
         } elseif ( isset($data->modality) && $data->modality == 'intra' ) {
 
