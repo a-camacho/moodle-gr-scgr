@@ -29,25 +29,23 @@ defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
 
-    // Choose in which courses the plugin should be active
+    /// Choose in which courses the plugin should be active
 
-    $settings->add(new admin_setting_configcheckbox(  'gradereport_scgr/plugin_disable', 'Disable the plugin totally',
+    $settings->add(new admin_setting_configcheckbox(  'scgr_plugin_disable', 'Disable the plugin totally',
         'Selecting this option will disable the plugin completely.', 0 ));
 
     $options = array();
     $courses = getCoursesIDandNames();
-    $settings->add(new admin_setting_configmultiselect(  'gradereport_scgr/course_activation_choice', 'Activate report on these courses',
+    $settings->add(new admin_setting_configmultiselect(  'scgr_course_activation_choice', 'Activate report on these courses',
                                                     'Choose in which courses you want the SCGR report to be avalaible.', $options, $courses ));
+
 
     // Choose in which courses the "groups" feature should be activated
 
-    $settings->add(new admin_setting_configcheckbox(  'gradereport_scgr/course_ignore_groups', 'Disable groups feature completely',
-        'Selecting this option will remove "inter" group graphs and group feature.', 0 ));
-
     $options2 = array();
     $courses2 = getCoursesIDandNames();
-    $settings->add(new admin_setting_configmultiselect(  'gradereport_scgr/course_activation_choicexxx', 'Activate report on these coursesxxxx',
-        'Choose in which courses you want the SCGR report to be avalaiblexxxx.', $options2, $courses2 ));
+    $settings->add(new admin_setting_configmultiselect(  'scgr_course_groups_activation_choice', 'Activate group feature on these courses.',
+        'Choose in which courses you want the SCGR groups feature to be enabled.', $options2, $courses2 ));
 
 
 }

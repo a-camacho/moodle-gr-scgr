@@ -58,6 +58,32 @@ function printOptions( $courseid, $modality, $temporality, $section = NULL, $gro
 
 }
 
+function printPluginConfig() {
+    global $CFG;
+
+    // Options
+    echo html_writer::tag('h2', 'Plugin Config (for this course)');
+
+    echo '<ul>';
+
+    if ( $CFG->scgr_plugin_disable ) {
+        echo html_writer::tag('li', 'scgr_plugin_disable : ' . $CFG->scgr_plugin_disable );
+    }
+
+    if ( $CFG->scgr_course_activation_choice ) {
+        echo html_writer::tag('li', 'scgr_course_activation_choice : ' . $CFG->scgr_course_activation_choice );
+    }
+
+    if ( $CFG->scgr_course_groups_activation_choice ) {
+        echo html_writer::tag('li', 'scgr_course_groups_activation_choice : ' . $CFG->scgr_course_groups_activation_choice );
+    }
+
+    echo '</ul>';
+
+    echo '<hr>';
+
+}
+
 function printGraph( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity = NULL ) {
     global $OUTPUT;
 
@@ -99,8 +125,6 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
         $grades = getGradesFromGroups($courseid, $activity);
         $groupnames = getGroupNames($courseid);                                 // Get groupnames
 
-        echo html_writer::tag('h1', getActivityName( $activity ), array( 'class' => 'scgr-graph-title2') );
-
         // Output graph if $groupnames and $grades
         if ( $grades && $groupnames ) {
 
@@ -109,8 +133,11 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
             $chart->add_series($series1);
             $chart->set_labels($groupnames);
+            $chart->set_title( getActivityName( $activity ) );
 
             echo $OUTPUT->render_chart($chart);
+
+            echo '<a href="#">Export as PNG</a>';
 
             echo '<hr />';
             echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';

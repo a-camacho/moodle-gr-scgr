@@ -23,3 +23,8 @@ h4.scgr-graph-title {
     text-align: center;
     font-size: 4em;
 }
+
+div.chart-area {
+    border: 2px solid black;
+    padding: 15px;
+}

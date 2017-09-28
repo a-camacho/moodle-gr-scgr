@@ -68,6 +68,9 @@ $string['form_simple_label_no_groups'] = 'This course has no user groups. Field 
 $string['form_double_title'] = 'Double Graph';
 $string['form_double_subtitle'] = 'Generate a graph using two values (grades from two activities) comparing users in a group, or groups in a course.';
 
+$string['form_double_label_activity1'] = 'Activity 1';
+$string['form_double_label_activity2'] = 'Activity 2';
+
 // Form Result
 
 $string['form_result_default_result'] = 'S-';

@@ -33,6 +33,8 @@ require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
 
+global $CFG;
+
 // Parameters
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
@@ -135,13 +137,9 @@ $config = get_config('grade_report_scgr');
 // Print header
 echo $OUTPUT->header();
 
-var_dump($config);
-
 // Check if plugin is activated for this course
-$activated_on = explode(",", $config->course_activation_choice);
-if ( !in_array( $courseid, $activated_on , false )  ) {
-
-    // echo $OUTPUT->notification('The SCGR plugin is not activated for this course. Please check the settings page.', 'notifymessage');
+$activated_on = explode(",", $CFG->scgr_course_activation_choice);
+if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable == '1' ) {
 
     echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr') );
     echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr') );
