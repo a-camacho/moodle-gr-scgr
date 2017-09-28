@@ -137,15 +137,15 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
             echo $OUTPUT->render_chart($chart);
 
-            echo '<a download="export.png" href="" id="chartdl">Export as PNG</a>';
+            echo '<a onclick="exportpng()" download="export.png" href="" id="chartdl">Export as PNG</a>';
 	    			
 	    // Improve heritage
 	    echo '<script type="text/javascript">
-	    	(function(){
+	    	function exportpng(){
 			var url_base64 = document.getElementsByTagName("canvas")[0].toDataURL("image/png");
 			console.log("execute func");
 	    		document.getElementById("chartdl").href=url_base64;
-	    	})()
+	    	}
 	    </script>';
             echo '<hr />';
             echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
