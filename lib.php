@@ -137,13 +137,12 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
             echo $OUTPUT->render_chart($chart);
 
-            echo '<a onclick="exportpng()" download="export.png" href="" id="chartdl">Export as PNG</a>';
+            echo '<a onclick="exportjpg()" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
 	    			
 	    // Improve heritage
 	    echo '<script type="text/javascript">
-	    	function exportpng(){
-			var url_base64 = document.getElementsByTagName("canvas")[0].toDataURL("image/png");
-			console.log("execute func");
+	    	function exportjpg(){
+			var url_base64 = document.getElementsByTagName("canvas")[0].toDataURL("image/jpg");
 	    		document.getElementById("chartdl").href=url_base64;
 	    	}
 	    </script>';
