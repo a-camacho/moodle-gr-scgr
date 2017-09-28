@@ -142,7 +142,8 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 	    // Improve heritage
 	    echo '<script type="text/javascript">
 	    	(function(){
-	    		var url_base64 = document.getElementsByTagName("canvas")[0].toDataURL("image/png");
+			var url_base64 = document.getElementsByTagName("canvas")[0].toDataURL("image/png");
+			console.log("execute func");
 	    		document.getElementById("chartdl").href=url_base64;
 	    	})()
 	    </script>';
