@@ -137,14 +137,56 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
             echo $OUTPUT->render_chart($chart);
 
-            echo '<a onclick="exportjpg()" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
-	    			
+            echo '<a onclick="canvasToImage(#FFFFFF)" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
+
 	    // Improve heritage
 	    echo '<script type="text/javascript">
-	    	function exportjpg(){
-			var url_base64 = document.getElementsByTagName("canvas")[0].toDataURL("image/jpeg");
-	    		document.getElementById("chartdl").href=url_base64;
-	    	}
+	    	function canvasToImage(backgroundColor)
+{
+	var canvas = document.getElementsByTagName("canvas")[0];
+	var context = canvas.getContext("2d");
+	//cache height and width		
+	var w = canvas.width;
+	var h = canvas.height;
+ 
+	var data;
+ 
+	if(backgroundColor)
+	{
+		//get the current ImageData for the canvas.
+		data = context.getImageData(0, 0, w, h);
+ 
+		//store the current globalCompositeOperation
+		var compositeOperation = context.globalCompositeOperation;
+ 
+		//set to draw behind current content
+		context.globalCompositeOperation = "destination-over";
+ 
+		//set background color
+		context.fillStyle = backgroundColor;
+ 
+		//draw background / rect on entire canvas
+		context.fillRect(0,0,w,h);
+	}
+ 
+	//get the image data from the canvas
+	var imageData = this.canvas.toDataURL("image/jpeg");
+ 
+	if(backgroundColor)
+	{
+		//clear the canvas
+		context.clearRect (0,0,w,h);
+ 
+		//restore it with original / cached ImageData
+		context.putImageData(data, 0,0);
+ 
+		//reset the globalCompositeOperation to what it was
+		context.globalCompositeOperation = compositeOperation;
+	}
+ 
+	//return the Base64 encoded data url string
+	document.getElementById("chartdl").href=imageData;
+}
 	    </script>';
             echo '<hr />';
             echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
