@@ -145,8 +145,10 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 			var canvas = document.getElementsByTagName("canvas")[0];
 			var context = canvas.getContext("2d");
 			//cache height and width		
-			var w = canvas.width;
-			var h = canvas.height;
+			//var w = canvas.width;
+			//var h = canvas.height;
+			var w = 1920;
+			var h = 1080;
 
 			var data;
 
@@ -169,7 +171,7 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 			}
 
 			//get the image data from the canvas
-			var imageData = this.canvas.toDataURL("image/jpeg");
+			var imageData = canvas.toDataURL("image/jpeg");
 
 			if(backgroundColor)
 			{
