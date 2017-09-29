@@ -137,7 +137,7 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
             echo $OUTPUT->render_chart($chart);
 
-            echo '<a onclick="canvasToImage(#FFFFFF)" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
+            echo '<a onclick="canvasToImage(\'#FFFFFF\')" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
 
 	    // Improve heritage
 	    echo '<script type="text/javascript">
