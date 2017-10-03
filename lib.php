@@ -141,10 +141,26 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
             echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
 
-            echo '<a onclick="canvasToImage(\'#FFFFFF\')" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
+            exportAsJPEG();
 
-            // Improve heritage
-            echo '<script type="text/javascript">
+        } else {
+
+            echo html_writer::tag('h3', 'Error');
+            echo html_writer::tag('p', 'users or grades not avalaible.');
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+
+        }
+
+    }
+
+}
+
+function exportAsJPEG() {
+
+    echo '<a onclick="canvasToImage(\'#FFFFFF\')" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
+
+    // Improve heritage
+    echo '<script type="text/javascript">
 	    	function canvasToImage(backgroundColor)	{
 			var canvas = document.getElementsByTagName("canvas")[0];
 			var context = canvas.getContext("2d");
@@ -193,16 +209,6 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 			document.getElementById("chartdl").href=imageData;
 		}
 	    </script>';
-
-        } else {
-
-            echo html_writer::tag('h3', 'Error');
-            echo html_writer::tag('p', 'users or grades not avalaible.');
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
-
-        }
-
-    }
 
 }
 
