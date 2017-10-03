@@ -137,10 +137,14 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
             echo $OUTPUT->render_chart($chart);
 
+            echo '<hr />';
+
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
+
             echo '<a onclick="canvasToImage(\'#FFFFFF\')" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
 
-	    // Improve heritage
-	    echo '<script type="text/javascript">
+            // Improve heritage
+            echo '<script type="text/javascript">
 	    	function canvasToImage(backgroundColor)	{
 			var canvas = document.getElementsByTagName("canvas")[0];
 			var context = canvas.getContext("2d");
@@ -189,8 +193,6 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 			document.getElementById("chartdl").href=imageData;
 		}
 	    </script>';
-            echo '<hr />';
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
 
         } else {
 
