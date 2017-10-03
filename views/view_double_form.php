@@ -8,11 +8,12 @@ $activities = getActivitiesFromCourseID($courseid, $categoryid);        // Activ
 $groups = getGroups($courseid);
 
 // Form that allows user to choose data to be included
-echo '<div class="form-box double">';
+echo '<div class="temp">';
 
     // Include title and subtitle
-    echo html_writer::tag('h3', get_string('form_double_title', 'gradereport_scgr') );
+    echo html_writer::tag('h3', get_string('form_double_title', 'gradereport_scgr') . ' <a href="?id=' . $courseid . '&graph=simple" style="font-size:small;">go to simple</a>' );
     echo html_writer::tag('p', get_string('form_double_subtitle', 'gradereport_scgr') );
+
     echo html_writer::tag('hr', '');
 
     // Include the form
@@ -20,6 +21,8 @@ echo '<div class="form-box double">';
 
     // Instantiate doublehtml_form
     $activated_on = explode(",", $CFG->scgr_course_groups_activation_choice);
+
+    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&graph=double';
     if ( in_array( $courseid, $activated_on , false )  ) {
         $mform = new doublehtml_form( $forms_action_url, array( $sections, $activities, $groups ) );
     } else {
@@ -36,27 +39,26 @@ echo '<div class="form-box double">';
 
         $data = $mform->get_data();
 
-        // echo html_writer::tag('p', 'Whatever you choose up there, the form uses INTER + ACTIVITY.');
-        // echo '<hr />';
-
         if ( isset($data->modality) && $data->modality == 'inter' ) {
 
-            printOptions( $courseid, $data->modality, 'all', 0, NULL, $data->activity );
+            printOptionsDouble( $courseid, $data->modality, 'all', 0,
+                NULL, $data->activity1, $data->activity2 );
 
-            printPluginConfig();
-
-            printGraph( $courseid, $data->modality, 'all', 0, NULL, $data->activity );
+            printGraphDouble( $courseid, $data->modality, 'all', 0, NULL,
+                $data->activity1, $data->activity2);
 
         } elseif ( isset($data->modality) && $data->modality == 'intra' ) {
 
-            printOptions( $courseid, $data->modality, 'all', 0,
-                $data->group, $data->activity );
+            printOptionsDouble( $courseid, $data->modality, 'all', 0,
+                $data->group, $data->activity1, $data->activity2 );
 
-            printGraph( $courseid, $data->modality, 'all', 0,
-                $data->group, $data->activity );
+            printGraphDouble( $courseid, $data->modality, 'all', 0, $data->group,
+                              $data->activity1, $data->activity2);
 
         } else {
+
             echo 'Error : modality not set';
+
         }
 
         /* ####################  END CHART RESULT  #################### */

@@ -10,9 +10,11 @@ $groups = getGroups($courseid);
 echo '<div class="temp">';
 
     // Include title and subtitle
-    echo html_writer::tag('h3', get_string('form_simple_title', 'gradereport_scgr') );
+    echo html_writer::tag('h3', get_string('form_simple_title', 'gradereport_scgr') . ' <a href="?id=' . $courseid . '&graph=double" style="font-size:small;">go to double</a>' );
+
     echo html_writer::tag('p', get_string('form_simple_subtitle', 'gradereport_scgr') );
     echo html_writer::tag('p', get_string('form_simple_subtitle2', 'gradereport_scgr') );
+
     echo html_writer::tag('hr', '');
 
     // Include the form
@@ -20,6 +22,8 @@ echo '<div class="temp">';
 
     // Instantiate simplehtml_form
     $activated_on = explode(",", $CFG->scgr_course_groups_activation_choice);
+
+    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&graph=simple';
     if ( in_array( $courseid, $activated_on , false )  ) {
         $mform = new simplehtml_form( $forms_action_url, array( $sections, $activities, $groups ) );
     } else {

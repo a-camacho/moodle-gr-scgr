@@ -9,14 +9,6 @@
     display: inline-block;
 }
 
-.simple {
-    border-color: green;
-}
-
-.double {
-    border-color: red;
-}
-
 /* Graph CSS */
 
 h4.scgr-graph-title {
