@@ -139,6 +139,7 @@ echo $OUTPUT->header();
 
 // Check if plugin is activated for this course
 $activated_on = explode(",", $CFG->scgr_course_activation_choice);
+
 if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable == '1' ) {
 
     echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr') );
@@ -146,13 +147,21 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
 
 } else {
 
-    if ( isset($_GET["graph"]) && $_GET["graph"] == 'double' ) {
+    if ( isset($_GET['mode']) && $_GET['mode'] == 'direct' ) {
 
-        include_once('views/view_double_form.php');
+        include_once('views/view_direct.php');
 
-    } else {
+    } elseif ( !isset($_GET['mode']) && isset($_GET["graph"]) ) {
 
-        include_once('views/view_simple_form.php');
+        if ( $_GET["graph"] == 'simple' ) {
+
+            include_once('views/view_simple_form.php');
+
+        } elseif ( $_GET["graph"] == 'double' ) {
+
+            include_once('views/view_double_form.php');
+
+        }
 
     }
 
