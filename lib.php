@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -135,6 +136,16 @@ function printPluginConfig() {
     echo '<hr>';
 
 }
+
+/*
+ * getAverage
+ *
+ * returns an array with simple averages (automatic weighting) from two arrays with float values inside.
+ *
+ * @activity1 (array) array containing X float values inside
+ * @activity2 (array) array containing X float values inside
+ * @return (array)
+ */
 
 function getAverage( $activity1, $activity2) {
 
@@ -377,6 +388,16 @@ function exportAsJPEG() {
 
 }
 
+/*
+ * getGradesFromGroups
+ *
+ * returns an array with X grades (average grade for each group) for a given activity.
+ *
+ * @courseid (int)
+ * @activity (int) Moodle activity ID
+ * @return (array)
+ */
+
 function getGradesFromGroups( $courseid, $activity ) {
 
     $groups = getGroupsIDS($courseid);
@@ -409,6 +430,15 @@ function getGradesFromGroups( $courseid, $activity ) {
 
 }
 
+/*
+ * getGroupsIDS
+ *
+ * returns an array with ID's of groups found in a course
+ *
+ * @courseid (int)
+ * @return (array)
+ */
+
 function getGroupsIDS( $courseid ) {
     $groups = groups_get_all_groups($courseid);
     $groups_array = array();
@@ -421,6 +451,15 @@ function getGroupsIDS( $courseid ) {
 
 }
 
+/*
+ * getActivityName
+ *
+ * returns the name of an activity (based on it's instance)
+ *
+ * @instanceitem (object)
+ * @return (string)
+ */
+
 function getActivityName($instanceitem) {
     global $DB;
 
@@ -431,6 +470,18 @@ function getActivityName($instanceitem) {
         return $record->name;
     }
 }
+
+/*
+ * getGrades
+ *
+ * returns the grade of users for a certain activity
+ *
+ * @users (array)
+ * @courseid (int)
+ * @activity (int?)
+ *
+ * @return (array)
+ */
 
 function getGrades($users, $courseid, $activity) {
 
@@ -450,8 +501,14 @@ function getGrades($users, $courseid, $activity) {
 
 }
 
+/*
+ * getCoursesIDandNames
+ *
+ * returns an array with courses ID's and names
+ *
+ * @return (array)
+ */
 
-// Get courses ID's
 function getCoursesIDandNames() {
     $courses = get_courses();
     $courses_array = array();
@@ -462,16 +519,22 @@ function getCoursesIDandNames() {
 
             $courses_array[$course->id] = $course->fullname;
 
-            // array_push( $courses_array, intval($course->id) );
-            // array_push( $courses_array, $course->fullname );
-
         }
     }
 
     return $courses_array;
 }
 
-// Get sections from courseID
+/*
+ * getSectionsFromCourseID
+ *
+ * returns the sections included in a course
+ *
+ * @courseid (int)
+ *
+ * @return (array)
+ */
+
 function getSectionsFromCourseID($courseid) {
     global $DB;
 
@@ -486,7 +549,17 @@ function getSectionsFromCourseID($courseid) {
     return $sections_list;
 }
 
-// Returns an array with exercices from course
+/*
+ * getActivitiesFromCourseID
+ *
+ * returns the an array with all the activities included in a course
+ *
+ * @courseid (int)
+ * @categoryid (int)
+ *
+ * @return (array)
+ */
+
 function getActivitiesFromCourseID($courseid, $categoryid) {
     global $DB;
 
@@ -504,7 +577,16 @@ function getActivitiesFromCourseID($courseid, $categoryid) {
     return $activities_list;
 }
 
-// Returns an array with users from the group
+/*
+ * getUsersFromGroup
+ *
+ * returns an array with users from a given group
+ *
+ * @groupid (int)
+ *
+ * @return (array)
+ */
+
 function getUsersFromGroup($groupid) {
     $fields = 'u.id, u.username';              //return these fields
     $users = groups_get_members($groupid, $fields, $sort='lastname ASC');
@@ -517,7 +599,16 @@ function getUsersFromGroup($groupid) {
     return $users_array;
 }
 
-// Returns an array with user names (parameter : int groupid)
+/*
+ * getUsernamesFromGroup
+ *
+ * returns an array with the user's names from a group
+ *
+ * @groupid (int)
+ *
+ * @return (array)
+ */
+
 function getUsernamesFromGroup($groupid) {
 
     $fields = 'u.username';              //return these fields
@@ -532,7 +623,16 @@ function getUsernamesFromGroup($groupid) {
     return $usernames;
 }
 
-// Returns an array with Groups names (parameter : int courseID)
+/*
+ * getGroups
+ *
+ * returns an array with Groups id's and names
+ *
+ * @courseid (int)
+ *
+ * @return (array)
+ */
+
 function getGroups($courseid) {
     $groups = groups_get_all_groups($courseid);
     $groups_array = array();
@@ -544,7 +644,16 @@ function getGroups($courseid) {
     return $groups_array;
 }
 
-// Returns an array with Groups names (parameter : int courseID)
+/*
+ * getGroupNames
+ *
+ * returns an array with Groups names
+ *
+ * @courseid (int)
+ *
+ * @return (array)
+ */
+
 function getGroupNames($courseid) {
     $groups = groups_get_all_groups($courseid);
     $groups_array = array();
@@ -555,13 +664,3 @@ function getGroupNames($courseid) {
 
     return $groups_array;
 }
-
-/**
- * Definition of the grade_report_scgr_overview class
- *
- * @package   gradereport_scgr
- * @copyright 2017 onwards André Camacho http://www.camacho.pt
- * @author    André Camacho
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
- 
