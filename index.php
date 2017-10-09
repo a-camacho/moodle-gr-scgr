@@ -163,6 +163,10 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
 
         }
 
+    } else {
+
+        include_once('views/view_simple_form.php');
+
     }
 
 }
