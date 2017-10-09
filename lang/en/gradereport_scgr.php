@@ -86,7 +86,3 @@ $string['form_result_modality_all_phrase'] = '';
 // Settings Page
 
 $string['settings_page_title'] = 'SCGR Settings';
-
-// Warnings
-
-$string['settings_page_title'] = 'SCGR Settings';
