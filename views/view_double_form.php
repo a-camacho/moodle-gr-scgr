@@ -41,16 +41,16 @@ echo '<div class="temp">';
 
         if ( isset($data->modality) && $data->modality == 'inter' ) {
 
-            printOptionsDouble( $courseid, $data->modality, 'all', 0,
-                NULL, $data->activity1, $data->activity2 );
+            printTheOptions( 'double', $courseid, $data->modality, 'all', 0, NULL,
+                $data->activity1, $data->activity2 );
 
             printGraphDouble( $courseid, $data->modality, 'all', 0, NULL,
                 $data->activity1, $data->activity2);
 
         } elseif ( isset($data->modality) && $data->modality == 'intra' ) {
 
-            printOptionsDouble( $courseid, $data->modality, 'all', 0,
-                $data->group, $data->activity1, $data->activity2 );
+            printTheOptions( 'double', $courseid, $data->modality, 'all', 0, $data->group,
+                $data->activity1, $data->activity2 );
 
             printGraphDouble( $courseid, $data->modality, 'all', 0, $data->group,
                               $data->activity1, $data->activity2);

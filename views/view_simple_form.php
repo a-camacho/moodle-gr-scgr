@@ -45,7 +45,8 @@ echo '<div class="temp">';
 
         if ( isset($data->modality) && $data->modality == 'inter' ) {
 
-            printOptions( $courseid, $data->modality, 'all', 0, NULL, $data->activity );
+            printTheOptions( 'simple', $courseid, $data->modality, 'all', 0, NULL,
+                                $data->activity );
 
             printPluginConfig();
 
@@ -53,8 +54,8 @@ echo '<div class="temp">';
 
         } elseif ( isset($data->modality) && $data->modality == 'intra' ) {
 
-            printOptions( $courseid, $data->modality, 'all', 0,
-                $data->group, $data->activity );
+            printTheOptions( 'simple', $courseid, $data->modality, 'all', 0, $data->group,
+                                $data->activity );
 
             printGraph( $courseid, $data->modality, 'all', 0,
                 $data->group, $data->activity );

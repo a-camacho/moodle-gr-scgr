@@ -15,99 +15,66 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function printOptionsDouble( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity1, $activity2 ) {
+/*
+ * printTheOptions
+ *
+ * prints parameters given in form and analyzed for graph generation
+ *
+ * @formtype (string) simple | double
+ * @courseid (id) id of course
+ * @modality (string) inter | intra
+ * @temporality (string) #####################      (optional)
+ * @section (id) ####################               (optional)
+ * @groupid (id) id of user group                   (optional)
+ * @activity1 (id) id of first activity
+ * @activity2 (id) id of second activity            (optional)
+ * @return (html)
+ */
 
-    if ( $groupid != NULL ) {
+function printTheOptions( $formtype, $courseid, $modality, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1, $activity2 = NULL )
+
+{
+
+    // @Camille : Ai-je besoin de déclarer les variables sachant que j'attribue des valeurs par défaut au cas où il n'y aurait rien ?
+    if ($groupid) {
         $groupname = groups_get_group_name($groupid);
     }
 
-    // Options
-    echo html_writer::tag('h1', 'Options');
-
-    echo '<ul>';
-
-    if ( $groupid != NULL ) {
-        echo html_writer::tag('li', 'Group name : ' . $groupname . '(#' . $groupid . ')');
-    } else {
-    }
-
-    if ( $modality ) {
-        echo html_writer::tag('li', 'Modality : ' . $modality);
-    } else {
-        echo html_writer::tag('li', 'Modality : ignored');
-    }
-
-    if ( $temporality ) {
-        echo html_writer::tag('li', 'Temporality : ' . $temporality);
-    }else {
-        echo html_writer::tag('li', 'Temporality : ignored');
-    }
-
-    if ( $section ) {
-        echo html_writer::tag('li', 'Section : ' . $section);
-    } else {
-        echo html_writer::tag('li', 'Section : ignored');
-    }
-
     if ( $activity1 ) {
-        echo html_writer::tag('li', 'Activity 1 : ' . getActivityName( $activity1 ) . ' (#' . $activity1 . ')');
-    } else {
-        echo html_writer::tag('li', 'Activity 1 : ignored');
+        $activity1name = getActivityName( $activity1 );
     }
 
     if ( $activity2 ) {
-        echo html_writer::tag('li', 'Activity 2 : ' . getActivityName( $activity2 ) . ' (#' . $activity2 . ')');
-    } else {
-        echo html_writer::tag('li', 'Activity 2 : ignored');
+        $activity2name = getActivityName( $activity2 );
     }
-
-    echo '</ul>';
-
-    echo '<hr>';
-
-}
-
-function printOptions( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity = NULL ) {
-
-    $groupname = groups_get_group_name($groupid);
 
     // Options
     echo html_writer::tag('h1', 'Options');
 
     echo '<ul>';
 
-    if ( $groupname ) {
-        echo html_writer::tag('li', 'Group name : ' . $groupname . '(#' . $groupid . ')');
-    } else {
+    // Form type
+    echo html_writer::tag('li', 'Form type : ' . $formtype);
+
+    // Group name
+    echo html_writer::tag('li', 'Modality : ' . $modality);
+
+    // Group name
+    if ( $groupid ) {
+        echo html_writer::tag('li', 'Group name : ' . $groupname . ' (#' . $groupid . ')');
     }
 
-    if ( $modality ) {
-        echo html_writer::tag('li', 'Modality : ' . $modality);
-    } else {
-        echo html_writer::tag('li', 'Modality : ignored');
+    // Activities
+    echo html_writer::tag('li', 'Activity 1 : ' . $activity1name . ' (#' . $activity1 . ')');
+    if ( $activity2 ) {
+        echo html_writer::tag('li', 'Activity 2 : ' . $activity2name . ' (#' . $activity2 . ')');
     }
 
-    if ( $temporality ) {
-        echo html_writer::tag('li', 'Temporality : ' . $temporality);
-    }else {
-        echo html_writer::tag('li', 'Temporality : ignored');
-    }
-
-    if ( $section ) {
-        echo html_writer::tag('li', 'Section : ' . $section);
-    } else {
-        echo html_writer::tag('li', 'Section : ignored');
-    }
-
-    if ( $activity ) {
-        echo html_writer::tag('li', 'Activity : ' . getActivityName( $activity ) . ' (#' . $activity . ')');
-    } else {
-        echo html_writer::tag('li', 'Activity : ignored');
-    }
+    // Temporality and section
+    // echo html_writer::tag('li', 'Temporality : ' . $temporality);
+    // echo html_writer::tag('li', 'Section : ' . $section);
 
     echo '</ul>';
-
-    echo '<hr>';
 
 }
 
@@ -147,7 +114,7 @@ function printPluginConfig() {
  * @return (array)
  */
 
-function getAverage( $activity1, $activity2) {
+function getAverage( $activity1, $activity2 ) {
 
     $average = array();
 
