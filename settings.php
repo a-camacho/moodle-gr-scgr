@@ -31,8 +31,8 @@ if ($ADMIN->fulltree) {
 
     /// Choose in which courses the plugin should be active
 
-    $settings->add(new admin_setting_configcheckbox(  'scgr_plugin_disable', 'Disable the plugin totally',
-        'Selecting this option will disable the plugin completely.', 0 ));
+    $settings->add(new admin_setting_configcheckbox(  'scgr_plugin_enabled', 'Enable the plugin',
+        'Selecting this option will activate the plugin.', 0 ));
 
     $options = array();
     $courses = getCoursesIDandNames();

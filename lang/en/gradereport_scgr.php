@@ -27,6 +27,10 @@ $string['pluginname'] = 'Social comparison grade report';
 
 // Page
 
+$string['page_plugin_not_active'] = 'SCGR plugin is not activated.';
+$string['page_plugin_not_active_description'] = 'Before being able to use SCGR plugin you need to activate it
+                                                         in settings page.';
+
 $string['page_not_active_on_this_course'] = 'SCGR plugin is not activated for this course.';
 $string['page_not_active_on_this_course_description'] = 'Before being able to use SCGR plugin you need to activate it
                                                          for this course in settings page.';
@@ -67,6 +71,7 @@ $string['form_simple_label_no_groups'] = 'This course has no user groups. Field 
 
 $string['form_double_title'] = 'Double Graph';
 $string['form_double_subtitle'] = 'Generate a graph using two values (grades from two activities) comparing users in a group, or groups in a course.';
+$string['form_double_subtitle2'] = '';
 
 $string['form_double_label_activity1'] = 'Activity 1';
 $string['form_double_label_activity2'] = 'Activity 2';
@@ -84,5 +89,9 @@ $string['form_result_modality_all_phrase'] = '';
 /* ################################################################################################################ */
 
 // Settings Page
+
+$string['settings_page_title'] = 'SCGR Settings';
+
+// Warnings
 
 $string['settings_page_title'] = 'SCGR Settings';

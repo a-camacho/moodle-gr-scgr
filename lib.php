@@ -31,9 +31,7 @@
  * @return (html)
  */
 
-function printTheOptions( $formtype, $courseid, $modality, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1, $activity2 = NULL )
-
-{
+function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1, $activity2 = NULL ) {
 
     // @Camille : Ai-je besoin de déclarer les variables sachant que j'attribue des valeurs par défaut au cas où il n'y aurait rien ?
     if ($groupid) {
@@ -57,7 +55,9 @@ function printTheOptions( $formtype, $courseid, $modality, $temporality = NULL, 
     echo html_writer::tag('li', 'Form type : ' . $formtype);
 
     // Group name
-    echo html_writer::tag('li', 'Modality : ' . $modality);
+    if ( $modality ) {
+        echo html_writer::tag('li', 'Modality : ' . $modality);
+    }
 
     // Group name
     if ( $groupid ) {
@@ -104,31 +104,7 @@ function printPluginConfig() {
 
 }
 
-/*
- * getAverage
- *
- * returns an array with simple averages (automatic weighting) from two arrays with float values inside.
- *
- * @activity1 (array) array containing X float values inside
- * @activity2 (array) array containing X float values inside
- * @return (array)
- */
-
-function getAverage( $activity1, $activity2 ) {
-
-    $average = array();
-
-    $i = 0;
-    foreach ( $activity1 as $grade1 ) {
-        $val = ( $grade1 + $activity2[$i] ) / 2;
-        array_push($average, $val);
-        $i++;
-    }
-
-    return $average;
-}
-
-function printGraphDouble( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity1, $activity2 ) {
+function printGraphDouble( $courseid, $modality = NULL, $temporality, $section = NULL, $groupid = NULL, $activity1, $activity2 ) {
     global $OUTPUT;
 
     if ( isset($modality) && $modality == 'intra' ) {
@@ -224,14 +200,40 @@ function printGraphDouble( $courseid, $modality, $temporality, $section = NULL, 
 
 }
 
-function printGraph( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity = NULL ) {
+function getUsersFromCourse() {
+
+}
+
+function getUsernamesFromUsers() {
+
+}
+
+function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity = NULL, $aregroupsactivated = NULL ) {
     global $OUTPUT;
 
-    if ( isset($modality) && $modality == 'intra' ) {
+    if ( !isset($modality) || $modality == 'intra' ) {
+
+        // If there are user groups and $groupid variable
 
         // Get users from choosen group
-        $users = getUsersFromGroup($groupid);           // Get users from this group
-        $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
+        if ( $aregroupsactivated == true && $groupid != NULL ) {
+            $users = getUsersFromGroup($groupid);           // Get users from this group
+            $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
+
+        // If there are no groups = grab all users from course
+        } elseif ( $aregroupsactivated == false ) {
+
+            $users = getUsersFromCourse();
+            $usernames = getUsernamesFromUsers();
+
+            // $context = context_course::instance($courseid);
+            // $users = get_enrolled_users($context, '', 0, '*');
+            // $usernames = array();
+
+        // If groups are activated but groupid was not submitted
+        } else {
+            // Return error ?
+        }
 
         echo html_writer::tag('h1', getActivityName( $activity ), array( 'class' => 'scgr-graph-title2') );
         echo html_writer::tag('h4', groups_get_group_name($groupid) );
@@ -296,6 +298,30 @@ function printGraph( $courseid, $modality, $temporality, $section = NULL, $group
 
     }
 
+}
+
+/*
+ * getAverage
+ *
+ * returns an array with simple averages (automatic weighting) from two arrays with float values inside.
+ *
+ * @activity1 (array) array containing X float values inside
+ * @activity2 (array) array containing X float values inside
+ * @return (array)
+ */
+
+function getAverage( $activity1, $activity2 ) {
+
+    $average = array();
+
+    $i = 0;
+    foreach ( $activity1 as $grade1 ) {
+        $val = ( $grade1 + $activity2[$i] ) / 2;
+        array_push($average, $val);
+        $i++;
+    }
+
+    return $average;
 }
 
 function exportAsJPEG() {

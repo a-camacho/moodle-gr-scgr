@@ -48,8 +48,6 @@ echo '<div class="temp">';
             printTheOptions( 'simple', $courseid, $data->modality, 'all', 0, NULL,
                                 $data->activity );
 
-            printPluginConfig();
-
             printGraph( $courseid, $data->modality, 'all', 0, NULL, $data->activity );
 
         } elseif ( isset($data->modality) && $data->modality == 'intra' ) {

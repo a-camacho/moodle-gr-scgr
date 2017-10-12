@@ -39,6 +39,7 @@ global $CFG;
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
 $userview = optional_param('userview', 0, PARAM_INT);
+$plugin_activated = false;
 
 // Context
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
@@ -68,6 +69,8 @@ if (empty($userid)) {
 /* #######################################      SECURITY        ################################################### */
 /* ################################################################################################################ */
 
+// Basic plugin activation status
+if ( $CFG->scgr_plugin_enabled == '1' ) { $plugin_activated = true; }
 
 /// Basic access checks
 $access = false;
@@ -137,38 +140,63 @@ $config = get_config('grade_report_scgr');
 // Print header
 echo $OUTPUT->header();
 
-// Check if plugin is activated for this course
-$activated_on = explode(",", $CFG->scgr_course_activation_choice);
+    // Checks if the plugin is activated (general)
+    if ( $plugin_activated == true ) {
 
-if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable == '1' ) {
+        // Create an array with courses that have the plugin activated
+        $activated_on_this_course = explode(",", $CFG->scgr_course_activation_choice);
 
-    echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr') );
-    echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr') );
+        // If plugin is not activated on this course
+        if ( !in_array( $courseid, $activated_on_this_course , false ) ) {
 
-} else {
+            // Returns error message for "plugin not activated on this course"
+            echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr') );
+            echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr') );
 
-    if ( isset($_GET['mode']) && $_GET['mode'] == 'direct' ) {
+        // If the plugin is activated on this course
+        } else {
 
-        include_once('views/view_direct.php');
+            // If the user wants to generate a graph with key (beta)
+            if ( isset($_GET['mode']) && $_GET['mode'] == 'direct' ) {
 
-    } elseif ( !isset($_GET['mode']) && isset($_GET["graph"]) ) {
+                // Output "direct" view
+                include_once('views/view_direct.php');
 
-        if ( $_GET["graph"] == 'simple' ) {
+            // If the user wants to generate a graph by form
+            } elseif ( !isset($_GET['mode']) && isset($_GET["graph"]) ) {
 
-            include_once('views/view_simple_form.php');
+                include_once('views/view_form.php');
 
-        } elseif ( $_GET["graph"] == 'double' ) {
+                // If the user wants to generate a simple graph
+                /* if ( $_GET["graph"] == 'simple' ) {
 
-            include_once('views/view_double_form.php');
+                    // Output "simple" view
+                    include_once('views/view_simple_form.php');
+
+                // If the user wants to generate a double graph
+                } elseif ( $_GET["graph"] == 'double' ) {
+
+                    // Output "simple" view
+                    include_once('views/view_double_form.php');
+
+                } */
+
+            // Default behaviour (when clicking on the report page)
+            } else {
+
+                include_once('views/view_form.php');
+
+            }
 
         }
 
+    // If the plugin is not activated on this course
     } else {
 
-        include_once('views/view_simple_form.php');
+        // Returns error message for "plugin not activated"
+        echo html_writer::tag('h3', get_string('page_plugin_not_active', 'gradereport_scgr') );
+        echo html_writer::tag('p', get_string('page_plugin_not_active_description', 'gradereport_scgr') );
 
     }
-
-}
 
 echo $OUTPUT->footer();

@@ -11,10 +11,19 @@ class simplehtml_form extends moodleform {
 
         $mform = $this->_form; // Don't forget the underscore!
 
-        $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),
-            'intra' => get_string('form_simple_value_mod_intra', 'gradereport_scgr'));
-        $mform->addElement('select', 'modality', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES);
+        $groupsactivated = ($this->_customdata[3]) ? true : false;
 
+        if ( $groupsactivated ) {
+
+            $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),
+                'intra' => get_string('form_simple_value_mod_intra', 'gradereport_scgr'));
+
+            $mform->addElement('select', 'modality', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES );
+            $mform->setDefault('modality', 'intra');
+
+        }
+
+        /*
         $TEMPORALITY_TYPES = array( 'all' => get_string('form_simple_value_tempo_all', 'gradereport_scgr'),
                                     'section' => get_string('form_simple_value_tempo_section', 'gradereport_scgr'),
                                     'activity' => get_string('form_simple_value_tempo_activity', 'gradereport_scgr'));
@@ -29,6 +38,8 @@ class simplehtml_form extends moodleform {
                             get_string('form_simple_label_section',
                             'gradereport_scgr'),
                             $SECTIONS_LIST, array('disabled') );
+
+        */
 
         $ACTIVITIES_LIST = $this->_customdata[1];                                    // Item 1 in array is SECTIONS
         $mform->addElement( 'select',
