@@ -200,6 +200,27 @@ function printGraphDouble( $courseid, $modality = NULL, $temporality, $section =
 
 }
 
+function stripTutorsFromUsers($users_array) {
+    global $DB;
+
+    $new_users_array = array();
+
+    foreach ( $users_array as $user ) {
+
+        $current_user = $DB->get_record('user', array( 'id' => intval($user) ) );
+
+        if ( !user_has_role_assignment( $current_user->id, 3 ) && !user_has_role_assignment( $current_user->id, 4 ) ) {
+
+            array_push($new_users_array, $current_user->id);
+
+        }
+
+    }
+
+    return $new_users_array;
+
+}
+
 function getUsersFromCourse($courseid) {
 
     $fields = 'u.id, u.username';               // return these fields
@@ -248,6 +269,8 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
         } elseif ( $aregroupsactivated == false ) {
 
             $users = getUsersFromCourse($courseid);
+            $users = stripTutorsFromUsers($users);
+            
             $usernames = getUsernamesFromUsers($users);
 
         // If groups are activated but groupid was not submitted
