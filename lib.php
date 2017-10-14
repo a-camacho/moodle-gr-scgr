@@ -200,11 +200,35 @@ function printGraphDouble( $courseid, $modality = NULL, $temporality, $section =
 
 }
 
-function getUsersFromCourse() {
+function getUsersFromCourse($courseid) {
+
+    $fields = 'u.id, u.username';               // return these fields
+    $users_array = array();                     // declare users array
+
+    $context = context_course::instance($courseid);             // fix context
+    $users = get_enrolled_users($context, '', 0, $fields);      // get users from courseid
+
+    foreach ( $users as $user ) {
+        array_push($users_array, intval($user->id));
+    }
+
+    return $users_array;
 
 }
 
-function getUsernamesFromUsers() {
+function getUsernamesFromUsers($users_array) {
+    global $DB;
+
+    $usernames_array = array();                 // declare usernames array
+
+    foreach ( $users_array as $user ) {
+
+        $current_user = $DB->get_record('user', array( 'id' => intval($user) ));
+        array_push( $usernames_array, $current_user->username );
+
+    }
+
+    return $usernames_array;
 
 }
 
@@ -223,12 +247,8 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
         // If there are no groups = grab all users from course
         } elseif ( $aregroupsactivated == false ) {
 
-            $users = getUsersFromCourse();
-            $usernames = getUsernamesFromUsers();
-
-            // $context = context_course::instance($courseid);
-            // $users = get_enrolled_users($context, '', 0, '*');
-            // $usernames = array();
+            $users = getUsersFromCourse($courseid);
+            $usernames = getUsernamesFromUsers($users);
 
         // If groups are activated but groupid was not submitted
         } else {
@@ -244,7 +264,7 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
         if ( $grades && $usernames ) {
 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
+            $series1 = new \core\chart_series( getActivityName( $activity ) , $grades);
 
             $chart->add_series($series1);
             $chart->set_labels($usernames);
