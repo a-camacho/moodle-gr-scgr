@@ -54,12 +54,17 @@ $string['form_simple_label_modality'] = 'Modality';
 $string['form_simple_label_temporality'] = 'Temporality';
 $string['form_simple_label_section'] = 'Temporality';
 $string['form_simple_label_activity'] = 'Temporality';
+$string['form_simple_label_custom_weighting'] = 'Custom weighting';
+$string['form_simple_label_custom_weighting_act_1'] = 'Weighting - Act. 1';
+$string['form_simple_label_custom_weighting_act_2'] = 'Weighting - Act. 2';
+
 
 $string['form_simple_value_mod_inter'] = 'Inter-group';
 $string['form_simple_value_mod_intra'] = 'Intra-group';
 $string['form_simple_value_tempo_all'] = 'Everything (until current section - not included)';
 $string['form_simple_value_tempo_section'] = 'A particular section';
 $string['form_simple_value_tempo_activity'] = 'A particular activity';
+$string['form_simple_value_custom_weighting'] = '.....';
 
 $string['form_simple_label_section'] = 'Choose a section';
 $string['form_simple_label_activity'] = 'Choose an activity';

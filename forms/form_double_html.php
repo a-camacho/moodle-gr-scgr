@@ -44,6 +44,21 @@ class doublehtml_form extends moodleform {
                                 'gradereport_scgr'),
                             $ACTIVITIES_LIST);
 
+
+        // Custom weighting
+
+        $mform->addElement('selectyesno', 'custom_weighting', get_string('form_simple_label_custom_weighting', 'gradereport_scgr'));
+        $mform->setDefault('custom_weighting', 0);
+
+        $mform->addElement('text', 'custom_weighting_activity1', get_string('form_simple_label_custom_weighting_act_1', 'gradereport_scgr') );
+        $mform->addElement('text', 'custom_weighting_activity2', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr') );
+        $mform->setDefault('custom_weighting_activity1', '1');
+        $mform->setDefault('custom_weighting_activity2', '1');
+
+        // Conditional disable
+        $mform->disabledIf('custom_weighting_activity1', 'custom_weighting', $condition = 'eq', $value=0);
+        $mform->disabledIf('custom_weighting_activity2', 'custom_weighting', $condition = 'eq', $value=0);
+
         // If groups array is not empty we show the select field
         if ( $this->_customdata[2] ) {
 
