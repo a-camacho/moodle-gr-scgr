@@ -48,4 +48,13 @@ if ($ADMIN->fulltree) {
         'Choose in which courses you want the SCGR groups feature to be enabled.', $options2, $courses2 ));
 
 
+    // Choose what user roles to ignore
+    // 1 = manager, 2 = course creator, 3 = teacher, 4 = non-editing teacher, 5 = student, 6 = guest
+
+    $options3 = array();
+    $user_roles_to_ignore = array( 1,2,3,4,5,6 );
+    $settings->add(new admin_setting_configmultiselect(  'scgr_course_ignore_user_roles', 'Ignore user roles.',
+        'Choose which roles you want the users included to be ignored when generating graphs.', $options3, $user_roles_to_ignore ));
+
+
 }
