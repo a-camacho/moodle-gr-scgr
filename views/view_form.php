@@ -77,9 +77,9 @@ echo '<div class="temp">';
             $modality = NULL;
         }
 
-        // Print options
-        printTheOptions( $mode, $courseid, $modality, 'all', 0, $group_id,
-            $data->activity );
+        // Print options and plugin config
+        printPluginConfig();
+        printTheOptions( $mode, $courseid, $modality, 'all', 0, $group_id, $data->activity );
 
         if ( $mode == 'double' ) {
             printGraphDouble( $courseid, $modality, 'all', 0, $group_id, $data->activity );

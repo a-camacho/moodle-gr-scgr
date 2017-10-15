@@ -47,7 +47,7 @@ function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality =
     }
 
     // Options
-    echo html_writer::tag('h1', 'Options');
+    echo html_writer::tag('h4', 'Options');
 
     echo '<ul>';
 
@@ -82,9 +82,13 @@ function printPluginConfig() {
     global $CFG;
 
     // Options
-    echo html_writer::tag('h2', 'Plugin Config (for this course)');
+    echo html_writer::tag('h4', 'Plugin Config (for this course)');
 
     echo '<ul>';
+
+    if ( $CFG->scgr_plugin_enabled ) {
+        echo html_writer::tag('li', 'scgr_plugin_enabled : ' . $CFG->scgr_plugin_enabled );
+    }
 
     if ( $CFG->scgr_plugin_disable ) {
         echo html_writer::tag('li', 'scgr_plugin_disable : ' . $CFG->scgr_plugin_disable );
@@ -96,6 +100,10 @@ function printPluginConfig() {
 
     if ( $CFG->scgr_course_groups_activation_choice ) {
         echo html_writer::tag('li', 'scgr_course_groups_activation_choice : ' . $CFG->scgr_course_groups_activation_choice );
+    }
+
+    if ( $CFG->scgr_course_include_user_roles ) {
+        echo html_writer::tag('li', 'scgr_course_include_user_roles : ' . $CFG->scgr_course_include_user_roles );
     }
 
     echo '</ul>';
@@ -200,18 +208,26 @@ function printGraphDouble( $courseid, $modality = NULL, $temporality, $section =
 
 }
 
-function stripTutorsFromUsers($users_array) {
-    global $DB;
+function stripUserRolesFromUsers($users_array) {
+    global $DB, $CFG;
 
     $new_users_array = array();
+    $roles_to_include_string = $CFG->scgr_course_include_user_roles;
+    $roles_to_include = array_map('intval', explode(',', $roles_to_include_string));
+
+    var_dump($roles_to_include);
 
     foreach ( $users_array as $user ) {
 
         $current_user = $DB->get_record('user', array( 'id' => intval($user) ) );
 
-        if ( !user_has_role_assignment( $current_user->id, 3 ) && !user_has_role_assignment( $current_user->id, 4 ) ) {
+        foreach ( $roles_to_include as $role ) {
 
-            array_push($new_users_array, $current_user->id);
+            if ( user_has_role_assignment( $current_user->id, $role ) ) {
+
+                array_push($new_users_array, $current_user->id);
+
+            }
 
         }
 
@@ -274,19 +290,18 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
     if ( !isset($modality) || $modality == 'intra' ) {
 
         // If there are user groups and $groupid variable
-
-        // Get users from choosen group
         if ( $aregroupsactivated == true && $groupid != NULL ) {
+
             $users = getUsersFromGroup($groupid);           // Get users from this group
             $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
 
         // If there are no groups = grab all users from course
         } elseif ( $aregroupsactivated == false ) {
 
-            $users = getUsersFromCourse($courseid);
-            $users = stripTutorsFromUsers($users);
+            $users = getUsersFromCourse($courseid);         // Get all users from course
+            $users = stripUserRolesFromUsers($users);       // Remove all non-wanted user roles
 
-            $usernames = getUsernamesFromUsers($users);
+            $usernames = getUsernamesFromUsers($users);     // Get usernames from users
 
         // If groups are activated but groupid was not submitted
         } else {

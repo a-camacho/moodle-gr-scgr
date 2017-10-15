@@ -140,6 +140,7 @@ $config = get_config('grade_report_scgr');
 // Print header
 echo $OUTPUT->header();
 
+
     // Checks if the plugin is activated (general)
     if ( $plugin_activated == true ) {
 
