@@ -78,35 +78,20 @@ echo '<div class="temp">';
         }
 
         // Print options and plugin config
-        printPluginConfig();
-        printTheOptions( $mode, $courseid, $modality, 'all', 0, $group_id, $data->activity );
 
         if ( $mode == 'double' ) {
-            printGraphDouble( $courseid, $modality, 'all', 0, $group_id, $data->activity );
+
+            printPluginConfig();
+            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2 );
+            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $aregroupsactivated );
+
         } else {
-            printGraph( $courseid, $modality, 'all', 0, $group_id, $data->activity, $aregroupsactivated );
+
+            printPluginConfig();
+            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL );
+            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $aregroupsactivated );
+
         }
-
-        /* if ( isset($data->modality) && $data->modality == 'inter' ) {
-
-            printTheOptions( $mode, $courseid, $data->modality, 'all', 0, $group_id,
-                $data->activity );
-
-            printGraph( $courseid, $data->modality, 'all', 0, $group_id, $data->activity );
-
-        } elseif ( isset($data->modality) && $data->modality == 'intra' ) {
-
-            printTheOptions( $mode, $courseid, $data->modality, 'all', 0, $group_id,
-                $data->activity );
-
-            printGraph( $courseid, $data->modality, 'all', 0,
-                $group_id, $data->activity );
-
-        } else {
-
-            echo 'Error : modality not set';
-
-        } */
 
     // If the data doesn't validate or first display
     } else {

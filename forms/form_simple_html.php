@@ -43,7 +43,7 @@ class simplehtml_form extends moodleform {
 
         $ACTIVITIES_LIST = $this->_customdata[1];                                    // Item 1 in array is SECTIONS
         $mform->addElement( 'select',
-                            'activity',
+                            'activity1',
                             get_string('form_simple_label_activity',
                             'gradereport_scgr'),
                             $ACTIVITIES_LIST);

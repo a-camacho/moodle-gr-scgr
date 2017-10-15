@@ -112,19 +112,33 @@ function printPluginConfig() {
 
 }
 
-function printGraphDouble( $courseid, $modality = NULL, $temporality, $section = NULL, $groupid = NULL, $activity1, $activity2 ) {
+function printGraphDouble( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1, $activity2, $aregroupsactivated = NULL ) {
     global $OUTPUT;
 
-    if ( isset($modality) && $modality == 'intra' ) {
+    if ( $modality == 'intra' || $modality == NULL ) {
 
-        // Get users from choosen group
-        $users = getUsersFromGroup($groupid);           // Get users from this group
-        $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
+        // If there are user groups and $groupid variable
+        if ( $aregroupsactivated == true && $groupid != NULL ) {
 
-        $activities_titles = '(1) ' . getActivityName( $activity1 ) . '<br /> (2) ' . getActivityName( $activity2 );
+            $users = getUsersFromGroup($groupid);           // Get users from this group
+            $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
 
-        echo html_writer::tag('h3', $activities_titles, array( 'class' => 'scgr-graph-title2') );
-        echo html_writer::tag('h4', groups_get_group_name($groupid) );
+        // If there are no groups = grab all users from course
+        } elseif ( $aregroupsactivated == false ) {
+
+            $users = getUsersFromCourse($courseid);         // Get all users from course
+            $users = stripUserRolesFromUsers($users);       // Remove all non-wanted user roles
+
+            $usernames = getUsernamesFromUsers($users);     // Get usernames from users
+
+        // If groups are activated but groupid was not submitted
+        } else {
+
+            // Return error ?
+
+        }
+
+        echo html_writer::tag('h1', 'Graph' );
 
         // Get grades from user array and item_id
         $grades_act_1 = getGrades($users, $courseid, $activity1);
@@ -161,7 +175,7 @@ function printGraphDouble( $courseid, $modality = NULL, $temporality, $section =
 
         }
 
-    } elseif ( isset($modality) && $modality == 'inter' ) {
+    } elseif ( $modality == 'inter' ) {
 
         // Get grades from groups for activity 1 and 2
         $grades_act_1 = getGradesFromGroups($courseid, $activity1);
@@ -208,6 +222,8 @@ function printGraphDouble( $courseid, $modality = NULL, $temporality, $section =
 
 }
 
+// 1 = manager, 2 = course creator, 3 = teacher, 4 = non-editing teacher, 5 = student, 6 = guest
+
 function stripUserRolesFromUsers($users_array) {
     global $DB, $CFG;
 
@@ -215,15 +231,13 @@ function stripUserRolesFromUsers($users_array) {
     $roles_to_include_string = $CFG->scgr_course_include_user_roles;
     $roles_to_include = array_map('intval', explode(',', $roles_to_include_string));
 
-    var_dump($roles_to_include);
-
     foreach ( $users_array as $user ) {
 
         $current_user = $DB->get_record('user', array( 'id' => intval($user) ) );
 
         foreach ( $roles_to_include as $role ) {
 
-            if ( user_has_role_assignment( $current_user->id, $role ) ) {
+            if ( user_has_role_assignment( $current_user->id, $role ) && !user_has_role_assignment( $current_user->id, 4 ) ) {
 
                 array_push($new_users_array, $current_user->id);
 
@@ -284,7 +298,7 @@ function getUserRoles() {
 
 }
 
-function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity = NULL, $aregroupsactivated = NULL ) {
+function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL ) {
     global $OUTPUT;
 
     if ( !isset($modality) || $modality == 'intra' ) {
@@ -303,24 +317,26 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
             $usernames = getUsernamesFromUsers($users);     // Get usernames from users
 
-        // If groups are activated but groupid was not submitted
-        } else {
-            // Return error ?
         }
 
-        echo html_writer::tag('h1', getActivityName( $activity ), array( 'class' => 'scgr-graph-title2') );
-        echo html_writer::tag('h4', groups_get_group_name($groupid) );
+        echo html_writer::tag('h1', 'Graph' );
 
         // Get grades from user array and item_id
-        $grades = getGrades($users, $courseid, $activity);
+        $grades1 = getGrades($users, $courseid, $activity1);
 
-        if ( $grades && $usernames ) {
+        if ( $grades1 && $usernames ) {
 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series( getActivityName( $activity ) , $grades);
+            $series1 = new \core\chart_series( getActivityName( $activity1 ) , $grades1);
 
             $chart->add_series($series1);
             $chart->set_labels($usernames);
+
+            if ( $activity2 ) {
+                $grades2 = getGrades($users, $courseid, $activity2);
+                $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
+                $chart->add_series($series2);
+            }
 
             echo $OUTPUT->render_chart($chart);
 
@@ -340,18 +356,25 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
     } elseif ( isset($modality) && $modality == 'inter' ) {
 
-        $grades = getGradesFromGroups($courseid, $activity);
+        $grades1 = getGradesFromGroups($courseid, $activity1);                  // Get grades for activity 1
         $groupnames = getGroupNames($courseid);                                 // Get groupnames
 
         // Output graph if $groupnames and $grades
-        if ( $grades && $groupnames ) {
+        if ( $grades1 && $groupnames ) {
 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
+            $series1 = new \core\chart_series( getActivityName( $activity1 ) , $grades1);
 
             $chart->add_series($series1);
             $chart->set_labels($groupnames);
-            $chart->set_title( getActivityName( $activity ) );
+
+            if ( $activity2 ) {
+                $grades2 = getGradesFromGroups($courseid, $activity2);          // Get grades for activity 2
+                $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
+                $chart->add_series($series2);
+            }
+
+            // $chart->set_title( 'Double graph' );
 
             echo $OUTPUT->render_chart($chart);
 
