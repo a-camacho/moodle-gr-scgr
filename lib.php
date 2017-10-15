@@ -253,6 +253,21 @@ function getUsernamesFromUsers($users_array) {
 
 }
 
+function getUserRoles() {
+    global $DB;
+
+    $sql = "SELECT id, shortname FROM unitice_role ORDER BY id ASC";        // SQL Query
+    $records = $DB->get_records_sql($sql);                                  // Get records with Moodle function
+    $user_roles = array();
+
+    foreach ( $records as $role ) {
+        $user_roles[$role->id] = $role->shortname;
+    }
+
+    return $user_roles;
+
+}
+
 function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity = NULL, $aregroupsactivated = NULL ) {
     global $OUTPUT;
 
@@ -270,7 +285,7 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
             $users = getUsersFromCourse($courseid);
             $users = stripTutorsFromUsers($users);
-            
+
             $usernames = getUsernamesFromUsers($users);
 
         // If groups are activated but groupid was not submitted

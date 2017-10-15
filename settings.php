@@ -52,7 +52,8 @@ if ($ADMIN->fulltree) {
     // 1 = manager, 2 = course creator, 3 = teacher, 4 = non-editing teacher, 5 = student, 6 = guest
 
     $options3 = array();
-    $user_roles_to_ignore = array( 1,2,3,4,5,6 );
+    $user_roles_to_ignore = getUserRoles();
+
     $settings->add(new admin_setting_configmultiselect(  'scgr_course_ignore_user_roles', 'Ignore user roles.',
         'Choose which roles you want the users included to be ignored when generating graphs.', $options3, $user_roles_to_ignore ));
 
