@@ -168,20 +168,6 @@ echo $OUTPUT->header();
 
                 include_once('views/view_form.php');
 
-                // If the user wants to generate a simple graph
-                /* if ( $_GET["graph"] == 'simple' ) {
-
-                    // Output "simple" view
-                    include_once('views/view_simple_form.php');
-
-                // If the user wants to generate a double graph
-                } elseif ( $_GET["graph"] == 'double' ) {
-
-                    // Output "simple" view
-                    include_once('views/view_double_form.php');
-
-                } */
-
             // Default behaviour (when clicking on the report page)
             } else {
 
