@@ -13,6 +13,8 @@ class doublehtml_form extends moodleform {
 
         $groupsactivated = ($this->_customdata[3]) ? true : false;
 
+        $mform->addElement('text', 'graph_custom_title', get_string('form_simple_label_graph_custom_title', 'gradereport_scgr') );
+
         if ( $groupsactivated ) {
 
             $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),

@@ -96,14 +96,18 @@ echo '<div class="temp">';
         if ( $mode == 'double' ) {
 
             printPluginConfig();
-            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $average );
-            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $aregroupsactivated, $average, $custom_title );
+            printTheOptions(    $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
+                                $data->activity2, $average, $custom_title );
+            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
+                        $data->activity2, $aregroupsactivated, $average, $custom_title );
 
         } else {
 
             printPluginConfig();
-            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $average );
-            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $aregroupsactivated, $average, $custom_title );
+            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
+                            NULL, $average, $custom_title );
+            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
+                        NULL, $aregroupsactivated, $average, $custom_title );
 
         }
 

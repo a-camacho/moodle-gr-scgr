@@ -31,7 +31,8 @@
  * @return (html)
  */
 
-function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1, $activity2 = NULL, $average ) {
+function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
+                          $activity1, $activity2 = NULL, $average, $custom_title ) {
 
     // @Camille : Ai-je besoin de déclarer les variables sachant que j'attribue des valeurs par défaut au cas où il n'y aurait rien ?
     if ($groupid) {
@@ -77,6 +78,11 @@ function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality =
         echo html_writer::tag('li', 'Average : no');
     }
 
+    // Average
+    if ($custom_title) {
+        echo html_writer::tag('li', 'Custom title : ' . $custom_title);
+    }
+
     // Temporality and section
     // echo html_writer::tag('li', 'Temporality : ' . $temporality);
     // echo html_writer::tag('li', 'Section : ' . $section);
@@ -116,116 +122,6 @@ function printPluginConfig() {
     echo '</ul>';
 
     echo '<hr>';
-
-}
-
-function printGraphDouble( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1, $activity2, $aregroupsactivated = NULL ) {
-    global $OUTPUT;
-
-    if ( $modality == 'intra' || $modality == NULL ) {
-
-        // If there are user groups and $groupid variable
-        if ( $aregroupsactivated == true && $groupid != NULL ) {
-
-            $users = getUsersFromGroup($groupid);           // Get users from this group
-            $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
-
-        // If there are no groups = grab all users from course
-        } elseif ( $aregroupsactivated == false ) {
-
-            $users = getUsersFromCourse($courseid);         // Get all users from course
-            $users = stripUserRolesFromUsers($users);       // Remove all non-wanted user roles
-
-            $usernames = getUsernamesFromUsers($users);     // Get usernames from users
-
-        // If groups are activated but groupid was not submitted
-        } else {
-
-            // Return error ?
-
-        }
-
-        echo html_writer::tag('h1', 'Graph' );
-
-        // Get grades from user array and item_id
-        $grades_act_1 = getGrades($users, $courseid, $activity1);
-        $grades_act_2 = getGrades($users, $courseid, $activity2);
-
-        $grades = getAverage( $grades_act_1, $grades_act_2 );
-
-        if ( $grades && $usernames ) {
-
-            $chart = new \core\chart_bar(); // Create a bar chart instance.
-
-            $series1 = new \core\chart_series('Activity 1', $grades_act_1);
-            $series2 = new \core\chart_series('Activity 2', $grades_act_2);
-            $series3 = new \core\chart_series('Average', $grades);
-
-            $chart->add_series($series1);
-            $chart->add_series($series2);
-            $chart->add_series($series3);
-            $chart->set_labels($usernames);
-
-            echo $OUTPUT->render_chart($chart);
-
-            echo '<hr />';
-
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
-
-            exportAsJPEG();
-
-        } else {
-
-            echo html_writer::tag('h3', 'Error');
-            echo html_writer::tag('p', 'users or grades not avalaible.');
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a>';
-
-        }
-
-    } elseif ( $modality == 'inter' ) {
-
-        // Get grades from groups for activity 1 and 2
-        $grades_act_1 = getGradesFromGroups($courseid, $activity1);
-        $grades_act_2 = getGradesFromGroups($courseid, $activity2);
-        $average_grades = getAverage( $grades_act_1, $grades_act_2 );
-
-        // Get groupnames
-        $groupnames = getGroupNames($courseid);
-
-        $activities_titles = getActivityName( $activity1 ) . ' & ' . getActivityName( $activity2 );
-        echo html_writer::tag('h3', $activities_titles, array( 'class' => 'scgr-graph-title2') );
-
-        // Output graph if $groupnames and $grades
-        if ( $grades_act_1 && $grades_act_2 && $groupnames ) {
-
-            $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series('Activity 1', $grades_act_1);
-            $series2 = new \core\chart_series('Activity 2', $grades_act_2);
-            $series3 = new \core\chart_series('Average', $average_grades);
-
-            $chart->add_series($series1);
-            $chart->add_series($series2);
-            $chart->add_series($series3);
-            $chart->set_labels($groupnames);
-            $chart->set_title( $activities_titles );
-
-            echo $OUTPUT->render_chart($chart);
-
-            echo '<hr />';
-
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
-
-            exportAsJPEG();
-
-        } else {
-
-            echo html_writer::tag('h3', 'Error');
-            echo html_writer::tag('p', 'users or grades not avalaible.');
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
-
-        }
-
-    }
 
 }
 
@@ -334,12 +230,12 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
         if ( $grades1 && $usernames ) {
 
+            $chart = new \core\chart_bar(); // Create a bar chart instance.
+            $series1 = new \core\chart_series( getActivityName( $activity1 ) , $grades1);
+
             if ( $custom_title != NULL ) {
                 $chart->set_title( $custom_title );
             }
-
-            $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series( getActivityName( $activity1 ) , $grades1);
 
             $chart->add_series($series1);
             $chart->set_labels($usernames);
@@ -384,6 +280,10 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
             $series1 = new \core\chart_series( getActivityName( $activity1 ) , $grades1);
+
+            if ( $custom_title != NULL ) {
+                $chart->set_title( $custom_title );
+            }
 
             $chart->add_series($series1);
             $chart->set_labels($groupnames);
