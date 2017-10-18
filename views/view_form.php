@@ -91,15 +91,24 @@ echo '<div class="temp">';
             $custom_title = NULL;
         }
 
+        // Set custom average
+        if ( property_exists($data, "custom_weighting") && $data->custom_weighting == '1' ) {
+            $custom_weight_array = array();
+            array_push($custom_weight_array, $data->custom_weighting_activity1);
+            array_push($custom_weight_array, $data->custom_weighting_activity2);
+        } else {
+            $custom_weight_array = NULL;
+        }
+
         // Print options and plugin config
 
         if ( $mode == 'double' ) {
 
             printPluginConfig();
             printTheOptions(    $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-                                $data->activity2, $average, $custom_title );
+                                $data->activity2, $average, $custom_title, $custom_weight_array );
             printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-                        $data->activity2, $aregroupsactivated, $average, $custom_title );
+                        $data->activity2, $aregroupsactivated, $average, $custom_title, $custom_weight_array );
 
         } else {
 

@@ -32,7 +32,7 @@
  */
 
 function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
-                          $activity1, $activity2 = NULL, $average, $custom_title ) {
+                          $activity1, $activity2 = NULL, $average, $custom_title, $custom_weight_array ) {
 
     // @Camille : Ai-je besoin de déclarer les variables sachant que j'attribue des valeurs par défaut au cas où il n'y aurait rien ?
     if ($groupid) {
@@ -78,7 +78,14 @@ function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality =
         echo html_writer::tag('li', 'Average : no');
     }
 
-    // Average
+    // Custom average
+    if ($custom_weight_array != NULL) {
+        echo html_writer::tag('li', 'Custom average : yes');
+        echo html_writer::tag('li', 'Activity 1 weight : ' . $custom_weight_array[0]);
+        echo html_writer::tag('li', 'Activity 2 weight : ' . $custom_weight_array[1]);
+    }
+
+    // Custom title
     if ($custom_title) {
         echo html_writer::tag('li', 'Custom title : ' . $custom_title);
     }
@@ -202,7 +209,9 @@ function getUserRoles() {
 }
 
 function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
-                     $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average, $custom_title = NULL ) {
+                     $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average, $custom_title = NULL,
+                     $custom_weight_array = NULL ) {
+
     global $OUTPUT;
 
     if ( !isset($modality) || $modality == 'intra' ) {
@@ -348,6 +357,18 @@ function getAverage( $activity1, $activity2 ) {
 
     return $average;
 }
+
+function getAverageSpecial( $activity1, $activity2, $weight1, $weight2 ) {
+    
+}
+
+/*
+ * getAverage
+ *
+ * prints an url that creates JPG from cavas onclick and downloads image
+ *
+ * @echo (url)
+ */
 
 function exportAsJPEG() {
 
