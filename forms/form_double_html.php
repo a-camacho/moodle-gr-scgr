@@ -44,6 +44,12 @@ class doublehtml_form extends moodleform {
                                 'gradereport_scgr'),
                             $ACTIVITIES_LIST);
 
+        // Average
+
+        $mform->addElement('selectyesno', 'average', get_string('form_simple_label_average', 'gradereport_scgr'));
+        $mform->setDefault('average', 1);
+
+        $mform->disabledIf('custom_weighting', 'average', $condition = 'eq', $value=0);
 
         // Custom weighting
 

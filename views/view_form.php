@@ -77,19 +77,26 @@ echo '<div class="temp">';
             $modality = NULL;
         }
 
+        // Set modality variable
+        if ( $data->average == '1' ) {
+            $average = true;
+        } else {
+            $average = false;
+        }
+
         // Print options and plugin config
 
         if ( $mode == 'double' ) {
 
             printPluginConfig();
-            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2 );
-            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $aregroupsactivated );
+            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $average );
+            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $aregroupsactivated, $average );
 
         } else {
 
             printPluginConfig();
-            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL );
-            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $aregroupsactivated );
+            printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $average );
+            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $aregroupsactivated, $average );
 
         }
 

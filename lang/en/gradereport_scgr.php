@@ -54,6 +54,7 @@ $string['form_simple_label_modality'] = 'Modality';
 $string['form_simple_label_temporality'] = 'Temporality';
 $string['form_simple_label_section'] = 'Temporality';
 $string['form_simple_label_activity'] = 'Temporality';
+$string['form_simple_label_average'] = 'Average';
 $string['form_simple_label_custom_weighting'] = 'Custom weighting';
 $string['form_simple_label_custom_weighting_act_1'] = 'Weighting - Act. 1';
 $string['form_simple_label_custom_weighting_act_2'] = 'Weighting - Act. 2';

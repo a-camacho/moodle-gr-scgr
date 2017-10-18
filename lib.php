@@ -31,7 +31,7 @@
  * @return (html)
  */
 
-function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1, $activity2 = NULL ) {
+function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1, $activity2 = NULL, $average ) {
 
     // @Camille : Ai-je besoin de déclarer les variables sachant que j'attribue des valeurs par défaut au cas où il n'y aurait rien ?
     if ($groupid) {
@@ -68,6 +68,13 @@ function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality =
     echo html_writer::tag('li', 'Activity 1 : ' . $activity1name . ' (#' . $activity1 . ')');
     if ( $activity2 ) {
         echo html_writer::tag('li', 'Activity 2 : ' . $activity2name . ' (#' . $activity2 . ')');
+    }
+
+    // Average
+    if ($average == true) {
+        echo html_writer::tag('li', 'Average : yes');
+    } else {
+        echo html_writer::tag('li', 'Average : no');
     }
 
     // Temporality and section
@@ -298,7 +305,7 @@ function getUserRoles() {
 
 }
 
-function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL ) {
+function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average ) {
     global $OUTPUT;
 
     if ( !isset($modality) || $modality == 'intra' ) {
@@ -336,6 +343,14 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
                 $grades2 = getGrades($users, $courseid, $activity2);
                 $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
                 $chart->add_series($series2);
+
+                if ( $average == true ) {
+
+                    $grades_average = getAverage($grades1, $grades2);
+                    $series_average = new \core\chart_series( get_string('form_simple_label_average', 'gradereport_scgr') , $grades_average);
+                    $chart->add_series($series_average);
+
+                }
             }
 
             echo $OUTPUT->render_chart($chart);
@@ -372,6 +387,15 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
                 $grades2 = getGradesFromGroups($courseid, $activity2);          // Get grades for activity 2
                 $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
                 $chart->add_series($series2);
+
+                if ( $average == true ) {
+
+                    $grades_average = getAverage($grades1, $grades2);
+                    $series_average = new \core\chart_series( get_string('form_simple_label_average', 'gradereport_scgr') , $grades_average);
+                    $chart->add_series($series_average);
+
+                }
+
             }
 
             // $chart->set_title( 'Double graph' );
