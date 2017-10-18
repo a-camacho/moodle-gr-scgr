@@ -305,7 +305,8 @@ function getUserRoles() {
 
 }
 
-function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL, $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average ) {
+function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
+                     $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average, $custom_title = NULL ) {
     global $OUTPUT;
 
     if ( !isset($modality) || $modality == 'intra' ) {
@@ -332,6 +333,10 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
         $grades1 = getGrades($users, $courseid, $activity1);
 
         if ( $grades1 && $usernames ) {
+
+            if ( $custom_title != NULL ) {
+                $chart->set_title( $custom_title );
+            }
 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
             $series1 = new \core\chart_series( getActivityName( $activity1 ) , $grades1);

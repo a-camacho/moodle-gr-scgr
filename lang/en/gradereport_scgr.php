@@ -44,6 +44,10 @@ $string['form_simple_button_submit'] = 'Submit';
 /* ##############################################      FORMS        ############################################### */
 /* ################################################################################################################ */
 
+// Forms - General
+
+$string['form_simple_label_graph_custom_title'] = 'Custom title';
+
 // Forms - Simple
 
 $string['form_simple_title'] = 'Simple Graph';

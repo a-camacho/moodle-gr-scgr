@@ -78,10 +78,17 @@ echo '<div class="temp">';
         }
 
         // Set modality variable
-        if ( $data->average == '1' ) {
+        if ( property_exists($data, "average") && $data->average == '1' ) {
             $average = true;
         } else {
             $average = false;
+        }
+
+        // Set custom title
+        if ( property_exists($data, "graph_custom_title") ) {
+            $custom_title = $data->graph_custom_title;
+        } else {
+            $custom_title = NULL;
         }
 
         // Print options and plugin config
@@ -90,13 +97,13 @@ echo '<div class="temp">';
 
             printPluginConfig();
             printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $average );
-            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $aregroupsactivated, $average );
+            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, $data->activity2, $aregroupsactivated, $average, $custom_title );
 
         } else {
 
             printPluginConfig();
             printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $average );
-            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $aregroupsactivated, $average );
+            printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1, NULL, $aregroupsactivated, $average, $custom_title );
 
         }
 
