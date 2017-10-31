@@ -14,6 +14,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+function grade_report_scgr_settings_definition(&$mform) {
+    global $CFG;
+
+    $options = array(-1 => get_string('default', 'grades'),
+        0 => get_string('hide'),
+        1 => get_string('show'));
+
+    if (empty($CFG->grade_report_user_showrank)) {
+        $options[-1] = get_string('defaultprev', 'grades', $options[0]);
+    } else {
+        $options[-1] = get_string('defaultprev', 'grades', $options[1]);
+    }
+
+    $mform->addElement('select', 'report_user_showrank', get_string('showrank', 'grades'), $options);
+    $mform->addHelpButton('report_user_showrank', 'showrank', 'grades');
+
+}
 
 /*
  * printTheOptions
@@ -359,7 +376,7 @@ function getAverage( $activity1, $activity2 ) {
 }
 
 function getAverageSpecial( $activity1, $activity2, $weight1, $weight2 ) {
-    
+
 }
 
 /*

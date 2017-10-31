@@ -100,7 +100,19 @@ $string['form_result_modality_all_phrase'] = '';
 
 // Settings Page
 
-$string['settings_page_title'] = 'SCGR Settings';
+$string['settings_page_title'] = 'SCGR global settings';
+
+// Course Settings Page
+
+$string['pref_page_title'] = 'SCGR preferences';
+$string['pref_explanation'] = 'This preferences determine features for SC grade report for this course only.';
+
+$string['pref_changereportdefaults'] = 'Change global SCGR settings';
+$string['pref_gotoreportpage'] = 'Go to report page';
+
+$string['pref_general_activate_scgr'] = 'Activate SCGR on this course';
+$string['pref_general_activate_groups'] = 'Activate groups feature on this course';
+
 
 // Warnings
 

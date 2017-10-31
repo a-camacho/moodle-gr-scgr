@@ -32,3 +32,46 @@ $courseid      = required_param('id', PARAM_INT);
 
 $PAGE->set_url(new moodle_url('/grade/report/scgr/preferences.php', array('id'=>$courseid)));
 $PAGE->set_pagelayout('admin');
+
+/// Make sure they can even access this course
+
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+    print_error('invalidcourseid');
+}
+
+require_login($course);
+
+$context = context_course::instance($course->id);
+$systemcontext = context_system::instance();
+require_capability('gradereport/grader:view', $context);            // BETA Capabilities based on grader
+
+require('preferences_form.php');
+$mform = new scgr_course_settings_form();
+
+$settings = grade_get_settings($course->id);
+
+$mform->set_data($settings);
+
+print_grade_page_head($courseid, 'settings', 'scgr', get_string('pref_page_title', 'gradereport_scgr'));
+
+// The settings could have been changed due to a notice shown in print_grade_page_head, we need to refresh them.
+$settings = grade_get_settings($course->id);
+$mform->set_data($settings);
+
+echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthnormal centerpara');
+echo get_string('pref_explanation', 'gradereport_scgr');
+echo $OUTPUT->box_end();
+
+// If USER has admin capability, print a link to the site config page for this report
+if (has_capability('moodle/site:config', $systemcontext)) {
+    echo '<div id="siteconfiglink">';
+    echo '<a href="'.$CFG->wwwroot.'/'.$CFG->admin.'/settings.php?section=gradereportscgr">';
+    echo get_string('pref_changereportdefaults', 'gradereport_scgr');
+    echo "</a><br />";
+    echo '<a href="'.$CFG->wwwroot.'/grade/report/scgr/index.php?id='.$courseid .'">';
+    echo get_string('pref_gotoreportpage', 'gradereport_scgr');
+    echo "</a>";
+    echo "</div>\n";
+}
+
+echo $OUTPUT->footer();
