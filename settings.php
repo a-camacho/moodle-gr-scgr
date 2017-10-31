@@ -29,6 +29,12 @@ defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
 
+    // Test setting
+    $optionstest = array('a', 'b', 'c');
+    $settings->add(new admin_setting_configmultiselect(  'scgr_test', 'test',
+        'test bla bla bla.', $optionstest, $optionstest ));
+
+
     /// Choose in which courses the plugin should be active
 
     $settings->add(new admin_setting_configcheckbox(  'scgr_plugin_enabled', 'Enable the plugin',

@@ -17,18 +17,11 @@
 function grade_report_scgr_settings_definition(&$mform) {
     global $CFG;
 
-    $options = array(-1 => get_string('default', 'grades'),
-        0 => get_string('hide'),
-        1 => get_string('show'));
+    echo '<br /><br /><br />';
 
-    if (empty($CFG->grade_report_user_showrank)) {
-        $options[-1] = get_string('defaultprev', 'grades', $options[0]);
-    } else {
-        $options[-1] = get_string('defaultprev', 'grades', $options[1]);
-    }
-
-    $mform->addElement('select', 'report_user_showrank', get_string('showrank', 'grades'), $options);
-    $mform->addHelpButton('report_user_showrank', 'showrank', 'grades');
+    $options = array('a', 'b', 'c');
+    $mform->addElement('select', 'scgr_test', 'bla bla', $options);
+    // $mform->addHelpButton('report_user_showrank', 'showrank', 'grades');
 
 }
 
@@ -97,7 +90,7 @@ function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality =
 
     // Custom average
     if ($custom_weight_array != NULL) {
-        echo html_writer::tag('li', 'Custom average : yes');
+        echo html_writer::tag('li', 'Custom weighting : yes');
         echo html_writer::tag('li', 'Activity 1 weight : ' . $custom_weight_array[0]);
         echo html_writer::tag('li', 'Activity 2 weight : ' . $custom_weight_array[1]);
     }
@@ -271,10 +264,17 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
                 $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
                 $chart->add_series($series2);
 
-                if ( $average == true ) {
+                if ( $average == true && $custom_weight_array == NULL ) {
 
-                    $grades_average = getAverage($grades1, $grades2);
+                    $grades_average = getSimpleAverage($grades1, $grades2);
                     $series_average = new \core\chart_series( get_string('form_simple_label_average', 'gradereport_scgr') , $grades_average);
+                    $chart->add_series($series_average);
+
+                } elseif ( $average == true && $custom_weight_array != NULL ) {
+
+                    $grades_average = getWeightedAverage($grades1, $grades2, $custom_weight_array);
+                    $grades_average_string = get_string('form_simple_label_average', 'gradereport_scgr') . ' ('.$custom_weight_array[0].'+'.$custom_weight_array[1].')';
+                    $series_average = new \core\chart_series( $grades_average_string , $grades_average);
                     $chart->add_series($series_average);
 
                 }
@@ -319,10 +319,17 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
                 $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
                 $chart->add_series($series2);
 
-                if ( $average == true ) {
+                if ( $average == true && $custom_weight_array == NULL ) {
 
-                    $grades_average = getAverage($grades1, $grades2);
+                    $grades_average = getSimpleAverage($grades1, $grades2);
                     $series_average = new \core\chart_series( get_string('form_simple_label_average', 'gradereport_scgr') , $grades_average);
+                    $chart->add_series($series_average);
+
+                } else if ( $average == true && $custom_weight_array != NULL ) {
+
+                    $grades_average = getWeightedAverage($grades1, $grades2, $custom_weight_array);
+                    $grades_average_string = get_string('form_simple_label_average', 'gradereport_scgr') . ' ('.$custom_weight_array[0].'+'.$custom_weight_array[1].')';
+                    $series_average = new \core\chart_series( $grades_average_string , $grades_average);
                     $chart->add_series($series_average);
 
                 }
@@ -361,7 +368,7 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
  * @return (array)
  */
 
-function getAverage( $activity1, $activity2 ) {
+function getSimpleAverage( $activity1, $activity2 ) {
 
     $average = array();
 
@@ -375,7 +382,19 @@ function getAverage( $activity1, $activity2 ) {
     return $average;
 }
 
-function getAverageSpecial( $activity1, $activity2, $weight1, $weight2 ) {
+function getWeightedAverage( $activity1, $activity2, $custom_weight_array ) {
+
+    $total_weight = array_sum($custom_weight_array);
+    $average = array();
+
+    $i = 0;
+    foreach ( $activity1 as $grade1 ) {
+        $val = ( $grade1 * $custom_weight_array[0] + $activity2[$i] * $custom_weight_array[1] ) / $total_weight;
+        array_push($average, $val);
+        $i++;
+    }
+
+    return $average;
 
 }
 

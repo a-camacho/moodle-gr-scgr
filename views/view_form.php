@@ -92,10 +92,14 @@ echo '<div class="temp">';
         }
 
         // Set custom average
+
+        // INFO :   intval() function converts user input to int. If user enters text it will show 1, if user enters
+        //          nothing it should fix it at 0.
+
         if ( property_exists($data, "custom_weighting") && $data->custom_weighting == '1' ) {
             $custom_weight_array = array();
-            array_push($custom_weight_array, $data->custom_weighting_activity1);
-            array_push($custom_weight_array, $data->custom_weighting_activity2);
+            array_push($custom_weight_array, intval($data->custom_weighting_activity1));
+            array_push($custom_weight_array, intval($data->custom_weighting_activity2));
         } else {
             $custom_weight_array = NULL;
         }
