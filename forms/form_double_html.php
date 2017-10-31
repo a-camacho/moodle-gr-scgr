@@ -58,7 +58,7 @@ class doublehtml_form extends moodleform {
                 'gradereport_scgr'),
             $ACTIVITIES_LIST);
         $activity2_array[] =& $mform->createElement('text', 'custom_weighting_activity2', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr') );
-        $mform->addGroup($activity1_array, 'activity2group', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr'), array(' '), false);
+        $mform->addGroup($activity2_array, 'activity2group', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr'), array(' '), false);
 
         // ************** CUSTOM WEIGHTING settings **************
         $mform->setDefault('custom_weighting_activity1', 1);

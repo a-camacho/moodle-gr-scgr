@@ -108,6 +108,14 @@ function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality =
 
 }
 
+/*
+ * printPluginConfig
+ *
+ * prints plugin settings
+ *
+ * @return (html)
+ */
+
 function printPluginConfig() {
     global $CFG;
 
@@ -142,7 +150,15 @@ function printPluginConfig() {
 
 }
 
-// 1 = manager, 2 = course creator, 3 = teacher, 4 = non-editing teacher, 5 = student, 6 = guest
+/*
+ * stripUserRolesFromUsers
+ *
+ * returns an array of users stripped out of users that should be excluded
+ * default roles : 1 = manager, 2 = course creator, 3 = teacher, 4 = non-editing teacher, 5 = student, 6 = guest
+ *
+ * @users_array (array) array or users to filter
+ * @return (array)
+ */
 
 function stripUserRolesFromUsers($users_array) {
     global $DB, $CFG;
@@ -173,6 +189,16 @@ function stripUserRolesFromUsers($users_array) {
 
 }
 
+/*
+ * getUsersFromCourse
+ *
+ * returns an array of users enrolled in a course
+ *
+ * @courseid (int) course id
+ * @return (array)
+ *
+ */
+
 function getUsersFromCourse($courseid) {
 
     $fields = 'u.id, u.username';               // return these fields
@@ -188,6 +214,16 @@ function getUsersFromCourse($courseid) {
     return $users_array;
 
 }
+
+/*
+ * getUsernamesFromUsers
+ *
+ * returns an array of usernames for displaying
+ *
+ * @users_array (array) array of users
+ * @return (array)
+ *
+ */
 
 function getUsernamesFromUsers($users_array) {
     global $DB;
@@ -205,6 +241,15 @@ function getUsernamesFromUsers($users_array) {
 
 }
 
+/*
+ * getUserRoles
+ *
+ * get user roles from site
+ *
+ * @return (array)
+ *
+ */
+
 function getUserRoles() {
     global $DB;
 
@@ -220,8 +265,29 @@ function getUserRoles() {
 
 }
 
+/*
+ * printGraph
+ *
+ * print the graph depending on parameters given
+ *
+ * @courseid (int)
+ * @modality (string)
+ * @temporality (-)
+ * @section (-)
+ * @groupid (int)
+ * @activity1 (int)
+ * @activity2 (int)
+ * @aregroupsactivated (bolean)
+ * @average (bolean)
+ * @custom_title (string)
+ * @custom_weight_array (array)
+ *
+ * @return (html)
+ *
+ */
+
 function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
-                     $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average, $custom_title = NULL,
+                     $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average = NULL, $custom_title = NULL,
                      $custom_weight_array = NULL ) {
 
     global $OUTPUT;
@@ -383,6 +449,20 @@ function getSimpleAverage( $activity1, $activity2 ) {
 
     return $average;
 }
+
+
+/*
+ * getWeightedAverage
+ *
+ * gets weighted average from grades from two activities
+ *
+ * @activity1 (int)
+ * @activity2 (string)
+ * @custom_weight_array (array) array with weight values for each activity
+ *
+ * @return (array)
+ *
+ */
 
 function getWeightedAverage( $activity1, $activity2, $custom_weight_array ) {
 
