@@ -14,16 +14,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-function grade_report_scgr_settings_definition(&$mform) {
-    global $CFG;
-
-    echo '<br /><br /><br />';
-
-    $options = array('a', 'b', 'c');
-    $mform->addElement('select', 'scgr_test', 'bla bla', $options);
-    // $mform->addHelpButton('report_user_showrank', 'showrank', 'grades');
-
-}
 
 /*
  * printTheOptions
@@ -58,51 +48,47 @@ function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality =
     }
 
     // Options
-    echo html_writer::tag('h4', 'Options');
+    echo html_writer::tag('h4', get_string('options_print_title', 'gradereport_scgr') );
 
     echo '<ul>';
 
-    // Form type
-    echo html_writer::tag('li', 'Form type : ' . $formtype);
+        // Custom title
+        if ($custom_title) {
+            echo html_writer::tag('li', get_string('options_print_customtitle', 'gradereport_scgr') . ' : ' . $custom_title);
+        }
 
-    // Group name
-    if ( $modality ) {
-        echo html_writer::tag('li', 'Modality : ' . $modality);
-    }
+        // Graph type
+        echo html_writer::tag('li', get_string('options_print_graphtype', 'gradereport_scgr') . ' : ' . $formtype);
 
-    // Group name
-    if ( $groupid ) {
-        echo html_writer::tag('li', 'Group name : ' . $groupname . ' (#' . $groupid . ')');
-    }
+        // Group name
+        if ( $modality ) {
+            echo html_writer::tag('li', get_string('options_print_modality', 'gradereport_scgr') . ' : ' . $modality);
+        }
 
-    // Activities
-    echo html_writer::tag('li', 'Activity 1 : ' . $activity1name . ' (#' . $activity1 . ')');
-    if ( $activity2 ) {
-        echo html_writer::tag('li', 'Activity 2 : ' . $activity2name . ' (#' . $activity2 . ')');
-    }
+        // Group name
+        if ( $groupid ) {
+            echo html_writer::tag('li', get_string('options_print_group', 'gradereport_scgr') . ' : ' . $groupname . ' (#' . $groupid . ')');
+        }
 
-    // Average
-    if ($average == true) {
-        echo html_writer::tag('li', 'Average : yes');
-    } else {
-        echo html_writer::tag('li', 'Average : no');
-    }
+        // Activities
+        echo html_writer::tag('li', get_string('options_print_activity', 'gradereport_scgr') . ' 1 : ' . $activity1name . ' (#' . $activity1 . ')');
+        if ( $activity2 ) {
+            echo html_writer::tag('li', get_string('options_print_activity', 'gradereport_scgr') . ' 2 : ' . $activity2name . ' (#' . $activity2 . ')');
+        }
 
-    // Custom average
-    if ($custom_weight_array != NULL) {
-        echo html_writer::tag('li', 'Custom weighting : yes');
-        echo html_writer::tag('li', 'Activity 1 weight : ' . $custom_weight_array[0]);
-        echo html_writer::tag('li', 'Activity 2 weight : ' . $custom_weight_array[1]);
-    }
+        // Average
+        $average_string = get_string('options_print_average', 'gradereport_scgr') . ' : ';
+        $average_string .= ($average == true) ? 'yes' : 'no';
+        echo html_writer::tag('li', $average_string );
 
-    // Custom title
-    if ($custom_title) {
-        echo html_writer::tag('li', 'Custom title : ' . $custom_title);
-    }
-
-    // Temporality and section
-    // echo html_writer::tag('li', 'Temporality : ' . $temporality);
-    // echo html_writer::tag('li', 'Section : ' . $section);
+        // Custom average weight
+        if ($custom_weight_array != NULL) {
+            echo html_writer::tag('li', 'Custom weighting : yes');
+            echo '<ul>';
+            echo html_writer::tag('li', get_string('options_print_activity', 'gradereport_scgr') . ' 1 ' . get_string('options_print_word_weight', 'gradereport_scgr') . ' : ' . $custom_weight_array[0]);
+            echo html_writer::tag('li', get_string('options_print_activity', 'gradereport_scgr') . ' 2 ' . get_string('options_print_word_weight', 'gradereport_scgr') . ' : ' . $custom_weight_array[1]);
+            echo '</ul>';
+        }
 
     echo '</ul>';
 
@@ -120,28 +106,24 @@ function printPluginConfig() {
     global $CFG;
 
     // Options
-    echo html_writer::tag('h4', 'Plugin Config (for this course)');
+    echo html_writer::tag('h4', get_string('options_print_config_title', 'gradereport_scgr') );
 
     echo '<ul>';
 
     if ( $CFG->scgr_plugin_enabled ) {
-        echo html_writer::tag('li', 'scgr_plugin_enabled : ' . $CFG->scgr_plugin_enabled );
-    }
-
-    if ( $CFG->scgr_plugin_disable ) {
-        echo html_writer::tag('li', 'scgr_plugin_disable : ' . $CFG->scgr_plugin_disable );
+        echo html_writer::tag('li', get_string('options_print_config_pluginenabled', 'gradereport_scgr') . ' : ' . $CFG->scgr_plugin_enabled );
     }
 
     if ( $CFG->scgr_course_activation_choice ) {
-        echo html_writer::tag('li', 'scgr_course_activation_choice : ' . $CFG->scgr_course_activation_choice );
+        echo html_writer::tag('li', get_string('options_print_config_courseactivedon', 'gradereport_scgr') . ' : ' . $CFG->scgr_course_activation_choice );
     }
 
     if ( $CFG->scgr_course_groups_activation_choice ) {
-        echo html_writer::tag('li', 'scgr_course_groups_activation_choice : ' . $CFG->scgr_course_groups_activation_choice );
+        echo html_writer::tag('li', get_string('options_print_config_groupactivedon', 'gradereport_scgr') . ' : ' . $CFG->scgr_course_groups_activation_choice );
     }
 
-    if ( $CFG->scgr_course_include_user_roles ) {
-        echo html_writer::tag('li', 'scgr_course_include_user_roles : ' . $CFG->scgr_course_include_user_roles );
+    if ( $CFG->scgr_course_exclude_user_roles ) {
+        echo html_writer::tag('li', get_string('options_print_config_excludeduserroles', 'gradereport_scgr') .  ' : ' . $CFG->scgr_course_exclude_user_roles );
     }
 
     echo '</ul>';

@@ -39,6 +39,37 @@ $string['page_not_active_on_this_course_description'] = 'Before being able to us
 
 $string['form_simple_button_submit'] = 'Submit';
 
+/* ################################################################################################################ */
+/* #############################################      OPTIONS        ############################################## */
+/* ################################################################################################################ */
+
+// Options - PrintPluginConfig
+
+$string['options_print_config_title'] = 'Plugin Config (global)';
+
+$string['options_print_config_pluginenabled'] = 'Plugin enabled';
+$string['options_print_config_courseactivedon'] = 'Plugin activated on these courses';
+$string['options_print_config_groupactivedon'] = 'Group feature activated on these courses';
+$string['options_print_config_excludeduserroles'] = 'User roles to be excluded from graphs';
+
+// Options - PrintOptions
+
+$string['options_print_title'] = 'Options';
+
+$string['options_print_graphtype'] = 'Form type';
+$string['options_print_modality'] = 'Modality';
+$string['options_print_group'] = 'Group';
+$string['options_print_activity'] = 'Activity';
+$string['options_print_average'] = 'Average';
+$string['options_print_customtitle'] = 'Custom title';
+
+
+$string['options_print_word_weight'] = 'weight';
+
+
+/* ################################################################################################################ */
+/* ##############################################      GRAPH        ############################################### */
+/* ################################################################################################################ */
 
 /* ################################################################################################################ */
 /* ##############################################      FORMS        ############################################### */

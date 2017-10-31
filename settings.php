@@ -28,14 +28,7 @@ require_once $CFG->dirroot.'/grade/report/scgr/lib.php';
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-
-    // Test setting
-    $options_test2 = array();
-    $options_test = array('a', 'b', 'c');
-    $settings->add(new admin_setting_configmultiselect(  'scgr_test', 'test',
-        'test bla bla bla.', $options_test2, $options_test ));
-
-
+    
     /// Choose in which courses the plugin should be active
 
     $settings->add(new admin_setting_configcheckbox(  'scgr_plugin_enabled', 'Enable the plugin',
