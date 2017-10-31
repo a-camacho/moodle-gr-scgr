@@ -30,9 +30,10 @@ defined('MOODLE_INTERNAL') || die;
 if ($ADMIN->fulltree) {
 
     // Test setting
-    $optionstest = array('a', 'b', 'c');
+    $options_test2 = array();
+    $options_test = array('a', 'b', 'c');
     $settings->add(new admin_setting_configmultiselect(  'scgr_test', 'test',
-        'test bla bla bla.', $optionstest, $optionstest ));
+        'test bla bla bla.', $options_test2, $options_test ));
 
 
     /// Choose in which courses the plugin should be active
@@ -58,10 +59,9 @@ if ($ADMIN->fulltree) {
     // 1 = manager, 2 = course creator, 3 = teacher, 4 = non-editing teacher, 5 = student, 6 = guest
 
     $options3 = array();
-    $user_roles_to_include = getUserRoles();
-
-    $settings->add(new admin_setting_configmultiselect(  'scgr_course_include_user_roles', 'Include user roles.',
-        'Choosing user roles here will only include grades for these user roles in graphs.', $options3, $user_roles_to_include ));
+    $user_roles = getUserRoles();
+    $settings->add(new admin_setting_configmultiselect(  'scgr_course_exclude_user_roles', 'Exclude user roles.',
+        'Choose what user roles will make user hidden from graphs.', $options3, $user_roles ));
 
 
 }

@@ -37,20 +37,28 @@ class doublehtml_form extends moodleform {
         $mform->setDefault('custom_weighting', 0);
 
         // ************** ACTIVITIES with custom weight **************
-        $ACTIVITIES_LIST = $this->_customdata[1];                                    // Item 1 in array is SECTIONS
-        $mform->addElement( 'select',
-                            'activity1',
-                            get_string('form_double_label_activity1',
-                            'gradereport_scgr'),
-                            $ACTIVITIES_LIST);
-        $mform->addElement('text', 'custom_weighting_activity1', get_string('form_simple_label_custom_weighting_act_1', 'gradereport_scgr') );
 
-        $mform->addElement( 'select',
-                            'activity2',
-                            get_string('form_double_label_activity2',
-                                'gradereport_scgr'),
-                            $ACTIVITIES_LIST);
-        $mform->addElement('text', 'custom_weighting_activity2', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr') );
+        $ACTIVITIES_LIST = $this->_customdata[1];                                    // Item 1 in array is SECTIONS
+
+        // Show activity 1 and custom weight in same line
+        $activity1_array=array();
+        $activity1_array[] =& $mform->createElement( 'select',
+            'activity1',
+            get_string('form_double_label_activity1',
+                'gradereport_scgr'),
+            $ACTIVITIES_LIST);
+        $activity1_array[] =& $mform->createElement('text', 'custom_weighting_activity1', get_string('form_simple_label_custom_weighting_act_1', 'gradereport_scgr') );
+        $mform->addGroup($activity1_array, 'activity1group', get_string('form_simple_label_custom_weighting_act_1', 'gradereport_scgr'), array(' '), false);
+
+        // Show activity 2 and custom weight in same line
+        $activity2_array=array();
+        $activity2_array[] =& $mform->createElement( 'select',
+            'activity2',
+            get_string('form_double_label_activity2',
+                'gradereport_scgr'),
+            $ACTIVITIES_LIST);
+        $activity2_array[] =& $mform->createElement('text', 'custom_weighting_activity2', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr') );
+        $mform->addGroup($activity1_array, 'activity2group', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr'), array(' '), false);
 
         // ************** CUSTOM WEIGHTING settings **************
         $mform->setDefault('custom_weighting_activity1', 1);

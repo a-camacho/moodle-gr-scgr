@@ -9,6 +9,10 @@
     display: inline-block;
 }
 
+#id_custom_weighting_activity1 {
+    max-width: 45px;
+}
+
 /* Graph CSS */
 
 h4.scgr-graph-title {

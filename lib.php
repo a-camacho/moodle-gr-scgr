@@ -42,7 +42,7 @@ function grade_report_scgr_settings_definition(&$mform) {
  */
 
 function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
-                          $activity1, $activity2 = NULL, $average, $custom_title, $custom_weight_array ) {
+                          $activity1, $activity2, $average = NULL, $custom_title = NULL, $custom_weight_array = NULL ) {
 
     // @Camille : Ai-je besoin de déclarer les variables sachant que j'attribue des valeurs par défaut au cas où il n'y aurait rien ?
     if ($groupid) {
@@ -148,21 +148,23 @@ function stripUserRolesFromUsers($users_array) {
     global $DB, $CFG;
 
     $new_users_array = array();
-    $roles_to_include_string = $CFG->scgr_course_include_user_roles;
-    $roles_to_include = array_map('intval', explode(',', $roles_to_include_string));
+    $roles_to_exclude_string = $CFG->scgr_course_exclude_user_roles;
+    $roles_to_exclude = array_map('intval', explode(',', $roles_to_exclude_string));
 
     foreach ( $users_array as $user ) {
 
         $current_user = $DB->get_record('user', array( 'id' => intval($user) ) );
+        $add_user = true;
 
-        foreach ( $roles_to_include as $role ) {
-
-            if ( user_has_role_assignment( $current_user->id, $role ) && !user_has_role_assignment( $current_user->id, 4 ) ) {
-
-                array_push($new_users_array, $current_user->id);
-
+        // CAN WE MAKE THIS FUNCTION MORE EFFICIENT ?
+        foreach ( $roles_to_exclude as $role ) {
+            if ( user_has_role_assignment( $current_user->id, $role ) ) {
+                $add_user = false;
             }
+        }
 
+        if ( $add_user ) {
+            array_push($new_users_array, $current_user->id);
         }
 
     }
