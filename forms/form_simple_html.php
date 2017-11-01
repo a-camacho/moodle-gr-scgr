@@ -14,6 +14,7 @@ class simplehtml_form extends moodleform {
         $groupsactivated = ($this->_customdata[3]) ? true : false;
 
         $mform->addElement('text', 'graph_custom_title', get_string('form_simple_label_graph_custom_title', 'gradereport_scgr') );
+        $mform->addHelpButton('graph_custom_title', 'helper_customtitle', 'gradereport_scgr');
 
         if ( $groupsactivated ) {
 
@@ -22,26 +23,9 @@ class simplehtml_form extends moodleform {
 
             $mform->addElement('select', 'modality', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES );
             $mform->setDefault('modality', 'intra');
+            $mform->addHelpButton('modality', 'helper_modality', 'gradereport_scgr');
 
         }
-
-        /*
-        $TEMPORALITY_TYPES = array( 'all' => get_string('form_simple_value_tempo_all', 'gradereport_scgr'),
-                                    'section' => get_string('form_simple_value_tempo_section', 'gradereport_scgr'),
-                                    'activity' => get_string('form_simple_value_tempo_activity', 'gradereport_scgr'));
-        $mform->addElement('select', 'temporality', get_string('form_simple_label_temporality', 'gradereport_scgr'),
-                            $TEMPORALITY_TYPES, array('disabled'));
-
-        // Initialize array
-        $SECTIONS_LIST = $this->_customdata[0];                                 // Item 0 in array is SECTIONS
-
-        $mform->addElement( 'select',
-                            'section',
-                            get_string('form_simple_label_section',
-                            'gradereport_scgr'),
-                            $SECTIONS_LIST, array('disabled') );
-
-        */
 
         $ACTIVITIES_LIST = $this->_customdata[1];                                    // Item 1 in array is SECTIONS
         $mform->addElement( 'select',
@@ -49,16 +33,18 @@ class simplehtml_form extends moodleform {
                             get_string('form_simple_label_activity',
                             'gradereport_scgr'),
                             $ACTIVITIES_LIST);
+        $mform->addHelpButton('activity1', 'helper_chooseactivity', 'gradereport_scgr');
 
         // If groups array is not empty we show the select field
         if ( $this->_customdata[2] ) {
 
-            $GROUPS_LIST = $this->_customdata[2];                                    // Item 1 in array is SECTIONS
+            $GROUPS_LIST = $this->_customdata[2];                                    // Item 2 in array is SECTIONS
             $mform->addElement( 'select',
                 'group',
                 get_string('form_simple_label_group',
                     'gradereport_scgr'),
                 $GROUPS_LIST);
+            $mform->addHelpButton('group', 'helper_group', 'gradereport_scgr');
 
         }
 

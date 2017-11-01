@@ -17,6 +17,7 @@ class doublehtml_form extends moodleform {
 
         // ************** CUSTOM TITLE **************
         $mform->addElement('text', 'graph_custom_title', get_string('form_simple_label_graph_custom_title', 'gradereport_scgr') );
+        $mform->addHelpButton('graph_custom_title', 'helper_customtitle', 'gradereport_scgr');
 
         // ************** INTER-INTRA CHOICE **************
         if ( $groupsactivated ) {
@@ -26,15 +27,21 @@ class doublehtml_form extends moodleform {
             $mform->setDefault('modality', 'intra');
         }
 
+        $mform->addHelpButton('modality', 'helper_modality', 'gradereport_scgr');
+
         // ************** AVERAGE **************
 
         $mform->addElement('selectyesno', 'average', get_string('form_simple_label_average', 'gradereport_scgr'));
         $mform->setDefault('average', 1);
         $mform->disabledIf('custom_weighting', 'average', $condition = 'eq', $value=0);
 
+        $mform->addHelpButton('average', 'helper_average', 'gradereport_scgr');
+
         // ************** CUSTOM WEIGHTING **************
         $mform->addElement('selectyesno', 'custom_weighting', get_string('form_simple_label_custom_weighting', 'gradereport_scgr'));
         $mform->setDefault('custom_weighting', 0);
+
+        $mform->addHelpButton('custom_weighting', 'helper_customweight', 'gradereport_scgr');
 
         // ************** ACTIVITIES with custom weight **************
 
@@ -60,6 +67,9 @@ class doublehtml_form extends moodleform {
         $activity2_array[] =& $mform->createElement('text', 'custom_weighting_activity2', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr') );
         $mform->addGroup($activity2_array, 'activity2group', get_string('form_simple_label_custom_weighting_act_2', 'gradereport_scgr'), array(' '), false);
 
+        $mform->addHelpButton('activity1group', 'helper_chooseactivity', 'gradereport_scgr');
+        $mform->addHelpButton('activity2group', 'helper_chooseactivity', 'gradereport_scgr');
+
         // ************** CUSTOM WEIGHTING settings **************
         $mform->setDefault('custom_weighting_activity1', 1);
         $mform->setDefault('custom_weighting_activity2', 1);
@@ -76,6 +86,7 @@ class doublehtml_form extends moodleform {
                 $GROUPS_LIST);
         }
         $mform->disabledIf('group', 'modality', $condition = 'eq', $value='inter');
+        $mform->addHelpButton('group', 'helper_group', 'gradereport_scgr');
 
         // Add buttons
 
