@@ -70,6 +70,13 @@ echo '<div class="temp">';
             $group_id = NULL;
         }
 
+        // Set viewtype variable
+        if ( property_exists($data, "viewtype") ) {
+            $viewtype = $data->viewtype;
+        } else {
+            $viewtype = NULL;
+        }
+
         // Set modality variable
         if ( property_exists($data, "modality") ) {
             $modality = $data->modality;
@@ -108,19 +115,24 @@ echo '<div class="temp">';
 
         if ( $mode == 'double' ) {
 
+            // Check and set if user wants all activities or only average
+            $averageonly = ( intval($data->averageonly) == 1 ) ? true : false;
+
             printPluginConfig();
             printTheOptions(    $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-                                $data->activity2, $average, $custom_title, $custom_weight_array );
+                                $data->activity2, $average, $custom_title, $custom_weight_array, $viewtype );
             printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-                        $data->activity2, $aregroupsactivated, $average, $custom_title, $custom_weight_array );
+                        $data->activity2, $aregroupsactivated, $average, $custom_title, $custom_weight_array,
+                        $averageonly, $viewtype );
 
         } else {
 
             printPluginConfig();
             printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-                            NULL, $average, $custom_title );
+                            NULL, $average, $custom_title, $custom_weight_array, $viewtype );
             printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-                        NULL, $aregroupsactivated, $average, $custom_title );
+                        NULL, $aregroupsactivated, $average, $custom_title, $custom_weight_array = NULL,
+                        $averageonly = NULL, $viewtype );
 
         }
 

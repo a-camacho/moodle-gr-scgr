@@ -13,9 +13,19 @@ class simplehtml_form extends moodleform {
 
         $groupsactivated = ($this->_customdata[3]) ? true : false;
 
+        // ************** CUSTOM TITLE **************
         $mform->addElement('text', 'graph_custom_title', get_string('form_simple_label_graph_custom_title', 'gradereport_scgr') );
         $mform->addHelpButton('graph_custom_title', 'helper_customtitle', 'gradereport_scgr');
 
+        // ************** GRAPH VIEW TYPE **************
+        $VIEW_TYPES = array( 'horizontal-bars' => get_string('form_simple_value_viewtype_horizontalbars', 'gradereport_scgr'),
+            'vertical-bars' => get_string('form_simple_value_viewtype_verticalbars', 'gradereport_scgr'));
+
+        $mform->addElement('select', 'viewtype', get_string('form_label_viewtype', 'gradereport_scgr'), $VIEW_TYPES );
+        $mform->setDefault('viewtype', 'vertical-bars');
+        $mform->addHelpButton('viewtype', 'helper_viewtype', 'gradereport_scgr');
+
+        // ************** INTER-INTRA CHOICE **************
         if ( $groupsactivated ) {
 
             $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),
@@ -27,6 +37,7 @@ class simplehtml_form extends moodleform {
 
         }
 
+        // ************** ACTIVITY **************
         $ACTIVITIES_LIST = $this->_customdata[1];                                    // Item 1 in array is SECTIONS
         $mform->addElement( 'select',
                             'activity1',

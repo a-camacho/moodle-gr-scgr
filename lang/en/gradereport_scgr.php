@@ -62,6 +62,7 @@ $string['options_print_group'] = 'Group';
 $string['options_print_activity'] = 'Activity';
 $string['options_print_average'] = 'Average';
 $string['options_print_customtitle'] = 'Custom title';
+$string['options_print_viewtype'] = 'View type';
 
 
 $string['options_print_word_weight'] = 'weight';
@@ -79,6 +80,8 @@ $string['options_print_word_weight'] = 'weight';
 
 $string['form_simple_label_graph_custom_title'] = 'Custom title';
 
+$string['form_label_viewtype'] = 'View type';
+
 // Forms - Simple
 
 $string['form_simple_title'] = 'Simple Graph';
@@ -94,6 +97,8 @@ $string['form_simple_label_custom_weighting'] = 'Custom weighting';
 $string['form_simple_label_custom_weighting_act_1'] = 'Weighting - Act. 1';
 $string['form_simple_label_custom_weighting_act_2'] = 'Weighting - Act. 2';
 
+$string['form_simple_value_viewtype_horizontalbars'] = 'Horizontal bars';
+$string['form_simple_value_viewtype_verticalbars'] = 'Vertical bars';
 
 $string['form_simple_value_mod_inter'] = 'Inter-group';
 $string['form_simple_value_mod_intra'] = 'Intra-group';
@@ -117,6 +122,8 @@ $string['form_double_subtitle2'] = '';
 $string['form_double_label_activity1'] = 'Activity 1';
 $string['form_double_label_activity2'] = 'Activity 2';
 
+$string['form_simple_label_averageony_desc'] = 'Check this if you want the activities to be hiden and show average only.';
+
 // Form Result
 
 $string['form_result_default_result'] = 'S-';
@@ -129,6 +136,9 @@ $string['form_result_modality_all_phrase'] = '';
 
 $string['helper_customtitle'] = 'Add a custom title?';
 $string['helper_customtitle_help'] = 'If enabled, this will show a custom title in heading of graph.';
+
+$string['helper_viewtype'] = 'Choose view type';
+$string['helper_viewtype_help'] = 'Choose view type for the graph.';
 
 $string['helper_modality'] = 'Choose modality';
 $string['helper_modality_help'] = 'Intra-group will show you comparison of students of a group.<br />Inter-group will show you comparison of groups in course.';

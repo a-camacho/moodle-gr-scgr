@@ -19,6 +19,14 @@ class doublehtml_form extends moodleform {
         $mform->addElement('text', 'graph_custom_title', get_string('form_simple_label_graph_custom_title', 'gradereport_scgr') );
         $mform->addHelpButton('graph_custom_title', 'helper_customtitle', 'gradereport_scgr');
 
+        // ************** GRAPH VIEW TYPE **************
+        $VIEW_TYPES = array( 'horizontal-bars' => get_string('form_simple_value_viewtype_horizontalbars', 'gradereport_scgr'),
+            'vertical-bars' => get_string('form_simple_value_viewtype_verticalbars', 'gradereport_scgr'));
+
+        $mform->addElement('select', 'viewtype', get_string('form_label_viewtype', 'gradereport_scgr'), $VIEW_TYPES );
+        $mform->setDefault('viewtype', 'vertical-bars');
+        $mform->addHelpButton('viewtype', 'helper_viewtype', 'gradereport_scgr');
+
         // ************** INTER-INTRA CHOICE **************
         if ( $groupsactivated ) {
             $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),
@@ -36,6 +44,8 @@ class doublehtml_form extends moodleform {
         $mform->disabledIf('custom_weighting', 'average', $condition = 'eq', $value=0);
 
         $mform->addHelpButton('average', 'helper_average', 'gradereport_scgr');
+
+        $mform->addElement( 'advcheckbox', 'averageonly', ' ', get_string('form_simple_label_averageony_desc', 'gradereport_scgr') , array('group' => 1), array(0, 1));
 
         // ************** CUSTOM WEIGHTING **************
         $mform->addElement('selectyesno', 'custom_weighting', get_string('form_simple_label_custom_weighting', 'gradereport_scgr'));

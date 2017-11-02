@@ -32,7 +32,8 @@
  */
 
 function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
-                          $activity1, $activity2, $average = NULL, $custom_title = NULL, $custom_weight_array = NULL ) {
+                          $activity1, $activity2, $average = NULL, $custom_title = NULL, $custom_weight_array = NULL,
+                          $viewtype ) {
 
     // @Camille : Ai-je besoin de déclarer les variables sachant que j'attribue des valeurs par défaut au cas où il n'y aurait rien ?
     if ($groupid) {
@@ -55,6 +56,11 @@ function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality =
         // Custom title
         if ($custom_title) {
             echo html_writer::tag('li', get_string('options_print_customtitle', 'gradereport_scgr') . ' : ' . $custom_title);
+        }
+
+        // View type
+        if ($viewtype) {
+            echo html_writer::tag('li', get_string('options_print_viewtype', 'gradereport_scgr') . ' : ' . $viewtype);
         }
 
         // Graph type
@@ -270,7 +276,7 @@ function getUserRoles() {
 
 function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
                      $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average = NULL, $custom_title = NULL,
-                     $custom_weight_array = NULL ) {
+                     $custom_weight_array = NULL, $averageonly = false, $viewtype ) {
 
     global $OUTPUT;
 
@@ -306,13 +312,19 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
                 $chart->set_title( $custom_title );
             }
 
-            $chart->add_series($series1);
+            if ( !$averageonly ) {
+                $chart->add_series($series1);
+            }
+
             $chart->set_labels($usernames);
 
             if ( $activity2 ) {
                 $grades2 = getGrades($users, $courseid, $activity2);
                 $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
-                $chart->add_series($series2);
+
+                if ( !$averageonly ) {
+                    $chart->add_series($series2);
+                }
 
                 if ( $average == true && $custom_weight_array == NULL ) {
 
@@ -330,12 +342,16 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
                 }
             }
 
-            $chart->set_horizontal(true);
+            // Set graph view type
+            if ( $viewtype == 'horizontal-bars' ) {
+                $chart->set_horizontal(true);
+            }
+
             echo $OUTPUT->render_chart($chart);
 
             echo '<hr />';
 
-            echo '<a href="/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> | ';
+            echo '<a href="/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
             exportAsJPEG();
 
         } else {
@@ -361,13 +377,19 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
                 $chart->set_title( $custom_title );
             }
 
-            $chart->add_series($series1);
+            if ( !$averageonly ) {
+                $chart->add_series($series1);
+            }
+
             $chart->set_labels($groupnames);
 
             if ( $activity2 ) {
                 $grades2 = getGradesFromGroups($courseid, $activity2);          // Get grades for activity 2
                 $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
-                $chart->add_series($series2);
+
+                if ( !$averageonly ) {
+                    $chart->add_series($series2);
+                }
 
                 if ( $average == true && $custom_weight_array == NULL ) {
 
@@ -386,9 +408,11 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
             }
 
-            // $chart->set_title( 'Double graph' );
+            // Set graph view type
+            if ( $viewtype == 'horizontal-bars' ) {
+                $chart->set_horizontal(true);
+            }
 
-            $chart->set_horizontal(true);
             echo $OUTPUT->render_chart($chart);
 
             echo '<hr />';
