@@ -330,12 +330,12 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
                 }
             }
 
+            $chart->set_horizontal(true);
             echo $OUTPUT->render_chart($chart);
 
             echo '<hr />';
 
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a>';
-
+            echo '<a href="/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> | ';
             exportAsJPEG();
 
         } else {
@@ -388,6 +388,7 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
             // $chart->set_title( 'Double graph' );
 
+            $chart->set_horizontal(true);
             echo $OUTPUT->render_chart($chart);
 
             echo '<hr />';
