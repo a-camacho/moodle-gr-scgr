@@ -34,7 +34,8 @@ $capabilities = array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_PROHIBIT
+            'student' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW
         )
     ),
     'gradereport/scgr:viewall' => array(
@@ -44,7 +45,9 @@ $capabilities = array(
         'archetypes' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
+            'manager' => CAP_ALLOW,
+            'student' => CAP_PROHIBIT,
+            'coursecreator' => CAP_ALLOW
         )
     )
 );

@@ -138,9 +138,6 @@ $config = get_config('grade_report_scgr');
 // Print header
 echo $OUTPUT->header();
 
-var_dump(has_capability('gradereport/scgr:viewall', $context));
-var_dump(has_capability('gradereport/scgr:view', $context));
-
 // Checks if the plugin is activated (general)
 if ( $plugin_activated == true ) {
 
@@ -156,6 +153,18 @@ if ( $plugin_activated == true ) {
 
     // If the plugin is activated on this course
     } else {
+
+        $View = '';
+        $Viewall = '';
+
+        if ( has_capability('gradereport/scgr:viewall', $context) ) {
+            $Viewall = 'voir tout';
+        }
+
+        if ( has_capability('gradereport/scgr:view', $context) ) {
+            $View = 'voir pour soi';
+        }
+        echo 'Capabilities are : ' . $Viewall . ' - ' . $View . '<br /><br />';
 
         // If the user wants to generate a graph with key (beta)
         if ( isset($_GET['mode']) && $_GET['mode'] == 'direct' ) {
