@@ -57,13 +57,11 @@ require_capability('gradereport/user:view', $context);
 
 if (empty($userid)) {
     require_capability('moodle/grade:viewall', $context);
-
 } else {
     if (!$DB->get_record('user', array('id'=>$userid, 'deleted'=>0)) or isguestuser($userid)) {
         print_error('invaliduser');
     }
 }
-
 
 /* ################################################################################################################ */
 /* #######################################      SECURITY        ################################################### */
@@ -140,50 +138,52 @@ $config = get_config('grade_report_scgr');
 // Print header
 echo $OUTPUT->header();
 
+var_dump(has_capability('gradereport/scgr:viewall', $context));
+var_dump(has_capability('gradereport/scgr:view', $context));
 
-    // Checks if the plugin is activated (general)
-    if ( $plugin_activated == true ) {
+// Checks if the plugin is activated (general)
+if ( $plugin_activated == true ) {
 
-        // Create an array with courses that have the plugin activated
-        $activated_on_this_course = explode(",", $CFG->scgr_course_activation_choice);
+    // Create an array with courses that have the plugin activated
+    $activated_on_this_course = explode(",", $CFG->scgr_course_activation_choice);
 
-        // If plugin is not activated on this course
-        if ( !in_array( $courseid, $activated_on_this_course , false ) ) {
+    // If plugin is not activated on this course
+    if ( !in_array( $courseid, $activated_on_this_course , false ) ) {
 
-            // Returns error message for "plugin not activated on this course"
-            echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr') );
-            echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr') );
+        // Returns error message for "plugin not activated on this course"
+        echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr') );
+        echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr') );
 
-        // If the plugin is activated on this course
+    // If the plugin is activated on this course
+    } else {
+
+        // If the user wants to generate a graph with key (beta)
+        if ( isset($_GET['mode']) && $_GET['mode'] == 'direct' ) {
+
+            // Output "direct" view
+            include_once('views/view_direct.php');
+
+        // If the user wants to generate a graph by form
+        } elseif ( !isset($_GET['mode']) && isset($_GET["graph"]) ) {
+
+            include_once('views/view_form.php');
+
+        // Default behaviour (when clicking on the report page)
         } else {
 
-            // If the user wants to generate a graph with key (beta)
-            if ( isset($_GET['mode']) && $_GET['mode'] == 'direct' ) {
-
-                // Output "direct" view
-                include_once('views/view_direct.php');
-
-            // If the user wants to generate a graph by form
-            } elseif ( !isset($_GET['mode']) && isset($_GET["graph"]) ) {
-
-                include_once('views/view_form.php');
-
-            // Default behaviour (when clicking on the report page)
-            } else {
-
-                include_once('views/view_form.php');
-
-            }
+            include_once('views/view_form.php');
 
         }
 
-    // If the plugin is not activated on this course
-    } else {
-
-        // Returns error message for "plugin not activated"
-        echo html_writer::tag('h3', get_string('page_plugin_not_active', 'gradereport_scgr') );
-        echo html_writer::tag('p', get_string('page_plugin_not_active_description', 'gradereport_scgr') );
-
     }
+
+// If the plugin is not activated on this course
+} else {
+
+    // Returns error message for "plugin not activated"
+    echo html_writer::tag('h3', get_string('page_plugin_not_active', 'gradereport_scgr') );
+    echo html_writer::tag('p', get_string('page_plugin_not_active_description', 'gradereport_scgr') );
+
+}
 
 echo $OUTPUT->footer();
