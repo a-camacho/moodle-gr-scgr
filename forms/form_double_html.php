@@ -55,6 +55,8 @@ class doublehtml_form extends moodleform {
 
         // ************** ACTIVITIES with custom weight **************
 
+        /*
+
         $ACTIVITIES_LIST = $this->_customdata[1];                                    // Item 1 in array is SECTIONS
 
         // Show activity 1 and custom weight in same line
@@ -79,6 +81,54 @@ class doublehtml_form extends moodleform {
 
         $mform->addHelpButton('activity1group', 'helper_chooseactivity', 'gradereport_scgr');
         $mform->addHelpButton('activity2group', 'helper_chooseactivity', 'gradereport_scgr');
+
+         */
+
+        // ************** ACTIVITIES with repeater **************
+
+
+
+
+
+        $ACTIVITIES_LIST = $this->_customdata[1];
+        $START_REPETITIONS = 1;
+        $MAX_ACTIVITIES = count($ACTIVITIES_LIST);
+
+        $repeatarray = array();
+
+        $activity_group = array();
+        $activity_group[] =& $mform->createElement( 'select', 'activity', get_string('form_simple_label_activity',
+                                                    'gradereport_scgr'), $ACTIVITIES_LIST);
+
+        $activity_group[] =& $mform->createElement( 'text', 'custom_weighting_activity',
+                                                    get_string('form_simple_label_custom_weighting_act_1',
+                                                    'gradereport_scgr') );
+
+        $repeatarray[] = $mform->addGroup(  $activity_group, 'activitygroup', get_string('form_simple_label_activity',
+                                            'gradereport_scgr'), array(' '));
+
+
+        $repeateloptions = array();
+        $repeateloptions['activitygroup']['helpbutton'] = array('helper_chooseactivity', 'gradereport_scgr');
+
+        $repeateloptions['activitygroup']['custom_weighting_activity']['default'] = '1';
+        $mform->setDefault('custom_weighting_activity', '1');
+
+        $repeateloptions['custom_weighting_activity']['disabledif'] = array('custom_weighting', 'eq', 0);
+        $mform->disabledIf('custom_weighting', 'custom_weighting_activity', $condition = 'eq', $value=0);
+
+        var_dump($repeateloptions);
+
+        $mform->addHelpButton('activitygroup', 'helper_chooseactivity', 'gradereport_scgr');
+
+        $this->repeat_elements($repeatarray, $START_REPETITIONS,
+            $repeateloptions, 'activitygroup_repeats', 'activitygroup_add_fields', 1, null, true);
+
+
+
+
+
+
 
         // ************** CUSTOM WEIGHTING settings **************
         $mform->setDefault('custom_weighting_activity1', 1);
