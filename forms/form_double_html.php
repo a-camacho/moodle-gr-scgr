@@ -15,6 +15,8 @@ class doublehtml_form extends moodleform {
 
         $groupsactivated = ($this->_customdata[3]) ? true : false;
 
+        $mform->addElement('header', 'scgr-general', 'General Parameters');
+
         // ************** CUSTOM TITLE **************
         $mform->addElement('text', 'graph_custom_title', get_string('form_simple_label_graph_custom_title', 'gradereport_scgr') );
         $mform->addHelpButton('graph_custom_title', 'helper_customtitle', 'gradereport_scgr');
@@ -53,6 +55,18 @@ class doublehtml_form extends moodleform {
 
         $mform->addHelpButton('custom_weighting', 'helper_customweight', 'gradereport_scgr');
 
+        // ************** GROUP select (in intra-group mode) **************
+        if ( $this->_customdata[2] ) {
+            $GROUPS_LIST = $this->_customdata[2];                                    // Item 1 in array is SECTIONS
+            $mform->addElement( 'select',
+                'group',
+                get_string('form_simple_label_group',
+                    'gradereport_scgr'),
+                $GROUPS_LIST);
+        }
+        $mform->disabledIf('group', 'modality', $condition = 'eq', $value='inter');
+        $mform->addHelpButton('group', 'helper_group', 'gradereport_scgr');
+
         // ************** ACTIVITIES with custom weight **************
 
         /*
@@ -86,67 +100,103 @@ class doublehtml_form extends moodleform {
 
         // ************** ACTIVITIES with repeater **************
 
-
-
+        $mform->addElement('header', 'scgr-activities', 'Activities');
 
 
         $ACTIVITIES_LIST = $this->_customdata[1];
-        $START_REPETITIONS = 1;
+        $START_REPETITIONS = 3;
         $MAX_ACTIVITIES = count($ACTIVITIES_LIST);
 
-        $repeatarray = array();
-
+        $attributes = array('size'=>'20');
         $activity_group = array();
         $activity_group[] =& $mform->createElement( 'select', 'activity', get_string('form_simple_label_activity',
                                                     'gradereport_scgr'), $ACTIVITIES_LIST);
 
         $activity_group[] =& $mform->createElement( 'text', 'custom_weighting_activity',
                                                     get_string('form_simple_label_custom_weighting_act_1',
-                                                    'gradereport_scgr') );
-
-        $repeatarray[] = $mform->addGroup(  $activity_group, 'activitygroup', get_string('form_simple_label_activity',
-                                            'gradereport_scgr'), array(' '));
+                                                    'gradereport_scgr'), $attributes );
 
 
-        $repeateloptions = array();
-        $repeateloptions['activitygroup']['helpbutton'] = array('helper_chooseactivity', 'gradereport_scgr');
+        // var_dump($this->_customdata);
 
-        $repeateloptions['activitygroup']['custom_weighting_activity']['default'] = '1';
+
+        $mform->setType('custom_weighting_activity', PARAM_TEXT);
+
         $mform->setDefault('custom_weighting_activity', '1');
 
-        $repeateloptions['custom_weighting_activity']['disabledif'] = array('custom_weighting', 'eq', 0);
-        $mform->disabledIf('custom_weighting', 'custom_weighting_activity', $condition = 'eq', $value=0);
+        $repeatarray = array();
 
-        var_dump($repeateloptions);
+        $repeatoptions = array();
+        $repeatoptions['activitygroup']['helpbutton'] = array('helper_chooseactivity', 'gradereport_scgr');
+        $repeatoptions['custom_weighting_activity']['disabledif'] = array('custom_weighting', 'eq', 0);
+        $repeatoptions['custom_weighting_activity']['default'] = 1;
 
-        $mform->addHelpButton('activitygroup', 'helper_chooseactivity', 'gradereport_scgr');
+        /* $repeatarray[] = $mform->addGroup(  $activity_group, 'activitygroup', get_string('form_simple_label_activity',
+            'gradereport_scgr'), array(' '));
+
+        */
+
+        $repeatarray[] = $mform->createElement( 'group', 'activitygroup',
+                                                get_string('form_simple_label_activity', 'gradereport_scgr'),
+                                                $activity_group, null, false);
 
         $this->repeat_elements($repeatarray, $START_REPETITIONS,
-            $repeateloptions, 'activitygroup_repeats', 'activitygroup_add_fields', 1, null, true);
+            $repeatoptions, 'activitygroup_repeats', 'activitygroup_add_fields', 1, null, true);
+
+
+        // Get header of section (repeating activities)
+        // Can other attributes come here ? Do I have to identify so ?
+        $actualrepgroupsno = $this->_form->_elements[9]->_attributes['value'];
+        $maximumrepgroupno = $MAX_ACTIVITIES;
+
+        var_dump($this->_form->_elements[9]->_attributes['value']);
 
 
 
 
 
+        // ************** Activities not grouped **************
+        /*
+        $mform->addElement('header', 'scgr-activities2', 'Activities (not grouped)');
 
+        $repeatarray = array();
+        $repeatarray[] = $mform->createElement('text', 'option', get_string('optionno', 'choice'));
+        $repeatarray[] = $mform->createElement('text', 'limit', get_string('limitno', 'choice'));
+        $repeatarray[] = $mform->createElement('hidden', 'optionid', 0);
+
+        if ($this->_instance){
+            $repeatno = $DB->count_records('choice_options', array('choiceid'=>$this->_instance));
+            $repeatno += 2;
+        } else {
+            $repeatno = 2;
+        }
+
+        // Set number maximum of instances
+        $repeatno = 2;
+        $maxrepeatno = count($ACTIVITIES_LIST);
+
+        $repeateloptions = array();
+        $repeateloptions['limit']['default'] = 0;
+        $repeateloptions['limit']['disabledif'] = array('custom_weighting', 'eq', 0);
+        $repeateloptions['limit']['rule'] = 'numeric';
+        $repeateloptions['limit']['type'] = PARAM_INT;
+
+        $repeateloptions['option']['helpbutton'] = array('choiceoptions', 'choice');
+
+        $mform->setType('option', PARAM_CLEANHTML);
+        $mform->setType('optionid', PARAM_INT);
+
+        $this->repeat_elements($repeatarray, $repeatno,
+            $repeateloptions, 'option_repeats', 'option_add_fields', 1, null, true);
+
+
+        */
 
         // ************** CUSTOM WEIGHTING settings **************
         $mform->setDefault('custom_weighting_activity1', 1);
         $mform->setDefault('custom_weighting_activity2', 1);
         $mform->disabledIf('custom_weighting_activity1', 'custom_weighting', $condition = 'eq', $value=0);
         $mform->disabledIf('custom_weighting_activity2', 'custom_weighting', $condition = 'eq', $value=0);
-
-        // ************** GROUP select (in intra-group mode) **************
-        if ( $this->_customdata[2] ) {
-            $GROUPS_LIST = $this->_customdata[2];                                    // Item 1 in array is SECTIONS
-            $mform->addElement( 'select',
-                'group',
-                get_string('form_simple_label_group',
-                    'gradereport_scgr'),
-                $GROUPS_LIST);
-        }
-        $mform->disabledIf('group', 'modality', $condition = 'eq', $value='inter');
-        $mform->addHelpButton('group', 'helper_group', 'gradereport_scgr');
 
         // Add buttons
 
