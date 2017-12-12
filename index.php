@@ -178,6 +178,136 @@ if ( $plugin_activated == true ) {
             include_once('views/view_form.php');
 
         // Default behaviour (when clicking on the report page)
+        } elseif ( isset($_GET['mode']) && $_GET['mode'] == 'test' ) {
+
+            echo '<div style="border: 2px solid #d1d1d1; padding: 15px; margin-bottom: 15px;">';
+
+            echo '<h2>Graph #1 : STU - Me vs My group</h2>';
+
+            echo '<p>L\'étudiant peut voir une visualisation de ses résultats au travers différentes activités (à son
+                    choix) contrastées avec la moyenne de son propre groupe.</p>';
+
+            echo '<h4>Customize graph</h4>
+                    First activity <select>
+                    <option value="act1">act1</option>
+                    <option value="act2">act2</option>
+                    <option value="act3">act3</option>
+                    <option value="act4">act4</option>
+                  </select>
+                  Last activity <select>
+                    <option value="act1">act1</option>
+                    <option value="act2">act2</option>
+                    <option value="act3">act3</option>
+                    <option value="act4">act4</option>
+                  </select><br /><br />';
+
+            $series1 = new core\chart_series('Mes résultats', [98, 76, 68, 90, 80, 74, 86, 0, 0, 0]);
+            $series2 = new \core\chart_series('Moyenne de mon groupe', [96, 79, 85, 75, 78, 74, 84, 0, 0, 0]);
+            $series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
+            $series2->set_smooth(true); // Calling set_smooth() passing true as parameter, will display smooth lines.
+
+            $chart = new core\chart_bar();
+            $chart->set_title('Graph #1 : STU - Me vs My group');
+            $chart->set_labels(['act1', 'act2', 'act3', 'act4', 'act5', 'act6', 'act7', 'act8', 'act9', 'act10']);
+            $chart->add_series($series2);
+            $chart->add_series($series1);
+            echo $OUTPUT->render($chart);
+
+            echo '</div><div style="border: 2px solid #d1d1d1; padding: 15px; margin-bottom: 15px;">';
+
+            echo '<h2>Graph #2 : STU - Us vs Them</h2>';
+            echo '<p>L\'étudiant peut voir une visualisation comparant les résultats des différents groupes à travers
+                    différentes activités.</p>';
+
+            $chart2 = new \core\chart_line();
+            $chart2->set_title('Graph #2 : STU - Us vs Them');
+            $chart2->set_smooth(true); // Calling set_smooth() passing true as parameter, will display smooth lines.
+            $CFG->chart_colorset = ['#001f3f', '#11ad55', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6'];
+
+            $seriesA = new core\chart_series('Groupe A', [98, 76, 69, 85, 80, 74, 86, 0, 0, 0]);
+            $seriesB = new core\chart_series('Groupe B', [90, 79, 69, 80, 83, 70, 88, 0, 0, 0]);
+            $seriesC = new core\chart_series('Groupe C', [62, 87, 68, 90, 87, 73, 81, 0, 0, 0]);
+            $seriesD = new core\chart_series('Mon groupe', [73, 62, 63, 92, 78, 79, 82, 0, 0, 0]);
+
+            $series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
+
+            $chart2->add_series($seriesD);
+            $chart2->add_series($seriesA);
+            $chart2->add_series($seriesB);
+            $chart2->add_series($seriesC);
+
+            $chart2->set_labels(['act1', 'act2', 'act3', 'act4', 'act5', 'act6', 'act7', 'act8', 'act9', 'act10']);
+
+            echo $OUTPUT->render($chart2);
+
+            echo '</div><div style="border: 2px solid #d1d1d1; padding: 15px; margin-bottom: 15px;">';
+
+            echo '<h2>Graph #3 : TUT - Progression</h2>';
+            echo '<p>Le tuteur peut voir la progression de ses apprenants (leur réussite sur différentes activités au choix)</p>';
+
+            $chart2 = new \core\chart_line();
+            $chart2->set_title('Graph #3 : TUT - Group students progression');
+            $chart2->set_smooth(true); // Calling set_smooth() passing true as parameter, will display smooth lines.
+            $CFG->chart_colorset = ['#001f3f', '#11ad55', '#d6d6d6', '#a0a0a0', '#b27b7b', '#7bb28a', '#7b86b2', '#ad7bb2', '#b27b9a'];
+
+            $series1 = new core\chart_series('User1', [98, 76, 69, 85, 80, 74, 86, 0, 0, 0]);
+            $series2 = new core\chart_series('User2', [90, 79, 69, 80, 83, 70, 88, 0, 0, 0]);
+            $series3 = new core\chart_series('User3', [62, 87, 68, 90, 87, 73, 81, 0, 0, 0]);
+            $series4 = new core\chart_series('User4', [73, 62, 63, 92, 78, 79, 82, 0, 0, 0]);
+            $series5 = new core\chart_series('User5', [78, 72, 76, 72, 68, 59, 62, 0, 0, 0]);
+            $series6 = new core\chart_series('User6', [88, 66, 59, 75, 70, 64, 76, 0, 0, 0]);
+            $series7 = new core\chart_series('User7', [80, 69, 59, 70, 73, 60, 78, 0, 0, 0]);
+            $series8 = new core\chart_series('User8', [52, 77, 58, 80, 77, 63, 71, 0, 0, 0]);
+            $series9 = new core\chart_series('User9', [63, 52, 53, 82, 68, 69, 72, 0, 0, 0]);
+            $series10 = new core\chart_series('User10', [68, 62, 66, 62, 58, 49, 72, 0, 0, 0]);
+
+            $series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
+
+            $chart2->add_series($series1);
+            $chart2->add_series($series2);
+            $chart2->add_series($series3);
+            $chart2->add_series($series4);
+            $chart2->add_series($series5);
+            $chart2->add_series($series6);
+            $chart2->add_series($series7);
+            $chart2->add_series($series8);
+            $chart2->add_series($series9);
+            $chart2->add_series($series10);
+
+            $chart2->set_labels(['act1', 'act2', 'act3', 'act4', 'act5', 'act6', 'act7', 'act8', 'act9', 'act10']);
+
+            echo $OUTPUT->render($chart2);
+
+            echo '</div><div style="border: 2px solid #d1d1d1; padding: 15px; margin-bottom: 15px;">';
+
+            echo '<h2>Graph #4 : TUT - Comparison</h2>';
+            echo '<p>Le tuteur peut comparer la réussite sur différentes activités (au choix) pour chaque apprenant de son groupe</p>';
+
+            $chart4 = new core\chart_bar();
+            $chart4->set_title('Graph #4 : TUT - Comparison');
+
+            $CFG->chart_colorset = ['#001f3f', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#11ad55'];
+
+            $series1 = new core\chart_series('Act1', [98, 76, 69, 85, 80, 74, 86, 0, 0, 0]);
+            $series2 = new core\chart_series('Act2', [90, 79, 69, 80, 83, 70, 88, 0, 0, 0]);
+            $series3 = new core\chart_series('Act3', [62, 87, 68, 90, 87, 73, 81, 0, 0, 0]);
+            $series4 = new core\chart_series('Act4', [73, 62, 63, 92, 78, 79, 82, 0, 0, 0]);
+            $series5 = new core\chart_series('Act5', [98, 76, 69, 85, 80, 74, 86, 0, 0, 0]);
+            $series6 = new core\chart_series('Act6', [90, 79, 69, 80, 83, 70, 88, 0, 0, 0]);
+            $series7 = new core\chart_series('Moyenne', [85, 79, 67, 83, 73, 80, 68, 0, 0, 0]);
+
+            $chart4->add_series($series1);
+            $chart4->add_series($series2);
+            $chart4->add_series($series3);
+            $chart4->add_series($series4);
+            $chart4->add_series($series5);
+            $chart4->add_series($series6);
+            $chart4->add_series($series7);
+
+            $chart4->set_labels(['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7', 'user8', 'user9', 'user10']);
+
+            echo $OUTPUT->render($chart4);
+
         } else {
 
             include_once('views/view_form.php');
