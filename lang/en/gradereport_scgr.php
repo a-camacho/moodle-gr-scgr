@@ -47,6 +47,12 @@ $string['form_custom_title'] = 'Custom graph';
 $string['form_custom_subtitle'] = 'Generate a graph using one value (grade or average) for one entity (person or group)';
 $string['form_custom_subtitle2'] = '';
 
+$string['form_custom_title'] = 'Double Graph';
+$string['form_custom_subtitle'] = 'Generate a graph using two values (grades from two activities) comparing users in a group, or groups in a course.';
+
+$string['form_custom_label_activity1'] = 'Activity 1';
+$string['form_custom_label_activity2'] = 'Activity 2';
+
 // Forms - Simple
 
 $string['form_simple_title'] = 'Simple Graph';
@@ -79,12 +85,26 @@ $string['form_double_label_activity1'] = 'Activity 1';
 $string['form_double_label_activity2'] = 'Activity 2';
 
 // Form Result
-
 $string['form_result_default_result'] = 'S-';
 $string['form_result_default_phrase'] = 'You want to see an ';
-
 $string['form_result_modality_all_result'] = '';
 $string['form_result_modality_all_phrase'] = '';
+// Form helpers
+
+$string['helper_customtitle'] = 'Add a custom title?';
+$string['helper_customtitle_help'] = 'If enabled, this will show a custom title in heading of graph.';
+$string['helper_viewtype'] = 'Choose view type';
+$string['helper_viewtype_help'] = 'Choose view type for the graph.';
+$string['helper_modality'] = 'Choose modality';
+$string['helper_modality_help'] = 'Intra-group will show you comparison of students of a group.<br />Inter-group will show you comparison of groups in course.';
+$string['helper_average'] = 'Calculate average?';
+$string['helper_average_help'] = 'If enabled, a series of data will be created with average of other activity grades.';
+$string['helper_customweight'] = 'Custom average weight';
+$string['helper_customweight_help'] = 'If enabled, you will be able to set a weight value to each activity for the average calc.';
+$string['helper_chooseactivity'] = 'Choose an activity';
+$string['helper_chooseactivity_help'] = 'Choose an activity that you want to be included in graph.';
+$string['helper_group'] = 'Choose a group';
+$string['helper_group_help'] = 'Choose the group you want the users to be included in graph.';
 
 /* ################################################################################################################ */
 /* #############################################      SETTINGS        ############################################# */

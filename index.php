@@ -158,33 +158,30 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
             $view = 'default';
         }
 
+        include_once('views/student.php');
+
+    } elseif ( current(get_user_roles($context, $USER->id))->shortname == 'teacher' ) {
+        $role = 'teacher';
+
+        if ( isset($_GET['view']) ) {
+            $view = $_GET['view'];
+        } else {
+            $view = 'default';
+        }
+
+        include_once('views/teacher.php');
+
     } elseif ( current(get_user_roles($context, $USER->id))->shortname == 'editingteacher' ) {
         $role = 'editingteacher';
         $view = 'default';
-    }
 
-    // Print title
-    echo html_writer::tag('h2', get_string('plugintitle', 'gradereport_scgr') . ' : ' . $role );
+        include_once('views/editingteacher.php');
 
-    // Print navigation
-    printCustomNav( $courseid, $role, $view );
+    } else {
 
-    if ( $role == 'student') {
-
-        if ( $view != 'inter' ) {
-            include_once('views/stu_graph1.php');
-        } else {
-            include_once('views/stu_graph2.php');
-        }
-
-    } elseif ( $role == 'editingteacher') {
-
-        include_once('views/custom_graph.php');
+        echo 'error : user role error';
 
     }
-
-
-
 
     /*
     if ( isset($_GET['mode']) && $_GET['mode'] == 'direct' ) {

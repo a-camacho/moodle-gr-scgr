@@ -25,7 +25,7 @@ function printCustomNav( $courseid, $role, $view ) {
             if ( $view == 'default' || $view == 'intra' ) {
                 $intermode = '';
                 $intramode = 'active';
-            } elseif ( $view == 'inter' ) {
+            } elseif ( $view == 'inter' || $view == 'comparison' ) {
                 $intermode = 'active';
                 $intramode = '';
             }
@@ -41,7 +41,35 @@ function printCustomNav( $courseid, $role, $view ) {
 
         case 'editingteacher':
             echo '<ul class="nav nav-tabs m-b-1">';
-            echo '<li class="nav-item"><a class="nav-link active" title="Custom graph"">Custom graph</a></li>';
+            echo '<li class="nav-item"><a class="nav-link active" title="Custom graph" href="index.php?id=' . $courseid . '&view=custom">Custom graph</a></li>';
+            echo '</ul>';
+            break;
+
+        case 'teacher':
+
+            if ( $view == 'default' || $view == 'progression' ) {
+                $comparison = '';
+                $progression = 'active';
+                $custom = '';
+            } elseif ( $view == 'comparison' ) {
+                $comparison = 'active';
+                $progression = '';
+                $custom = '';
+            } elseif ( $view = 'custom' ) {
+                $comparison = '';
+                $progression = '';
+                $custom = 'active';
+            }
+
+            echo '<ul class="nav nav-tabs m-b-1">';
+
+            echo '<li class="nav-item"><a class="nav-link ' . $progression . '" href="index.php?id=' . $courseid . '&view=progression"
+                          title="Progression">Progression</a></li>';
+
+            echo '<li class="nav-item"><a class="nav-link ' . $comparison . '" href="index.php?id=' . $courseid . '&view=comparison"
+                          title="Comparison">Comparison</a></li>';
+
+            echo '<li class="nav-item"><a class="nav-link ' . $custom . '" title="Custom graph" href="index.php?id=' . $courseid . '&view=custom">Custom graph</a></li>';
             echo '</ul>';
             break;
     }
