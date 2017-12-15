@@ -41,6 +41,12 @@ $string['form_simple_button_submit'] = 'Submit';
 /* ##############################################      FORMS        ############################################### */
 /* ################################################################################################################ */
 
+// Forms - Custom
+
+$string['form_custom_title'] = 'Custom graph';
+$string['form_custom_subtitle'] = 'Generate a graph using one value (grade or average) for one entity (person or group)';
+$string['form_custom_subtitle2'] = '';
+
 // Forms - Simple
 
 $string['form_simple_title'] = 'Simple Graph';

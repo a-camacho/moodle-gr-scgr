@@ -15,20 +15,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function printCustomNav( $role ) {
+function printCustomNav( $courseid, $role, $view ) {
 
     switch ($role) {
-        case 0:
+        case 'student':
             echo '<ul class="nav nav-tabs m-b-1">';
-            echo '<li class="nav-item"><a class="nav-link active" title="Grader report">Grader report</a></li>';
-            echo '<li class="nav-item"><a class="nav-link" href="http://syno.camacho.pt/labs/moodle/grade/report/history/index.php?id=2" title="Grade history">Grade history</a></li>';
+            echo '<li class="nav-item">';
+
+            if ( $view == 'default' || $view == 'intra' ) {
+                $intermode = '';
+                $intramode = 'active';
+            } elseif ( $view == 'inter' ) {
+                $intermode = 'active';
+                $intramode = '';
+            }
+
+            echo '<li class="nav-item"><a class="nav-link ' . $intramode . '" href="index.php?id=' . $courseid . '&view=intra"
+                          title="Me vs my group">Me vs My group</a></li>';
+
+            echo '<li class="nav-item"><a class="nav-link ' . $intermode . '" href="index.php?id=' . $courseid . '&view=inter"
+                          title="Us vs them">Us vs them</a></li>';
+
             echo '</ul>';
             break;
-        case 1:
-            echo "i égal 1";
-            break;
-        case 2:
-            echo "i égal 2";
+
+        case 'editingteacher':
+            echo '<ul class="nav nav-tabs m-b-1">';
+            echo '<li class="nav-item"><a class="nav-link active" title="Custom graph"">Custom graph</a></li>';
+            echo '</ul>';
             break;
     }
 
