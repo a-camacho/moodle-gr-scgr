@@ -31,8 +31,10 @@ if ($ADMIN->fulltree) {
 
     /// Choose in which courses the plugin should be active
 
-    $settings->add(new admin_setting_configcheckbox(  'scgr_plugin_enabled', 'Enable the plugin',
-        'Selecting this option will activate the plugin.', 0 ));
+    /*
+
+    $settings->add(new admin_setting_configcheckbox(  'scgr_plugin_disable', 'Disable the plugin totally',
+        'Selecting this option will disable the plugin completely.', 0 ));
 
     $options = array();
     $courses = getCoursesIDandNames();
@@ -47,14 +49,6 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configmultiselect(  'scgr_course_groups_activation_choice', 'Activate group feature on these courses.',
         'Choose in which courses you want the SCGR groups feature to be enabled.', $options2, $courses2 ));
 
-
-    // Choose what user roles to ignore
-    // 1 = manager, 2 = course creator, 3 = teacher, 4 = non-editing teacher, 5 = student, 6 = guest
-
-    $options3 = array();
-    $user_roles = getUserRoles();
-    $settings->add(new admin_setting_configmultiselect(  'scgr_course_exclude_user_roles', 'Exclude user roles.',
-        'Choose what user roles will make user hidden from graphs.', $options3, $user_roles ));
-
+    */
 
 }

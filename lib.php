@@ -15,121 +15,139 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
- * printTheOptions
- *
- * prints parameters given in form and analyzed for graph generation
- *
- * @formtype (string) simple | double
- * @courseid (id) id of course
- * @modality (string) inter | intra
- * @temporality (string) #####################      (optional)
- * @section (id) ####################               (optional)
- * @groupid (id) id of user group                   (optional)
- * @activity1 (id) id of first activity
- * @activity2 (id) id of second activity            (optional)
- * @return (html)
- */
+function printCustomNav( $role ) {
 
-function printTheOptions( $formtype, $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
-                          $activity1, $activity2, $average = NULL, $custom_title = NULL, $custom_weight_array = NULL,
-                          $viewtype ) {
-
-    // @Camille : Ai-je besoin de déclarer les variables sachant que j'attribue des valeurs par défaut au cas où il n'y aurait rien ?
-    if ($groupid) {
-        $groupname = groups_get_group_name($groupid);
-    }
-
-    if ( $activity1 ) {
-        $activity1name = getActivityName( $activity1 );
-    }
-
-    if ( $activity2 ) {
-        $activity2name = getActivityName( $activity2 );
-    }
-
-    // Options
-    echo html_writer::tag('h4', get_string('options_print_title', 'gradereport_scgr') );
-
-    echo '<ul>';
-
-        // Custom title
-        if ($custom_title) {
-            echo html_writer::tag('li', get_string('options_print_customtitle', 'gradereport_scgr') . ' : ' . $custom_title);
-        }
-
-        // View type
-        if ($viewtype) {
-            echo html_writer::tag('li', get_string('options_print_viewtype', 'gradereport_scgr') . ' : ' . $viewtype);
-        }
-
-        // Graph type
-        echo html_writer::tag('li', get_string('options_print_graphtype', 'gradereport_scgr') . ' : ' . $formtype);
-
-        // Group name
-        if ( $modality ) {
-            echo html_writer::tag('li', get_string('options_print_modality', 'gradereport_scgr') . ' : ' . $modality);
-        }
-
-        // Group name
-        if ( $groupid ) {
-            echo html_writer::tag('li', get_string('options_print_group', 'gradereport_scgr') . ' : ' . $groupname . ' (#' . $groupid . ')');
-        }
-
-        // Activities
-        echo html_writer::tag('li', get_string('options_print_activity', 'gradereport_scgr') . ' 1 : ' . $activity1name . ' (#' . $activity1 . ')');
-        if ( $activity2 ) {
-            echo html_writer::tag('li', get_string('options_print_activity', 'gradereport_scgr') . ' 2 : ' . $activity2name . ' (#' . $activity2 . ')');
-        }
-
-        // Average
-        $average_string = get_string('options_print_average', 'gradereport_scgr') . ' : ';
-        $average_string .= ($average == true) ? 'yes' : 'no';
-        echo html_writer::tag('li', $average_string );
-
-        // Custom average weight
-        if ($custom_weight_array != NULL) {
-            echo html_writer::tag('li', 'Custom weighting : yes');
-            echo '<ul>';
-            echo html_writer::tag('li', get_string('options_print_activity', 'gradereport_scgr') . ' 1 ' . get_string('options_print_word_weight', 'gradereport_scgr') . ' : ' . $custom_weight_array[0]);
-            echo html_writer::tag('li', get_string('options_print_activity', 'gradereport_scgr') . ' 2 ' . get_string('options_print_word_weight', 'gradereport_scgr') . ' : ' . $custom_weight_array[1]);
+    switch ($role) {
+        case 0:
+            echo '<ul class="nav nav-tabs m-b-1">';
+            echo '<li class="nav-item"><a class="nav-link active" title="Grader report">Grader report</a></li>';
+            echo '<li class="nav-item"><a class="nav-link" href="http://syno.camacho.pt/labs/moodle/grade/report/history/index.php?id=2" title="Grade history">Grade history</a></li>';
             echo '</ul>';
-        }
-
-    echo '</ul>';
+            break;
+        case 1:
+            echo "i égal 1";
+            break;
+        case 2:
+            echo "i égal 2";
+            break;
+    }
 
 }
 
-/*
- * printPluginConfig
- *
- * prints plugin settings
- *
- * @return (html)
- */
+function printOptionsDouble( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity1, $activity2 ) {
+
+    if ( $groupid != NULL ) {
+        $groupname = groups_get_group_name($groupid);
+    }
+
+    // Options
+    echo html_writer::tag('h1', 'Options');
+
+    echo '<ul>';
+
+    if ( $groupid != NULL ) {
+        echo html_writer::tag('li', 'Group name : ' . $groupname . '(#' . $groupid . ')');
+    } else {
+    }
+
+    if ( $modality ) {
+        echo html_writer::tag('li', 'Modality : ' . $modality);
+    } else {
+        echo html_writer::tag('li', 'Modality : ignored');
+    }
+
+    if ( $temporality ) {
+        echo html_writer::tag('li', 'Temporality : ' . $temporality);
+    }else {
+        echo html_writer::tag('li', 'Temporality : ignored');
+    }
+
+    if ( $section ) {
+        echo html_writer::tag('li', 'Section : ' . $section);
+    } else {
+        echo html_writer::tag('li', 'Section : ignored');
+    }
+
+    if ( $activity1 ) {
+        echo html_writer::tag('li', 'Activity 1 : ' . getActivityName( $activity1 ) . ' (#' . $activity1 . ')');
+    } else {
+        echo html_writer::tag('li', 'Activity 1 : ignored');
+    }
+
+    if ( $activity2 ) {
+        echo html_writer::tag('li', 'Activity 2 : ' . getActivityName( $activity2 ) . ' (#' . $activity2 . ')');
+    } else {
+        echo html_writer::tag('li', 'Activity 2 : ignored');
+    }
+
+    echo '</ul>';
+
+    echo '<hr>';
+
+}
+
+function printOptions( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity = NULL ) {
+
+    $groupname = groups_get_group_name($groupid);
+
+    // Options
+    echo html_writer::tag('h1', 'Options');
+
+    echo '<ul>';
+
+    if ( $groupname ) {
+        echo html_writer::tag('li', 'Group name : ' . $groupname . '(#' . $groupid . ')');
+    } else {
+    }
+
+    if ( $modality ) {
+        echo html_writer::tag('li', 'Modality : ' . $modality);
+    } else {
+        echo html_writer::tag('li', 'Modality : ignored');
+    }
+
+    if ( $temporality ) {
+        echo html_writer::tag('li', 'Temporality : ' . $temporality);
+    }else {
+        echo html_writer::tag('li', 'Temporality : ignored');
+    }
+
+    if ( $section ) {
+        echo html_writer::tag('li', 'Section : ' . $section);
+    } else {
+        echo html_writer::tag('li', 'Section : ignored');
+    }
+
+    if ( $activity ) {
+        echo html_writer::tag('li', 'Activity : ' . getActivityName( $activity ) . ' (#' . $activity . ')');
+    } else {
+        echo html_writer::tag('li', 'Activity : ignored');
+    }
+
+    echo '</ul>';
+
+    echo '<hr>';
+
+}
 
 function printPluginConfig() {
     global $CFG;
 
     // Options
-    echo html_writer::tag('h4', get_string('options_print_config_title', 'gradereport_scgr') );
+    echo html_writer::tag('h2', 'Plugin Config (for this course)');
 
     echo '<ul>';
 
-    if ( $CFG->scgr_plugin_enabled ) {
-        echo html_writer::tag('li', get_string('options_print_config_pluginenabled', 'gradereport_scgr') . ' : ' . $CFG->scgr_plugin_enabled );
+    if ( $CFG->scgr_plugin_disable ) {
+        echo html_writer::tag('li', 'scgr_plugin_disable : ' . $CFG->scgr_plugin_disable );
     }
 
     if ( $CFG->scgr_course_activation_choice ) {
-        echo html_writer::tag('li', get_string('options_print_config_courseactivedon', 'gradereport_scgr') . ' : ' . $CFG->scgr_course_activation_choice );
+        echo html_writer::tag('li', 'scgr_course_activation_choice : ' . $CFG->scgr_course_activation_choice );
     }
 
     if ( $CFG->scgr_course_groups_activation_choice ) {
-        echo html_writer::tag('li', get_string('options_print_config_groupactivedon', 'gradereport_scgr') . ' : ' . $CFG->scgr_course_groups_activation_choice );
-    }
-
-    if ( $CFG->scgr_course_exclude_user_roles ) {
-        echo html_writer::tag('li', get_string('options_print_config_excludeduserroles', 'gradereport_scgr') .  ' : ' . $CFG->scgr_course_exclude_user_roles );
+        echo html_writer::tag('li', 'scgr_course_groups_activation_choice : ' . $CFG->scgr_course_groups_activation_choice );
     }
 
     echo '</ul>';
@@ -139,219 +157,68 @@ function printPluginConfig() {
 }
 
 /*
- * stripUserRolesFromUsers
+ * getAverage
  *
- * returns an array of users stripped out of users that should be excluded
- * default roles : 1 = manager, 2 = course creator, 3 = teacher, 4 = non-editing teacher, 5 = student, 6 = guest
+ * returns an array with simple averages (automatic weighting) from two arrays with float values inside.
  *
- * @users_array (array) array or users to filter
+ * @activity1 (array) array containing X float values inside
+ * @activity2 (array) array containing X float values inside
  * @return (array)
  */
 
-function stripUserRolesFromUsers($users_array) {
-    global $DB, $CFG;
+function getAverage( $activity1, $activity2) {
 
-    $new_users_array = array();
-    $roles_to_exclude_string = $CFG->scgr_course_exclude_user_roles;
-    $roles_to_exclude = array_map('intval', explode(',', $roles_to_exclude_string));
+    $average = array();
 
-    foreach ( $users_array as $user ) {
-
-        $current_user = $DB->get_record('user', array( 'id' => intval($user) ) );
-        $add_user = true;
-
-        // CAN WE MAKE THIS FUNCTION MORE EFFICIENT ?
-        foreach ( $roles_to_exclude as $role ) {
-            if ( user_has_role_assignment( $current_user->id, $role ) ) {
-                $add_user = false;
-            }
-        }
-
-        if ( $add_user ) {
-            array_push($new_users_array, $current_user->id);
-        }
-
+    $i = 0;
+    foreach ( $activity1 as $grade1 ) {
+        $val = ( $grade1 + $activity2[$i] ) / 2;
+        array_push($average, $val);
+        $i++;
     }
 
-    return $new_users_array;
-
+    return $average;
 }
 
-/*
- * getUsersFromCourse
- *
- * returns an array of users enrolled in a course
- *
- * @courseid (int) course id
- * @return (array)
- *
- */
-
-function getUsersFromCourse($courseid) {
-
-    $fields = 'u.id, u.username';               // return these fields
-    $users_array = array();                     // declare users array
-
-    $context = context_course::instance($courseid);             // fix context
-    $users = get_enrolled_users($context, '', 0, $fields);      // get users from courseid
-
-    foreach ( $users as $user ) {
-        array_push($users_array, intval($user->id));
-    }
-
-    return $users_array;
-
-}
-
-/*
- * getUsernamesFromUsers
- *
- * returns an array of usernames for displaying
- *
- * @users_array (array) array of users
- * @return (array)
- *
- */
-
-function getUsernamesFromUsers($users_array) {
-    global $DB;
-
-    $usernames_array = array();                 // declare usernames array
-
-    foreach ( $users_array as $user ) {
-
-        $current_user = $DB->get_record('user', array( 'id' => intval($user) ));
-        array_push( $usernames_array, $current_user->username );
-
-    }
-
-    return $usernames_array;
-
-}
-
-/*
- * getUserRoles
- *
- * get user roles from site
- *
- * @return (array)
- *
- */
-
-function getUserRoles() {
-    global $DB;
-
-    $sql = "SELECT id, shortname FROM unitice_role ORDER BY id ASC";        // SQL Query
-    $records = $DB->get_records_sql($sql);                                  // Get records with Moodle function
-    $user_roles = array();
-
-    foreach ( $records as $role ) {
-        $user_roles[$role->id] = $role->shortname;
-    }
-
-    return $user_roles;
-
-}
-
-/*
- * printGraph
- *
- * print the graph depending on parameters given
- *
- * @courseid (int)
- * @modality (string)
- * @temporality (-)
- * @section (-)
- * @groupid (int)
- * @activity1 (int)
- * @activity2 (int)
- * @aregroupsactivated (bolean)
- * @average (bolean)
- * @custom_title (string)
- * @custom_weight_array (array)
- *
- * @return (html)
- *
- */
-
-function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section = NULL, $groupid = NULL,
-                     $activity1 = NULL, $activity2 = NULL, $aregroupsactivated = NULL, $average = NULL, $custom_title = NULL,
-                     $custom_weight_array = NULL, $averageonly = false, $viewtype ) {
-
+function printGraphDouble( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity1, $activity2 ) {
     global $OUTPUT;
 
-    if ( !isset($modality) || $modality == 'intra' ) {
+    if ( isset($modality) && $modality == 'intra' ) {
 
-        // If there are user groups and $groupid variable
-        if ( $aregroupsactivated == true && $groupid != NULL ) {
+        // Get users from choosen group
+        $users = getUsersFromGroup($groupid);           // Get users from this group
+        $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
 
-            $users = getUsersFromGroup($groupid);           // Get users from this group
-            $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
+        $activities_titles = '(1) ' . getActivityName( $activity1 ) . '<br /> (2) ' . getActivityName( $activity2 );
 
-        // If there are no groups = grab all users from course
-        } elseif ( $aregroupsactivated == false ) {
-
-            $users = getUsersFromCourse($courseid);         // Get all users from course
-            $users = stripUserRolesFromUsers($users);       // Remove all non-wanted user roles
-
-            $usernames = getUsernamesFromUsers($users);     // Get usernames from users
-
-        }
-
-        echo html_writer::tag('h1', 'Graph' );
+        echo html_writer::tag('h3', $activities_titles, array( 'class' => 'scgr-graph-title2') );
+        echo html_writer::tag('h4', groups_get_group_name($groupid) );
 
         // Get grades from user array and item_id
-        $grades1 = getGrades($users, $courseid, $activity1);
+        $grades_act_1 = getGrades($users, $courseid, $activity1);
+        $grades_act_2 = getGrades($users, $courseid, $activity2);
 
-        if ( $grades1 && $usernames ) {
+        $grades = getAverage( $grades_act_1, $grades_act_2 );
+
+        if ( $grades && $usernames ) {
 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series( getActivityName( $activity1 ) , $grades1);
 
-            if ( $custom_title != NULL ) {
-                $chart->set_title( $custom_title );
-            }
+            $series1 = new \core\chart_series('Activity 1', $grades_act_1);
+            $series2 = new \core\chart_series('Activity 2', $grades_act_2);
+            $series3 = new \core\chart_series('Average', $grades);
 
-            if ( !$averageonly ) {
-                $chart->add_series($series1);
-            }
-
+            $chart->add_series($series1);
+            $chart->add_series($series2);
+            $chart->add_series($series3);
             $chart->set_labels($usernames);
-
-            if ( $activity2 ) {
-                $grades2 = getGrades($users, $courseid, $activity2);
-                $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
-
-                if ( !$averageonly ) {
-                    $chart->add_series($series2);
-                }
-
-                if ( $average == true && $custom_weight_array == NULL ) {
-
-                    $grades_average = getSimpleAverage($grades1, $grades2);
-                    $series_average = new \core\chart_series( get_string('form_simple_label_average', 'gradereport_scgr') , $grades_average);
-                    $chart->add_series($series_average);
-
-                } elseif ( $average == true && $custom_weight_array != NULL ) {
-
-                    $grades_average = getWeightedAverage($grades1, $grades2, $custom_weight_array);
-                    $grades_average_string = get_string('form_simple_label_average', 'gradereport_scgr') . ' ('.$custom_weight_array[0].'+'.$custom_weight_array[1].')';
-                    $series_average = new \core\chart_series( $grades_average_string , $grades_average);
-                    $chart->add_series($series_average);
-
-                }
-            }
-
-            // Set graph view type
-            if ( $viewtype == 'horizontal-bars' ) {
-                $chart->set_horizontal(true);
-            }
 
             echo $OUTPUT->render_chart($chart);
 
             echo '<hr />';
 
-            echo '<a href="/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
+
             exportAsJPEG();
 
         } else {
@@ -364,54 +231,30 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
     } elseif ( isset($modality) && $modality == 'inter' ) {
 
-        $grades1 = getGradesFromGroups($courseid, $activity1);                  // Get grades for activity 1
-        $groupnames = getGroupNames($courseid);                                 // Get groupnames
+        // Get grades from groups for activity 1 and 2
+        $grades_act_1 = getGradesFromGroups($courseid, $activity1);
+        $grades_act_2 = getGradesFromGroups($courseid, $activity2);
+        $average_grades = getAverage( $grades_act_1, $grades_act_2 );
+
+        // Get groupnames
+        $groupnames = getGroupNames($courseid);
+
+        $activities_titles = getActivityName( $activity1 ) . ' & ' . getActivityName( $activity2 );
+        echo html_writer::tag('h3', $activities_titles, array( 'class' => 'scgr-graph-title2') );
 
         // Output graph if $groupnames and $grades
-        if ( $grades1 && $groupnames ) {
+        if ( $grades_act_1 && $grades_act_2 && $groupnames ) {
 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series( getActivityName( $activity1 ) , $grades1);
+            $series1 = new \core\chart_series('Activity 1', $grades_act_1);
+            $series2 = new \core\chart_series('Activity 2', $grades_act_2);
+            $series3 = new \core\chart_series('Average', $average_grades);
 
-            if ( $custom_title != NULL ) {
-                $chart->set_title( $custom_title );
-            }
-
-            if ( !$averageonly ) {
-                $chart->add_series($series1);
-            }
-
+            $chart->add_series($series1);
+            $chart->add_series($series2);
+            $chart->add_series($series3);
             $chart->set_labels($groupnames);
-
-            if ( $activity2 ) {
-                $grades2 = getGradesFromGroups($courseid, $activity2);          // Get grades for activity 2
-                $series2 = new \core\chart_series( getActivityName( $activity2 ) , $grades2);
-
-                if ( !$averageonly ) {
-                    $chart->add_series($series2);
-                }
-
-                if ( $average == true && $custom_weight_array == NULL ) {
-
-                    $grades_average = getSimpleAverage($grades1, $grades2);
-                    $series_average = new \core\chart_series( get_string('form_simple_label_average', 'gradereport_scgr') , $grades_average);
-                    $chart->add_series($series_average);
-
-                } else if ( $average == true && $custom_weight_array != NULL ) {
-
-                    $grades_average = getWeightedAverage($grades1, $grades2, $custom_weight_array);
-                    $grades_average_string = get_string('form_simple_label_average', 'gradereport_scgr') . ' ('.$custom_weight_array[0].'+'.$custom_weight_array[1].')';
-                    $series_average = new \core\chart_series( $grades_average_string , $grades_average);
-                    $chart->add_series($series_average);
-
-                }
-
-            }
-
-            // Set graph view type
-            if ( $viewtype == 'horizontal-bars' ) {
-                $chart->set_horizontal(true);
-            }
+            $chart->set_title( $activities_titles );
 
             echo $OUTPUT->render_chart($chart);
 
@@ -433,67 +276,79 @@ function printGraph( $courseid, $modality = NULL, $temporality = NULL, $section 
 
 }
 
-/*
- * getAverage
- *
- * returns an array with simple averages (automatic weighting) from two arrays with float values inside.
- *
- * @activity1 (array) array containing X float values inside
- * @activity2 (array) array containing X float values inside
- * @return (array)
- */
+function printGraph( $courseid, $modality, $temporality, $section = NULL, $groupid = NULL, $activity = NULL ) {
+    global $OUTPUT;
 
-function getSimpleAverage( $activity1, $activity2 ) {
+    if ( isset($modality) && $modality == 'intra' ) {
 
-    $average = array();
+        // Get users from choosen group
+        $users = getUsersFromGroup($groupid);           // Get users from this group
+        $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
 
-    $i = 0;
-    foreach ( $activity1 as $grade1 ) {
-        $val = ( $grade1 + $activity2[$i] ) / 2;
-        array_push($average, $val);
-        $i++;
+        echo html_writer::tag('h1', getActivityName( $activity ), array( 'class' => 'scgr-graph-title2') );
+        echo html_writer::tag('h4', groups_get_group_name($groupid) );
+
+        // Get grades from user array and item_id
+        $grades = getGrades($users, $courseid, $activity);
+
+        if ( $grades && $usernames ) {
+
+            $chart = new \core\chart_bar(); // Create a bar chart instance.
+            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
+
+            $chart->add_series($series1);
+            $chart->set_labels($usernames);
+
+            echo $OUTPUT->render_chart($chart);
+
+            echo '<hr />';
+
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a>';
+
+            exportAsJPEG();
+
+        } else {
+
+            echo html_writer::tag('h3', 'Error');
+            echo html_writer::tag('p', 'users or grades not avalaible.');
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a>';
+
+        }
+
+    } elseif ( isset($modality) && $modality == 'inter' ) {
+
+        $grades = getGradesFromGroups($courseid, $activity);
+        $groupnames = getGroupNames($courseid);                                 // Get groupnames
+
+        // Output graph if $groupnames and $grades
+        if ( $grades && $groupnames ) {
+
+            $chart = new \core\chart_bar(); // Create a bar chart instance.
+            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
+
+            $chart->add_series($series1);
+            $chart->set_labels($groupnames);
+            $chart->set_title( getActivityName( $activity ) );
+
+            echo $OUTPUT->render_chart($chart);
+
+            echo '<hr />';
+
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
+
+            exportAsJPEG();
+
+        } else {
+
+            echo html_writer::tag('h3', 'Error');
+            echo html_writer::tag('p', 'users or grades not avalaible.');
+            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+
+        }
+
     }
 
-    return $average;
 }
-
-
-/*
- * getWeightedAverage
- *
- * gets weighted average from grades from two activities
- *
- * @activity1 (int)
- * @activity2 (string)
- * @custom_weight_array (array) array with weight values for each activity
- *
- * @return (array)
- *
- */
-
-function getWeightedAverage( $activity1, $activity2, $custom_weight_array ) {
-
-    $total_weight = array_sum($custom_weight_array);
-    $average = array();
-
-    $i = 0;
-    foreach ( $activity1 as $grade1 ) {
-        $val = ( $grade1 * $custom_weight_array[0] + $activity2[$i] * $custom_weight_array[1] ) / $total_weight;
-        array_push($average, $val);
-        $i++;
-    }
-
-    return $average;
-
-}
-
-/*
- * getAverage
- *
- * prints an url that creates JPG from cavas onclick and downloads image
- *
- * @echo (url)
- */
 
 function exportAsJPEG() {
 
