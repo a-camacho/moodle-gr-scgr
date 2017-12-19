@@ -36,6 +36,20 @@ $string['page_not_active_on_this_course_description'] = 'Before being able to us
 
 $string['form_button_submit'] = 'Submit';
 
+/* ################################################################################################################ */
+/* ###########################################      PREDEFINED        ############################################# */
+/* ################################################################################################################ */
+
+// Predefined graphs - Descriptions
+
+$string['student_intra_description'] = '(example) L\'étudiant peut voir une visualisation de ses résultats au travers différentes activités (à son
+    choix) contrastées avec la moyenne de son propre groupe.';
+$string['student_inter_description'] = 'Custom graph';
+
+// Predefined graphs - Customize
+
+$string['predefined_customize_title'] = 'Customize graph';
+$string['predefined_customize_label_activity'] = 'Activities';
 
 /* ################################################################################################################ */
 /* ##############################################      FORMS        ############################################### */
@@ -55,13 +69,10 @@ $string['form_custom_label_average'] = 'Calculate average';
 $string['form_custom_label_averageonly'] = 'Show only average';
 $string['form_custom_label_custom_weighting'] = 'Custom weighting';
 
-
-
 // Forms - Custom - Values
 
 $string['form_simple_value_viewtype_horizontalbars'] = 'Horizontal bars';
 $string['form_simple_value_viewtype_verticalbars'] = 'Vertical bars';
-
 
 // Form helpers
 
@@ -82,42 +93,6 @@ $string['helper_chooseactivity_help'] = 'Choose an activity that you want to be 
 $string['helper_group'] = 'Choose a group';
 $string['helper_group_help'] = 'Choose the group you want the users to be included in graph.';
 
-// Forms - Simple
-
-$string['form_simple_title'] = 'Simple Graph';
-$string['form_simple_subtitle'] = 'Generate a graph using one value (grade or average) for one entity (person or group)';
-$string['form_simple_subtitle2'] = '';
-
-$string['form_simple_label_modality'] = 'Modality';
-$string['form_simple_label_temporality'] = 'Temporality';
-$string['form_simple_label_section'] = 'Temporality';
-$string['form_simple_label_activity'] = 'Temporality';
-
-$string['form_simple_value_mod_inter'] = 'Inter-group';
-$string['form_simple_value_mod_intra'] = 'Intra-group';
-$string['form_simple_value_tempo_all'] = 'Everything (until current section - not included)';
-$string['form_simple_value_tempo_section'] = 'A particular section';
-$string['form_simple_value_tempo_activity'] = 'A particular activity';
-
-$string['form_simple_label_section'] = 'Choose a section';
-$string['form_simple_label_activity'] = 'Choose an activity';
-$string['form_simple_label_group'] = 'Choose a group';
-
-$string['form_simple_label_no_groups'] = 'This course has no user groups. Field deactivated.';
-
-// Forms - Double
-
-$string['form_double_title'] = 'Double Graph';
-$string['form_double_subtitle'] = 'Generate a graph using two values (grades from two activities) comparing users in a group, or groups in a course.';
-
-$string['form_double_label_activity1'] = 'Activity 1';
-$string['form_double_label_activity2'] = 'Activity 2';
-
-// Form Result
-$string['form_result_default_result'] = 'S-';
-$string['form_result_default_phrase'] = 'You want to see an ';
-$string['form_result_modality_all_result'] = '';
-$string['form_result_modality_all_phrase'] = '';
 
 /* ################################################################################################################ */
 /* #############################################      SETTINGS        ############################################# */

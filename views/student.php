@@ -11,12 +11,12 @@ require_once('modules/choose_activities_form.php');
 
 if ($view != 'inter') {
 
-    echo '<p>(example) L\'étudiant peut voir une visualisation de ses résultats au travers différentes activités (à son
-    choix) contrastées avec la moyenne de son propre groupe.</p>';
+    echo html_writer::tag('p', get_string('student_intra_description', 'gradereport_scgr') );
 
-    echo '<h4>Customize graph</h4>';
+    echo html_writer::tag('h4', get_string('predefined_customize_title', 'gradereport_scgr') );
 
-    $activities = array(1, 2, 3, 4, 5, 6);
+    $activities = getActivitiesFromCourseID($courseid, $categoryid);
+
     $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=intra';
     $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
 
@@ -37,33 +37,58 @@ if ($view != 'inter') {
 
         print_r($activities);
 
-    } else {
+        // $test = getActivityGradeFromUserID($userid, $courseid, $activities[0]);
+        $test = getActivitiesGradeFromUserID($userid, $courseid, $activities);
 
-        //Set default data (if any)
-        $toform = '';
-        $mform->set_data($toform);
-        //displays the form
-        $mform->display();
+        var_dump($test);
 
-    }
+        echo '<br />####################<br />';
 
-    /*
-    echo 'First activity <select>
-    <option value="act1">act1</option>
-    <option value="act2">act2</option>
-    <option value="act3">act3</option>
-    <option value="act4">act4</option>
-</select>
-Last activity <select>
-    <option value="act1">act1</option>
-    <option value="act2">act2</option>
-    <option value="act3">act3</option>
-    <option value="act4">act4</option>
-</select><br /><br />';
+        $user_grades = new core\chart_series('Mes résultats', getActivitiesGradeFromUserID($userid, $courseid, $activities) );
+        // $group_average = new \core\chart_series('Moyenne de mon groupe', [96, 79, 85, 75, 78, 74, 84, 0, 0, 0]);
+        // $group_average->set_type(\core\chart_series::TYPE_LINE);
+        // $group_average->set_smooth(true);
 
-    */
+        $chart = new core\chart_bar();
+        $chart->set_labels(getActivitiesNames($activities));
+        // $chart->add_series($group_average);
+        $chart->add_series($user_grades);
 
-    $series1 = new core\chart_series('Mes résultats', [98, 76, 68, 90, 80, 74, 86, 0, 0, 0]);
+        // Set maximum Y Axis value
+        $yaxis = $chart->get_yaxis(0, true);
+        $yaxis->set_max(100);
+
+
+        echo $OUTPUT->render($chart);
+
+
+        } else {
+
+            //Set default data (if any)
+            $toform = '';
+            $mform->set_data($toform);
+            //displays the form
+            $mform->display();
+
+        }
+
+        /*
+        echo 'First activity <select>
+        <option value="act1">act1</option>
+        <option value="act2">act2</option>
+        <option value="act3">act3</option>
+        <option value="act4">act4</option>
+    </select>
+    Last activity <select>
+        <option value="act1">act1</option>
+        <option value="act2">act2</option>
+        <option value="act3">act3</option>
+        <option value="act4">act4</option>
+    </select><br /><br />';
+
+        */
+
+    /* $series1 = new core\chart_series('Mes résultats', [98, 76, 68, 90, 80, 74, 86, 0, 0, 0]);
     $series2 = new \core\chart_series('Moyenne de mon groupe', [96, 79, 85, 75, 78, 74, 84, 0, 0, 0]);
     $series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
     $series2->set_smooth(true); // Calling set_smooth() passing true as parameter, will display smooth lines.
@@ -73,7 +98,7 @@ Last activity <select>
     $chart->add_series($series2);
     $chart->add_series($series1);
 
-    echo $OUTPUT->render($chart);
+    echo $OUTPUT->render($chart); */
 
 } else {
 

@@ -16,7 +16,7 @@ class chooseactivities_form extends moodleform {
 
         // ************** FIRST ACTIVITY **************
 
-        $select = $mform->addElement( 'select', 'activity', get_string('form_simple_label_activity',
+        $select = $mform->addElement( 'select', 'activity', get_string('predefined_customize_label_activity',
             'gradereport_scgr'), $ACTIVITIES_LIST);
         $select->setMultiple(true);
 

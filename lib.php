@@ -532,6 +532,22 @@ function getActivityName($instanceitem) {
     }
 }
 
+function getActivitiesNames($activities) {
+    global $DB;
+
+    $activities_names = array();
+
+    foreach ( $activities as $activity) {
+        $sql = "SELECT * FROM unitice_assign WHERE id = $activity";           // SQL Query
+        $records = $DB->get_records_sql($sql);
+        foreach ($records as $record) {
+            array_push($activities_names, $record->name);
+        }
+    }
+
+    return $activities_names;
+}
+
 /*
  * getGrades
  *
@@ -553,6 +569,37 @@ function getGrades($users, $courseid, $activity) {
 
         if ( !empty($grading_info->items) ) {
             $grade = $grading_info->items[0]->grades[$user]->grade;
+            array_push($grades, floatval($grade));
+        }
+
+    }
+
+    return $grades;
+
+}
+
+function getActivityGradeFromUserID($userid, $courseid, $activity) {
+
+    $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
+    $grade = NULL;
+
+    if ( !empty($grading_info->items) ) {
+        $grade = $grading_info->items[0]->grades[$userid]->grade;
+        return $grade;
+    }
+
+}
+
+function getActivitiesGradeFromUserID($userid, $courseid, $activities) {
+
+    $grades = array();
+
+    foreach ($activities as $activity) {
+
+        $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
+
+        if ( !empty($grading_info->items) ) {
+            $grade = $grading_info->items[0]->grades[$userid]->grade;
             array_push($grades, floatval($grade));
         }
 
