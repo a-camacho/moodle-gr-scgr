@@ -34,7 +34,7 @@ $string['page_not_active_on_this_course_description'] = 'Before being able to us
 
 // Buttons
 
-$string['form_simple_button_submit'] = 'Submit';
+$string['form_button_submit'] = 'Submit';
 
 
 /* ################################################################################################################ */

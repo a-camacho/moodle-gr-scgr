@@ -6,12 +6,49 @@ echo html_writer::tag('h2', get_string('plugintitle', 'gradereport_scgr') . ' : 
 // Print navigation
 printCustomNav( $courseid, $role, $view );
 
+// Include the form
+require_once('modules/choose_activities_form.php');
+
 if ($view != 'inter') {
 
     echo '<p>(example) L\'étudiant peut voir une visualisation de ses résultats au travers différentes activités (à son
     choix) contrastées avec la moyenne de son propre groupe.</p>';
-    echo '<h4>Customize graph</h4>
-First activity <select>
+
+    echo '<h4>Customize graph</h4>';
+
+    $activities = array(1, 2, 3, 4, 5, 6);
+    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=intra';
+    $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
+
+    if ($mform->is_cancelled()) {
+
+    } else if ($fromform = $mform->get_data()) {
+
+        $data = $mform->get_data();
+
+        // Set group_id variable
+        if ( property_exists($data, "activity") ) {
+            $activities = $data->activity;
+        } else {
+            $activities = NULL;
+        }
+
+        // Print options and plugin config and graph
+
+        print_r($activities);
+
+    } else {
+
+        //Set default data (if any)
+        $toform = '';
+        $mform->set_data($toform);
+        //displays the form
+        $mform->display();
+
+    }
+
+    /*
+    echo 'First activity <select>
     <option value="act1">act1</option>
     <option value="act2">act2</option>
     <option value="act3">act3</option>
@@ -23,6 +60,9 @@ Last activity <select>
     <option value="act3">act3</option>
     <option value="act4">act4</option>
 </select><br /><br />';
+
+    */
+
     $series1 = new core\chart_series('Mes résultats', [98, 76, 68, 90, 80, 74, 86, 0, 0, 0]);
     $series2 = new \core\chart_series('Moyenne de mon groupe', [96, 79, 85, 75, 78, 74, 84, 0, 0, 0]);
     $series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
