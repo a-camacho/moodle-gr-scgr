@@ -1,10 +1,26 @@
 <?php
 
+global $USER;
+
+// Check if this course has groups
+$courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups_activation_choice));
+
+if ( in_array($courseid, $courses_with_groups) ) {
+    $user_groups = array_keys($USER->groupmember[2]);      // Function that extracts groups id's from $USER global variable
+    $user_groups_clean = implode(",", $user_groups);
+    $user_first_group = $user_groups[0];
+} else {
+    $user_groups_clean = '';
+}
+
 // Print title
-echo html_writer::tag('h2', get_string('plugintitle', 'gradereport_scgr') . ' : ' . $role );
+echo html_writer::tag(  'h2', get_string('plugintitle', 'gradereport_scgr') . ' : ' . $role . ' - ' . $USER->firstname .
+                        ' ' . $USER->lastname . ' (groups:' . $user_groups_clean . ')');
 
 // Print navigation
 printCustomNav( $courseid, $role, $view );
+
+// printPluginConfig();
 
 // Include the form
 require_once('modules/choose_activities_form.php');
@@ -12,8 +28,6 @@ require_once('modules/choose_activities_form.php');
 if ($view != 'inter') {
 
     echo html_writer::tag('p', get_string('student_intra_description', 'gradereport_scgr') );
-
-    echo html_writer::tag('h4', get_string('predefined_customize_title', 'gradereport_scgr') );
 
     $activities = getActivitiesFromCourseID($courseid, $categoryid);
 
@@ -23,6 +37,12 @@ if ($view != 'inter') {
     if ($mform->is_cancelled()) {
 
     } else if ($fromform = $mform->get_data()) {
+
+        //Set default data and display form
+        
+        $toform = '';
+        $mform->set_data($toform);
+        $mform->display();
 
         $data = $mform->get_data();
 
@@ -35,32 +55,36 @@ if ($view != 'inter') {
 
         // Print options and plugin config and graph
 
-        print_r($activities);
+        if ( in_array($courseid, $courses_with_groups) ) {
 
-        // $test = getActivityGradeFromUserID($userid, $courseid, $activities[0]);
-        $test = getActivitiesGradeFromUserID($userid, $courseid, $activities);
+            $users = getUsersFromGroup($user_first_group);
 
-        var_dump($test);
+            $group_average = new \core\chart_series('Moyenne de mon groupe', getActivitiesGradeFromUsers($users, $courseid, $activities));
+            $group_average->set_type(\core\chart_series::TYPE_LINE);
+            $group_average->set_smooth(true);
 
-        echo '<br />####################<br />';
+        } else {
 
-        $user_grades = new core\chart_series('Mes résultats', getActivitiesGradeFromUserID($userid, $courseid, $activities) );
-        // $group_average = new \core\chart_series('Moyenne de mon groupe', [96, 79, 85, 75, 78, 74, 84, 0, 0, 0]);
-        // $group_average->set_type(\core\chart_series::TYPE_LINE);
-        // $group_average->set_smooth(true);
+            $users = getEnrolledUsersFromContext($context);
+
+            $group_average = new \core\chart_series('Moyenne de la classe', getActivitiesGradeFromUsers($users, $courseid, $activities));
+            $group_average->set_type(\core\chart_series::TYPE_LINE);
+            $group_average->set_smooth(true);
+
+        }
 
         $chart = new core\chart_bar();
+        $user_grades = new core\chart_series('Mes résultats', getActivitiesGradeFromUserID($userid, $courseid, $activities) );
+
         $chart->set_labels(getActivitiesNames($activities));
-        // $chart->add_series($group_average);
+        $chart->add_series($group_average);
         $chart->add_series($user_grades);
 
         // Set maximum Y Axis value
         $yaxis = $chart->get_yaxis(0, true);
         $yaxis->set_max(100);
 
-
         echo $OUTPUT->render($chart);
-
 
         } else {
 

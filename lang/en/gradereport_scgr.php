@@ -42,7 +42,7 @@ $string['form_button_submit'] = 'Submit';
 
 // Predefined graphs - Descriptions
 
-$string['student_intra_description'] = '(example) L\'étudiant peut voir une visualisation de ses résultats au travers différentes activités (à son
+$string['student_intra_description'] = 'L\'étudiant peut voir une visualisation de ses résultats au travers différentes activités (à son
     choix) contrastées avec la moyenne de son propre groupe.';
 $string['student_inter_description'] = 'Custom graph';
 

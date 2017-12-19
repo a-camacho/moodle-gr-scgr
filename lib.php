@@ -578,6 +578,51 @@ function getGrades($users, $courseid, $activity) {
 
 }
 
+function getEnrolledUsersFromContext($context) {
+
+    $fields = 'u.id, u.username';              //return these fields
+    $users = get_enrolled_users($context, '', 0, $fields);
+    $users_array = array();
+
+    foreach ( $users as $user ) {
+        array_push($users_array, intval($user->id));
+    }
+
+    return $users_array;
+
+}
+
+function getActivityGradeFromGroupID($groupid, $courseid, $activity) {
+
+    $users = getUsersFromGroup($groupid);
+    $grades = array();
+
+    foreach ($users as $userid) {
+
+        $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
+        $grade = NULL;
+
+        if ( !empty($grading_info->items) ) {
+            $grade = $grading_info->items[0]->grades[$userid]->grade;
+            array_push($grades, $grade);
+        }
+
+    }
+
+    if ( count($grades) != 0 ) {
+        $grade = array_sum($grades) / count($grades);
+    } else {
+        $grade = 0;
+    }
+
+    return $grade;
+
+}
+
+function getActivitiesGradeFromGroupID($groupid, $courseid, $activities) {
+
+}
+
 function getActivityGradeFromUserID($userid, $courseid, $activity) {
 
     $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
@@ -606,6 +651,44 @@ function getActivitiesGradeFromUserID($userid, $courseid, $activities) {
     }
 
     return $grades;
+
+}
+
+function getActivitiesGradeFromUsers($users, $courseid, $activities) {
+
+    $average_grades = array();
+
+    foreach ($activities as $activity) {
+
+        $grades = array();
+
+        foreach ( $users as $user ) {
+
+            $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $user);
+
+            if ( !empty($grading_info->items) ) {
+
+                if ( !empty($grading_info->items[0]->grades[$user]->grade) ) {
+
+                    $grade = $grading_info->items[0]->grades[$user]->grade;
+                    array_push($grades, floatval($grade));
+
+                }
+            }
+
+        }
+
+        if ( count($grades) != 0 ) {
+            $average_grade = array_sum($grades) / count($grades);
+        } else {
+            $average_grade = 0;
+        }
+
+        array_push($average_grades, number_format(floatval($average_grade), 2));
+
+    }
+
+    return $average_grades;
 
 }
 

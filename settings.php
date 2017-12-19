@@ -31,8 +31,6 @@ if ($ADMIN->fulltree) {
 
     /// Choose in which courses the plugin should be active
 
-    /*
-
     $settings->add(new admin_setting_configcheckbox(  'scgr_plugin_disable', 'Disable the plugin totally',
         'Selecting this option will disable the plugin completely.', 0 ));
 
@@ -48,7 +46,5 @@ if ($ADMIN->fulltree) {
     $courses2 = getCoursesIDandNames();
     $settings->add(new admin_setting_configmultiselect(  'scgr_course_groups_activation_choice', 'Activate group feature on these courses.',
         'Choose in which courses you want the SCGR groups feature to be enabled.', $options2, $courses2 ));
-
-    */
 
 }
