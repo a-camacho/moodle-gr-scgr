@@ -1,12 +1,13 @@
 <?php
 
-global $USER, $CFG;
+global $USER, $CFG, $DB;
 
 // Check if this course has groups
 $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups_activation_choice));
 
 if ( in_array($courseid, $courses_with_groups) ) {
     $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
+    $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
     $user_groups_clean = '(groups: ' . implode(",", $user_groups) . ')';
 } else {
     $user_groups = NULL;
@@ -20,36 +21,74 @@ echo html_writer::tag(  'h2', get_string('plugintitle', 'gradereport_scgr') . ' 
 // Print navigation
 printCustomNav( $courseid, $role, $view );
 
+// Include the form
+require_once('modules/choose_activities_form.php');
+
 if ( $view == 'progression' || $view == 'default' ) {
 
-    echo '<p>Le tuteur peut voir la progression de ses apprenants (leur réussite sur différentes activités au choix)</p>';
-    $chart2 = new \core\chart_line();
-    $chart2->set_title('Graph #3 : TUT - Group students progression');
-    $chart2->set_smooth(true); // Calling set_smooth() passing true as parameter, will display smooth lines.
-    $CFG->chart_colorset = ['#001f3f', '#11ad55', '#d6d6d6', '#a0a0a0', '#b27b7b', '#7bb28a', '#7b86b2', '#ad7bb2', '#b27b9a'];
-    $series1 = new core\chart_series('User1', [98, 76, 69, 85, 80, 74, 86, 0, 0, 0]);
-    $series2 = new core\chart_series('User2', [90, 79, 69, 80, 83, 70, 88, 0, 0, 0]);
-    $series3 = new core\chart_series('User3', [62, 87, 68, 90, 87, 73, 81, 0, 0, 0]);
-    $series4 = new core\chart_series('User4', [73, 62, 63, 92, 78, 79, 82, 0, 0, 0]);
-    $series5 = new core\chart_series('User5', [78, 72, 76, 72, 68, 59, 62, 0, 0, 0]);
-    $series6 = new core\chart_series('User6', [88, 66, 59, 75, 70, 64, 76, 0, 0, 0]);
-    $series7 = new core\chart_series('User7', [80, 69, 59, 70, 73, 60, 78, 0, 0, 0]);
-    $series8 = new core\chart_series('User8', [52, 77, 58, 80, 77, 63, 71, 0, 0, 0]);
-    $series9 = new core\chart_series('User9', [63, 52, 53, 82, 68, 69, 72, 0, 0, 0]);
-    $series10 = new core\chart_series('User10', [68, 62, 66, 62, 58, 49, 72, 0, 0, 0]);
-    $series2->set_type(\core\chart_series::TYPE_LINE); // Set the series type to line chart.
-    $chart2->add_series($series1);
-    $chart2->add_series($series2);
-    $chart2->add_series($series3);
-    $chart2->add_series($series4);
-    $chart2->add_series($series5);
-    $chart2->add_series($series6);
-    $chart2->add_series($series7);
-    $chart2->add_series($series8);
-    $chart2->add_series($series9);
-    $chart2->add_series($series10);
-    $chart2->set_labels(['act1', 'act2', 'act3', 'act4', 'act5', 'act6', 'act7', 'act8', 'act9', 'act10']);
-    echo $OUTPUT->render($chart2);
+    echo html_writer::tag('p', get_string('teacher_progression_description', 'gradereport_scgr') );
+
+    $activities = getActivitiesFromCourseID($courseid, $categoryid);
+
+    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=progression';
+    $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
+
+    if ($mform->is_cancelled()) {
+
+    } else if ($fromform = $mform->get_data()) {
+
+        //Set default data and display form
+
+        $toform = '';
+        $mform->set_data($toform);
+        $mform->display();
+
+        $data = $mform->get_data();
+
+        // Set group_id variable
+        if ( property_exists($data, "activity") ) {
+            $activities = $data->activity;
+        } else {
+            $activities = NULL;
+        }
+
+        foreach ( $user_groups as $group ) {
+
+            $users = getUsersFromGroup($group);
+            // Strip tutors from users
+            $users = stripTutorsFromUsers($users, $context);
+
+            // Create chart
+            $chart = new \core\chart_line();
+            $chart->set_smooth(true);
+
+            $color_array = array(   '#d6d6d6', '#8c8c8c', '#d6d6d6', '#8c8c8c', '#d6d6d6', '#8c8c8c', '#d6d6d6', '#8c8c8c',
+                '#d6d6d6', '#8c8c8c', '#d6d6d6', '#8c8c8c', '#d6d6d6','#8c8c8c','#d6d6d6' );
+
+            $CFG->chart_colorset = $color_array;
+
+            foreach ($users as $user) {
+                $user_object = $DB->get_record('user', array('id'=>$user));
+                $username = $user_object->firstname . $user_object->lastname;
+                $series = new core\chart_series($username, getActivitiesGradeFromUserID($user, $courseid, $activities));
+                $series->set_type(\core\chart_series::TYPE_LINE);
+                $chart->add_series($series);
+            }
+
+            $chart->set_labels(getActivitiesNames($activities));
+            echo $OUTPUT->render($chart);
+
+        }
+
+    } else {
+
+        //Set default data (if any)
+        $toform = '';
+        $mform->set_data($toform);
+        //displays the form
+        $mform->display();
+
+    }
 
 
 } elseif( $view == 'comparison' ) {

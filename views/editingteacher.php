@@ -6,12 +6,11 @@ global $USER, $CFG;
 $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups_activation_choice));
 
 if ( in_array($courseid, $courses_with_groups) ) {
-    $user_groups = array_keys($USER->groupmember[2]);
-    $user_groups_clean = implode(",", $user_groups);
-    $user_first_group = $user_groups[0];
+    $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
+    $user_groups_clean = '(groups: ' . implode(",", $user_groups) . ')';
 } else {
+    $user_groups = NULL;
     $user_groups_clean = '';
-    $user_first_group = NULL;
 }
 
 // Print title

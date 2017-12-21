@@ -365,6 +365,50 @@ function exportAsJPEG() {
 
 }
 
+function stripTutorsGroupFromGroupIDS($groups) {
+
+    $groups_to_ignore = array(1);
+    $new_groups = array();
+
+    foreach ( $groups as $group ) {
+
+        if ( !in_array($group, $groups_to_ignore) ) {
+            array_push($new_groups, $group);
+        }
+
+    }
+
+    return $new_groups;
+}
+
+function stripTutorsFromUsers($users, $context) {
+
+    $role_to_ignore = array(1);
+    $new_users = array();
+
+    foreach ($users as $userid) {
+
+        $user_roles = get_user_roles($context, $userid, false);
+        $ignore_user = false;
+
+        foreach ( $user_roles as $role ) {
+
+            if ( $role->shortname == 'teacher' ) {
+                $ignore_user = true;
+            }
+
+        }
+
+        if ( $ignore_user == false ) {
+            array_push($new_users, $userid);
+        }
+
+    }
+
+    return $new_users;
+
+}
+
 /*
  * getAverage
  *

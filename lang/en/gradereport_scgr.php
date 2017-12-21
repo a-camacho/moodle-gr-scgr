@@ -44,8 +44,14 @@ $string['form_button_submit'] = 'Submit';
 
 $string['student_intra_description'] = 'L\'étudiant peut voir une visualisation de ses résultats au travers différentes
 activités (à son choix) contrastées avec la moyenne de son propre groupe.';
+
 $string['student_inter_description'] = 'L\'étudiant peut voir une visualisation comparant les résultats des différents
 groupes à travers différentes activités.';
+
+$string['teacher_progression_description'] = 'Le tuteur peut voir la progression de ses apprenants (leur réussite sur
+différentes activités au choix)';
+
+
 
 // Predefined graphs - Customize
 

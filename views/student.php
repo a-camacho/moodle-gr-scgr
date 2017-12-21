@@ -54,24 +54,16 @@ if ($view != 'inter') {
             $activities = NULL;
         }
 
-        // Print options and plugin config and graph
-
         if ( in_array($courseid, $courses_with_groups) ) {
-
             $users = getUsersFromGroup($user_first_group);
-
             $group_average = new \core\chart_series('Moyenne de mon groupe', getActivitiesGradeFromUsers($users, $courseid, $activities));
             $group_average->set_type(\core\chart_series::TYPE_LINE);
             $group_average->set_smooth(true);
-
         } else {
-
             $users = getEnrolledUsersFromContext($context);
-
             $group_average = new \core\chart_series('Moyenne de la classe', getActivitiesGradeFromUsers($users, $courseid, $activities));
             $group_average->set_type(\core\chart_series::TYPE_LINE);
             $group_average->set_smooth(true);
-
         }
 
         $chart = new core\chart_bar();
