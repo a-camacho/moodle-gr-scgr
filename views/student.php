@@ -11,6 +11,7 @@ if ( in_array($courseid, $courses_with_groups) ) {
     $user_first_group = $user_groups[0];
 } else {
     $user_groups_clean = '';
+    $user_first_group = NULL;
 }
 
 // Print title

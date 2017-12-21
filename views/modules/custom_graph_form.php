@@ -7,13 +7,20 @@ class customhtml_form extends moodleform {
 
     //Add elements to form
     public function definition() {
-        global $CFG, $config;
+        global $USER, $CFG, $config;
 
         $mform = $this->_form; // Don't forget the underscore!
 
         // Get variables
 
         $groupsactivated = ($this->_customdata[3]) ? true : false;
+        $courseid = $this->_customdata[0];
+
+        if ( $this->_customdata[4] ) {
+            $user_groups = $this->_customdata[4];
+        } else {
+            $user_groups = NULL;
+        }
 
         $mform->addElement('header', 'scgr-general', 'General Parameters');
 
@@ -56,13 +63,34 @@ class customhtml_form extends moodleform {
         $mform->addHelpButton('custom_weighting', 'helper_customweight', 'gradereport_scgr');
 
         // ************** GROUP select (in intra-group mode) **************
+
         if ( $this->_customdata[2] ) {
-            $GROUPS_LIST = $this->_customdata[2];                                    // Item 1 in array is SECTIONS
-            $mform->addElement( 'select',
-                'group',
-                get_string('form_custom_label_group',
-                    'gradereport_scgr'),
-                $GROUPS_LIST);
+
+            if ( $user_groups ) {
+
+                $groups_with_names = array();
+                foreach ( $user_groups as $group ) {
+                    $groups_with_names[$group] = groups_get_group_name($group);
+                }
+                $GROUPS_LIST = $groups_with_names;
+
+                $mform->addElement( 'select',
+                    'group',
+                    get_string('form_custom_label_group',
+                        'gradereport_scgr'),
+                    $GROUPS_LIST);
+
+            } else {
+
+                $GROUPS_LIST = $this->_customdata[2];
+                $mform->addElement( 'select',
+                    'group',
+                    get_string('form_custom_label_group',
+                        'gradereport_scgr'),
+                    $GROUPS_LIST);
+
+            }
+
         }
         $mform->disabledIf('group', 'modality', $condition = 'eq', $value='inter');
         $mform->addHelpButton('group', 'helper_group', 'gradereport_scgr');
@@ -102,7 +130,6 @@ class customhtml_form extends moodleform {
 
         $mform->addElement('header', 'scgr-activities', 'Activities');
 
-
         $ACTIVITIES_LIST = $this->_customdata[1];
         $START_REPETITIONS = 3;
         $MAX_ACTIVITIES = count($ACTIVITIES_LIST);
@@ -113,7 +140,7 @@ class customhtml_form extends moodleform {
             'gradereport_scgr'), $ACTIVITIES_LIST);
 
         $activity_group[] =& $mform->createElement( 'text', 'custom_weighting_activity',
-            get_string('form_custom_label_custom_weighting_act_1',
+            get_string('form_custom_label_custom_weighting',
                 'gradereport_scgr'), $attributes );
 
 
