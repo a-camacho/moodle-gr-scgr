@@ -42,14 +42,16 @@ $string['form_button_submit'] = 'Submit';
 
 // Predefined graphs - Descriptions
 
-$string['student_intra_description'] = 'L\'étudiant peut voir une visualisation de ses résultats au travers différentes activités (à son
-    choix) contrastées avec la moyenne de son propre groupe.';
-$string['student_inter_description'] = 'Custom graph';
+$string['student_intra_description'] = 'L\'étudiant peut voir une visualisation de ses résultats au travers différentes
+activités (à son choix) contrastées avec la moyenne de son propre groupe.';
+$string['student_inter_description'] = 'L\'étudiant peut voir une visualisation comparant les résultats des différents
+groupes à travers différentes activités.';
 
 // Predefined graphs - Customize
 
 $string['predefined_customize_title'] = 'Customize graph';
 $string['predefined_customize_label_activity'] = 'Activities';
+
 
 /* ################################################################################################################ */
 /* ##############################################      FORMS        ############################################### */
