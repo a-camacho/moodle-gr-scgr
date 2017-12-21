@@ -86,11 +86,27 @@ if ($mform->is_cancelled()) {
         $custom_title = NULL;
     }
 
+    // Set activities
+    $activities = array();
+
+    // Check and set if user wants all activities or only average
+    $averageonly = ( intval($data->averageonly) == 1 ) ? true : false;
+
+    if ( property_exists($data, "activity") ) {
+        foreach ( $data->activity as $activity ) {
+            array_push($activities, intval($activity));
+        }
+    } else {
+        $activities = NULL;
+    }
+
     // Set custom average
 
     // INFO :   intval() function converts user input to int. If user enters text it will show 1, if user enters
     //          nothing it should fix it at 0.
 
+    $custom_weight_array = array();
+    /*
     if ( property_exists($data, "custom_weighting") && $data->custom_weighting == '1' ) {
         $custom_weight_array = array();
         array_push($custom_weight_array, intval($data->custom_weighting_activity1));
@@ -98,33 +114,20 @@ if ($mform->is_cancelled()) {
     } else {
         $custom_weight_array = NULL;
     }
+    */
 
     // Print options and plugin config
 
-    if ( $mode == 'double' ) {
-
-        // Check and set if user wants all activities or only average
-        $averageonly = ( intval($data->averageonly) == 1 ) ? true : false;
+    if ( $mode == 'custom' ) {
 
         printPluginConfig();
-        printTheOptions(    $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-            $data->activity2, $average, $custom_title, $custom_weight_array, $viewtype );
-        printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-            $data->activity2, $aregroupsactivated, $average, $custom_title, $custom_weight_array,
-            $averageonly, $viewtype );
-
-    } else {
-
-        printPluginConfig();
-        printTheOptions( $mode, $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-            NULL, $average, $custom_title, $custom_weight_array, $viewtype );
-        printGraph( $courseid, $modality, NULL, NULL, $group_id, $data->activity1,
-            NULL, $aregroupsactivated, $average, $custom_title, $custom_weight_array = NULL,
-            $averageonly = NULL, $viewtype );
+        printOptions(    $courseid, $modality, $group_id, $activities,
+                         $average, $custom_title, $viewtype );
+        printGraph( $courseid, $modality, $group_id, $activities, $average, $custom_title, $custom_weight_array,
+                    $averageonly, $viewtype );
 
     }
 
-    // If the data doesn't validate or first display
 } else {
 
     //Set default data (if any)

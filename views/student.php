@@ -39,7 +39,7 @@ if ($view != 'inter') {
     } else if ($fromform = $mform->get_data()) {
 
         //Set default data and display form
-        
+
         $toform = '';
         $mform->set_data($toform);
         $mform->display();

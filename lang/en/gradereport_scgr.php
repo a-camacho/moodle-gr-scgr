@@ -65,14 +65,20 @@ $string['form_custom_subtitle2'] = '';
 
 $string['form_custom_label_custom_title'] = 'Custom title';
 $string['form_custom_label_viewtype'] = 'View type';
+$string['form_custom_label_modality'] = 'Modality';
+$string['form_custom_label_activity'] = 'Choose activity';
+$string['form_custom_label_activities'] = 'Activities';
+$string['form_custom_label_group'] = 'Group';
 $string['form_custom_label_average'] = 'Calculate average';
 $string['form_custom_label_averageonly'] = 'Show only average';
 $string['form_custom_label_custom_weighting'] = 'Custom weighting';
 
 // Forms - Custom - Values
 
-$string['form_simple_value_viewtype_horizontalbars'] = 'Horizontal bars';
-$string['form_simple_value_viewtype_verticalbars'] = 'Vertical bars';
+$string['form_custom_value_viewtype_horizontalbars'] = 'Horizontal bars';
+$string['form_custom_value_viewtype_verticalbars'] = 'Vertical bars';
+$string['form_custom_value_mod_intra'] = 'Intra-group';
+$string['form_custom_value_mod_inter'] = 'Inter-group';
 
 // Form helpers
 

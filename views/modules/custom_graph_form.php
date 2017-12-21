@@ -22,8 +22,8 @@ class customhtml_form extends moodleform {
         $mform->addHelpButton('graph_custom_title', 'helper_customtitle', 'gradereport_scgr');
 
         // ************** GRAPH VIEW TYPE **************
-        $VIEW_TYPES = array( 'horizontal-bars' => get_string('form_simple_value_viewtype_horizontalbars', 'gradereport_scgr'),
-            'vertical-bars' => get_string('form_simple_value_viewtype_verticalbars', 'gradereport_scgr'));
+        $VIEW_TYPES = array( 'horizontal-bars' => get_string('form_custom_value_viewtype_horizontalbars', 'gradereport_scgr'),
+            'vertical-bars' => get_string('form_custom_value_viewtype_verticalbars', 'gradereport_scgr'));
 
         $mform->addElement('select', 'viewtype', get_string('form_custom_label_viewtype', 'gradereport_scgr'), $VIEW_TYPES );
         $mform->setDefault('viewtype', 'vertical-bars');
@@ -31,9 +31,9 @@ class customhtml_form extends moodleform {
 
         // ************** INTER-INTRA CHOICE **************
         if ( $groupsactivated ) {
-            $MODALITY_TYPES = array( 'inter' => get_string('form_simple_value_mod_inter', 'gradereport_scgr'),
-                'intra' => get_string('form_simple_value_mod_intra', 'gradereport_scgr'));
-            $mform->addElement('select', 'modality', get_string('form_simple_label_modality', 'gradereport_scgr'), $MODALITY_TYPES );
+            $MODALITY_TYPES = array( 'inter' => get_string('form_custom_value_mod_inter', 'gradereport_scgr'),
+                'intra' => get_string('form_custom_value_mod_intra', 'gradereport_scgr'));
+            $mform->addElement('select', 'modality', get_string('form_custom_label_modality', 'gradereport_scgr'), $MODALITY_TYPES );
             $mform->setDefault('modality', 'intra');
         }
 
@@ -42,7 +42,7 @@ class customhtml_form extends moodleform {
         // ************** AVERAGE **************
 
         $mform->addElement('selectyesno', 'average', get_string('form_custom_label_average', 'gradereport_scgr'));
-        $mform->setDefault('average', 1);
+        $mform->setDefault('average', 0);
         $mform->disabledIf('custom_weighting', 'average', $condition = 'eq', $value=0);
         $mform->addHelpButton('average', 'helper_average', 'gradereport_scgr');
 
@@ -60,7 +60,7 @@ class customhtml_form extends moodleform {
             $GROUPS_LIST = $this->_customdata[2];                                    // Item 1 in array is SECTIONS
             $mform->addElement( 'select',
                 'group',
-                get_string('form_simple_label_group',
+                get_string('form_custom_label_group',
                     'gradereport_scgr'),
                 $GROUPS_LIST);
         }
@@ -109,11 +109,11 @@ class customhtml_form extends moodleform {
 
         $attributes = array('size'=>'20');
         $activity_group = array();
-        $activity_group[] =& $mform->createElement( 'select', 'activity', get_string('form_simple_label_activity',
+        $activity_group[] =& $mform->createElement( 'select', 'activity', get_string('form_custom_label_activity',
             'gradereport_scgr'), $ACTIVITIES_LIST);
 
         $activity_group[] =& $mform->createElement( 'text', 'custom_weighting_activity',
-            get_string('form_simple_label_custom_weighting_act_1',
+            get_string('form_custom_label_custom_weighting_act_1',
                 'gradereport_scgr'), $attributes );
 
 
@@ -137,7 +137,7 @@ class customhtml_form extends moodleform {
         */
 
         $repeatarray[] = $mform->createElement( 'group', 'activitygroup',
-            get_string('form_simple_label_activity', 'gradereport_scgr'),
+            get_string('form_custom_label_activity', 'gradereport_scgr'),
             $activity_group, null, false);
 
         $this->repeat_elements($repeatarray, $START_REPETITIONS,
@@ -149,7 +149,7 @@ class customhtml_form extends moodleform {
         $actualrepgroupsno = $this->_form->_elements[9]->_attributes['value'];
         $maximumrepgroupno = $MAX_ACTIVITIES;
 
-        var_dump($this->_form->_elements[9]->_attributes['value']);
+        // var_dump($this->_form->_elements[9]->_attributes['value']);
 
 
 
