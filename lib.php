@@ -165,18 +165,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
         }
 
-        // Create a series with averages
-        if ( $average ) {
-
-            $average_serie = array();
-
-            $user_grades = getActivitiesGradeFromUserID($users[0], $courseid, $activities);
-            $user_average = array_sum($user_grades) / count($user_grades);
-
-            var_dump($user_average);
-
-        }
-
+        // Generate the chart
         if ( $grades_array && $usernames ) {
 
             // Create chart and set some settings
@@ -195,10 +184,28 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
                 $i++;
             }
 
+            // Create a series with averages
+            if ( $average ) {
+
+                $average_array = array();
+
+                foreach ( $users as $user ) {
+                    $user_grades = getActivitiesGradeFromUserID($user, $courseid, $activities);
+                    array_push($average_array, getAverage($user_grades, NULL));
+                }
+
+                $average_series = new \core\chart_series('Average', $average_array);
+                $chart->add_series($average_series);
+
+            }
+
             // More settings
             $chart->set_labels($usernames);
             if ($custom_title) {
                 $chart->set_title($custom_title);
+            }
+            if ($viewtype == 'horizontal-bars') {
+                $chart->set_horizontal(true);
             }
 
             // Output chart
@@ -214,24 +221,46 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             echo html_writer::tag('h3', 'Error');
             echo html_writer::tag('p', 'users or grades not avalaible.');
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a>';
+            echo '<a href="index.php?id=' . $courseid . '">Back</a>';
 
         }
 
     } elseif ( isset($modality) && $modality == 'inter' ) {
 
-        $grades = getGradesFromGroups($courseid, $activity);
-        $groupnames = getGroupNames($courseid);                                 // Get groupnames
+        $groupnames = getGroupNames($courseid);
+        $groups = getGroupsIDS($courseid);
 
-        // Output graph if $groupnames and $grades
-        if ( $grades && $groupnames ) {
+        // Output graph if $groupnames and $activities
+        if ( $activities && $groupnames ) {
 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
 
-            $chart->add_series($series1);
+            foreach ( $activities as $activity ) {
+                $grades = getGradesFromGroups($courseid, $activity);
+                $series = new \core\chart_series(getActivityName($activity), $grades);
+                $chart->add_series($series);
+            }
+
+            // Create a series with averages
+            if ( $average ) {
+
+                $averages = array();
+
+                foreach ( $groups as $group ) {
+
+                    $group_grades = getActivitiesGradeFromGroupID($group, $courseid, $activities);
+                    $group_average = getAverage($group_grades, NULL);
+                    array_push($averages, $group_average);
+                }
+
+                $average_series = new \core\chart_series('Average', $averages);
+                $chart->add_series($average_series);
+            }
+
+            // Chart settings
+            if ($custom_title) { $chart->set_title($custom_title); }
+            if ($viewtype == 'horizontal-bars') { $chart->set_horizontal(true); }
             $chart->set_labels($groupnames);
-            $chart->set_title( getActivityName( $activity ) );
 
             echo $OUTPUT->render_chart($chart);
 
@@ -346,18 +375,18 @@ function exportAsJPEG() {
  * @return (array)
  */
 
-function getAverage( $activity1, $activity2) {
+function getAverage( $grades, $weights = NULL ) {
 
-    $average = array();
+    if ( !$weights & $grades ) {
 
-    $i = 0;
-    foreach ( $activity1 as $grade1 ) {
-        $val = ( $grade1 + $activity2[$i] ) / 2;
-        array_push($average, $val);
-        $i++;
+        $result = array_sum($grades) / count($grades);
+
+    } else {
+
     }
 
-    return $average;
+    return $result;
+
 }
 
 /*
@@ -531,6 +560,15 @@ function getActivityGradeFromGroupID($groupid, $courseid, $activity) {
 }
 
 function getActivitiesGradeFromGroupID($groupid, $courseid, $activities) {
+
+    $grades = array();
+
+    foreach ( $activities as $activity ) {
+        $grade = getActivityGradeFromGroupID($groupid, $courseid, $activity);
+        array_push($grades, $grade);
+    }
+
+    return $grades;
 
 }
 
