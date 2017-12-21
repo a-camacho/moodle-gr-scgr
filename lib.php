@@ -106,13 +106,13 @@ function printOptions( $courseid, $modality, $groupid = NULL, $activities, $aver
     if ( $custom_title ) {
         echo html_writer::tag('li', '$custom_title : ' . $custom_title);
     } else {
-        echo html_writer::tag('li', '$custom_title : ignored');
+        echo html_writer::tag('li', '$custom_title : no');
     }
 
     if ( $viewtype ) {
         echo html_writer::tag('li', '$viewtype : ' . $viewtype);
     } else {
-        echo html_writer::tag('li', '$viewtype : ignored');
+        echo html_writer::tag('li', '$viewtype : error');
     }
 
     echo '</ul>';
@@ -134,7 +134,7 @@ function printOptions( $courseid, $modality, $groupid = NULL, $activities, $aver
 
 function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, $average, $custom_title,
                      $custom_weight_array = NULL, $averageonly, $viewtype ) {
-    global $OUTPUT;
+    global $OUTPUT, $CFG;
 
     if ( isset($modality) && $modality == 'intra' ) {
 
@@ -148,30 +148,60 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
         echo html_writer::tag('h4', groups_get_group_name($groupid) );
 
-        var_dump($activities);
-
         // Get grades for each activity
-        $grades = array();
+        $grades_array = array();
+        $activities_names = array();
+        $average_grades = array();
 
         // Get grades from user array and item_id
         foreach ( $activities as $activity ) {
 
-            $test = getGrades($users, $courseid, $activity);
-            var_dump($test);
+            // Push user grades for the activity
+            $activity_grades = getGrades($users, $courseid, $activity);
+            array_push($grades_array, $activity_grades);
 
-            // array_push($grades, getGrades($users, $courseid, $activity));
+            // Push the name of activity in array
+            array_push($activities_names, getActivityName($activity));
+
         }
 
-        var_dump($grades);
+        // Create a series with averages
+        if ( $average ) {
 
-        if ( $grades && $usernames ) {
+            $average_serie = array();
 
+            $user_grades = getActivitiesGradeFromUserID($users[0], $courseid, $activities);
+            $user_average = array_sum($user_grades) / count($user_grades);
+
+            var_dump($user_average);
+
+        }
+
+        if ( $grades_array && $usernames ) {
+
+            // Create chart and set some settings
             $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $series1 = new \core\chart_series('Note de l\'exercice', $grades);
+            $CFG->chart_colorset = ['#001f3f', '#D6CFCB', '#CCB7AE', '#A6808C', '#706677', '#565264', '#D9F0FF', '#A3D5FF', '#d6d6d6'];
 
-            $chart->add_series($series1);
+            // Iterate over the activities final grades
+            $i = 0;
+            foreach ( $grades_array as $activity_grades) {
+                $series = new \core\chart_series($activities_names[$i], $activity_grades);
+
+                if ( $averageonly == NULL ) {
+                    $chart->add_series($series);
+                }
+
+                $i++;
+            }
+
+            // More settings
             $chart->set_labels($usernames);
+            if ($custom_title) {
+                $chart->set_title($custom_title);
+            }
 
+            // Output chart
             echo $OUTPUT->render_chart($chart);
 
             echo '<hr />';
