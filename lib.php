@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function printCustomNav( $courseid, $role, $view ) {
+function printCustomNav( $courseid, $role, $view, $course_has_groups ) {
 
     switch ($role) {
         case 'student':
@@ -31,10 +31,14 @@ function printCustomNav( $courseid, $role, $view ) {
             }
 
             echo '<li class="nav-item"><a class="nav-link ' . $intramode . '" href="index.php?id=' . $courseid . '&view=intra"
-                          title="Me vs my group">Me vs My group</a></li>';
+                          title="Me vs others">Me vs others</a></li>';
 
-            echo '<li class="nav-item"><a class="nav-link ' . $intermode . '" href="index.php?id=' . $courseid . '&view=inter"
+            if ( $course_has_groups != false ) {
+
+                echo '<li class="nav-item"><a class="nav-link ' . $intermode . '" href="index.php?id=' . $courseid . '&view=inter"
                           title="Us vs them">Us vs them</a></li>';
+
+            }
 
             echo '</ul>';
             break;

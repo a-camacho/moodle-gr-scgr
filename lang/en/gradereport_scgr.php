@@ -115,3 +115,16 @@ $string['helper_group_help'] = 'Choose the group you want the users to be includ
 // Settings Page
 
 $string['settings_page_title'] = 'SCGR Settings';
+
+
+/* ################################################################################################################ */
+/* #############################################      FUNCTIONS        ############################################ */
+/* ################################################################################################################ */
+
+// Navigation
+
+$string['nav_custom'] = 'Custom chart';
+$string['nav_student_intra'] = 'Me vs others';
+$string['nav_student_inter'] = 'My group vs other groups';
+$string['nav_teacher_progression'] = 'Progression';
+$string['nav_teacher_comparison'] = 'Comparison';

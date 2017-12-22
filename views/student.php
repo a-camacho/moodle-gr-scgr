@@ -6,20 +6,22 @@ global $USER, $CFG;
 $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups_activation_choice));
 
 if ( in_array($courseid, $courses_with_groups) ) {
-    $user_groups = array_keys($USER->groupmember[2]);      // Function that extracts groups id's from $USER global variable
-    $user_groups_clean = implode(",", $user_groups);
-    $user_first_group = $user_groups[0];
+    $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
+    $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
+    $user_groups_clean = '(groups: ' . implode(",", $user_groups) . ')';
+    $course_has_groups = true;
 } else {
+    $user_groups = NULL;
     $user_groups_clean = '';
-    $user_first_group = NULL;
+    $course_has_groups = false;
 }
 
 // Print title
 echo html_writer::tag(  'h2', get_string('plugintitle', 'gradereport_scgr') . ' : ' . $role . ' - ' . $USER->firstname .
-                        ' ' . $USER->lastname . ' (groups:' . $user_groups_clean . ')');
+    ' ' . $USER->lastname . ' ' . $user_groups_clean);
 
 // Print navigation
-printCustomNav( $courseid, $role, $view );
+printCustomNav( $courseid, $role, $view, $course_has_groups );
 
 // printPluginConfig();
 
@@ -91,64 +93,72 @@ if ($view != 'inter') {
 
 } else {
 
-    echo html_writer::tag('p', get_string('student_inter_description', 'gradereport_scgr') );
+    if ( $course_has_groups != false ) {
 
-    $activities = getActivitiesFromCourseID($courseid, $categoryid);
+        echo html_writer::tag('p', get_string('student_inter_description', 'gradereport_scgr') );
 
-    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=inter';
-    $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
+        $activities = getActivitiesFromCourseID($courseid, $categoryid);
 
-    if ($mform->is_cancelled()) {
+        $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=inter';
+        $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
 
-    } else if ($fromform = $mform->get_data()) {
+        if ($mform->is_cancelled()) {
 
-        //Set default data and display form
-        $toform = '';
-        $mform->set_data($toform);
-        $mform->display();
-        $data = $mform->get_data();
+        } else if ($fromform = $mform->get_data()) {
 
-        // Start generating chart
-        $chart = new \core\chart_line();
-        $chart->set_smooth(true);
+            //Set default data and display form
+            $toform = '';
+            $mform->set_data($toform);
+            $mform->display();
+            $data = $mform->get_data();
 
-        // Try to set this color : 11ad55 to our user group
-        $color_array = array(   '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6',
-                                '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6','#d6d6d6','#d6d6d6' );
+            // Start generating chart
+            $chart = new \core\chart_line();
+            $chart->set_smooth(true);
 
-        $groupnames = getGroupNames($courseid);
-        $groups = getGroupsIDS($courseid);
+            // Try to set this color : 11ad55 to our user group
+            $color_array = array(   '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6',
+                '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6','#d6d6d6','#d6d6d6' );
 
-        // Trouver la position de $user_first_group dans $groups
-        $pos = array_search($user_first_group, $groups);
-        // Fixer la couleur en position POS+1 dans $color_array à 11ad55
-        $color_array[$pos+1] = '11ad55';
-        $CFG->chart_colorset = $color_array;
+            $groupnames = getGroupNames($courseid);
+            $groups = getGroupsIDS($courseid);
 
-        $activities = $data->activity;
+            // Trouver la position de $user_first_group dans $groups
+            $pos = array_search($user_first_group, $groups);
+            // Fixer la couleur en position POS+1 dans $color_array à 11ad55
+            $color_array[$pos+1] = '11ad55';
+            $CFG->chart_colorset = $color_array;
 
-        $i = 0;
-        foreach ( $groups as $groupid ) {
+            $activities = $data->activity;
 
-            $group_grades = getActivitiesGradeFromGroupID($groupid, $courseid, $activities);
-            $group_serie = new core\chart_series($groupnames[$i], $group_grades);
-            $chart->add_series($group_serie);
+            $i = 0;
+            foreach ( $groups as $groupid ) {
 
-            $i++;
+                $group_grades = getActivitiesGradeFromGroupID($groupid, $courseid, $activities);
+                $group_serie = new core\chart_series($groupnames[$i], $group_grades);
+                $chart->add_series($group_serie);
+
+                $i++;
+            }
+
+            $chart->set_labels(getActivitiesNames($activities));
+
+            echo $OUTPUT->render($chart);
+
+
+        } else {
+
+            //Set default data (if any)
+            $toform = '';
+            $mform->set_data($toform);
+            //displays the form
+            $mform->display();
+
         }
-
-        $chart->set_labels(getActivitiesNames($activities));
-
-        echo $OUTPUT->render($chart);
-
 
     } else {
 
-        //Set default data (if any)
-        $toform = '';
-        $mform->set_data($toform);
-        //displays the form
-        $mform->display();
+        echo 'Error : this course has no groups in settings.';
 
     }
 
