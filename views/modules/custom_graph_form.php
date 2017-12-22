@@ -37,12 +37,15 @@ class customhtml_form extends moodleform {
         $mform->addHelpButton('viewtype', 'helper_viewtype', 'gradereport_scgr');
 
         // ************** INTER-INTRA CHOICE **************
-        if ( $groupsactivated ) {
+        if ( $groupsactivated == true ) {
             $MODALITY_TYPES = array( 'inter' => get_string('form_custom_value_mod_inter', 'gradereport_scgr'),
                 'intra' => get_string('form_custom_value_mod_intra', 'gradereport_scgr'));
-            $mform->addElement('select', 'modality', get_string('form_custom_label_modality', 'gradereport_scgr'), $MODALITY_TYPES );
-            $mform->setDefault('modality', 'intra');
+        } else {
+            $MODALITY_TYPES = array( 'intra' => get_string('form_custom_value_mod_intra', 'gradereport_scgr'));
         }
+
+        $mform->addElement('select', 'modality', get_string('form_custom_label_modality', 'gradereport_scgr'), $MODALITY_TYPES );
+        $mform->setDefault('modality', 'intra');
 
         $mform->addHelpButton('modality', 'helper_modality', 'gradereport_scgr');
 
@@ -91,9 +94,10 @@ class customhtml_form extends moodleform {
 
             }
 
+            $mform->addHelpButton('group', 'helper_group', 'gradereport_scgr');
+
         }
         $mform->disabledIf('group', 'modality', $condition = 'eq', $value='inter');
-        $mform->addHelpButton('group', 'helper_group', 'gradereport_scgr');
 
         // ************** ACTIVITIES with custom weight **************
 

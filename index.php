@@ -173,7 +173,12 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
 
     } elseif ( current(get_user_roles($context, $USER->id))->shortname == 'editingteacher' ) {
         $role = 'editingteacher';
-        $view = 'default';
+
+        if ( isset($_GET['view']) ) {
+            $view = $_GET['view'];
+        } else {
+            $view = 'default';
+        }
 
         include_once('views/editingteacher.php');
 

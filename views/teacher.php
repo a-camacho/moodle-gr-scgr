@@ -9,9 +9,11 @@ if ( in_array($courseid, $courses_with_groups) ) {
     $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
     $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
     $user_groups_clean = '(groups: ' . implode(",", $user_groups) . ')';
+    $course_has_groups = true;
 } else {
     $user_groups = NULL;
     $user_groups_clean = '';
+    $course_has_groups = false;
 }
 
 // Print title
@@ -19,7 +21,7 @@ echo html_writer::tag(  'h2', get_string('plugintitle', 'gradereport_scgr') . ' 
     ' ' . $USER->lastname . ' ' . $user_groups_clean);
 
 // Print navigation
-printCustomNav( $courseid, $role, $view );
+printCustomNav( $courseid, $role, $view, $course_has_groups);
 
 // Include the form
 require_once('modules/choose_activities_form.php');

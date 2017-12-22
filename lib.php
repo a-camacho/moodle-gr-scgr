@@ -31,12 +31,12 @@ function printCustomNav( $courseid, $role, $view, $course_has_groups ) {
             }
 
             echo '<li class="nav-item"><a class="nav-link ' . $intramode . '" href="index.php?id=' . $courseid . '&view=intra"
-                          title="Me vs others">Me vs others</a></li>';
+                          title="' . get_string('nav_student_intra', 'gradereport_scgr') . '">' . get_string('nav_student_intra', 'gradereport_scgr') . '</a></li>';
 
             if ( $course_has_groups != false ) {
 
                 echo '<li class="nav-item"><a class="nav-link ' . $intermode . '" href="index.php?id=' . $courseid . '&view=inter"
-                          title="Us vs them">Us vs them</a></li>';
+                          title="' . get_string('nav_student_inter', 'gradereport_scgr') . '">' . get_string('nav_student_inter', 'gradereport_scgr') . '</a></li>';
 
             }
 
@@ -44,8 +44,20 @@ function printCustomNav( $courseid, $role, $view, $course_has_groups ) {
             break;
 
         case 'editingteacher':
+
+            if ( $view == 'default' || $view == 'custom' ) {
+                $custom = 'active';
+                $help = '';
+            } elseif ( $view == 'help' ) {
+                $custom = '';
+                $help = 'active';
+            }
+
             echo '<ul class="nav nav-tabs m-b-1">';
-            echo '<li class="nav-item"><a class="nav-link active" title="Custom graph" href="index.php?id=' . $courseid . '&view=custom">Custom graph</a></li>';
+            echo '<li class="nav-item"><a class="nav-link ' . $custom . '" title="' . get_string('nav_custom', 'gradereport_scgr') . '"
+                                          href="index.php?id=' . $courseid . '&view=custom">' . get_string('nav_custom', 'gradereport_scgr') . '</a></li>';
+            echo '<li class="nav-item"><a class="nav-link ' . $help . '" title="' . get_string('nav_help', 'gradereport_scgr') . '"
+                                          href="index.php?id=' . $courseid . '&view=help">' . get_string('nav_help', 'gradereport_scgr') . '</a></li>';
             echo '</ul>';
             break;
 
@@ -68,12 +80,12 @@ function printCustomNav( $courseid, $role, $view, $course_has_groups ) {
             echo '<ul class="nav nav-tabs m-b-1">';
 
             echo '<li class="nav-item"><a class="nav-link ' . $progression . '" href="index.php?id=' . $courseid . '&view=progression"
-                          title="Progression">Progression</a></li>';
+                          title="' . get_string('nav_teacher_progression', 'gradereport_scgr') . '">' . get_string('nav_teacher_progression', 'gradereport_scgr') . '</a></li>';
 
             echo '<li class="nav-item"><a class="nav-link ' . $comparison . '" href="index.php?id=' . $courseid . '&view=comparison"
-                          title="Comparison">Comparison</a></li>';
+                          title="' . get_string('nav_teacher_comparison', 'gradereport_scgr') . '">' . get_string('nav_teacher_comparison', 'gradereport_scgr') . '</a></li>';
 
-            echo '<li class="nav-item"><a class="nav-link ' . $custom . '" title="Custom graph" href="index.php?id=' . $courseid . '&view=custom">Custom graph</a></li>';
+            echo '<li class="nav-item"><a class="nav-link ' . $custom . '" title="' . get_string('nav_custom', 'gradereport_scgr') . '" href="index.php?id=' . $courseid . '&view=custom">' . get_string('nav_custom', 'gradereport_scgr') . '</a></li>';
             echo '</ul>';
             break;
     }
@@ -137,14 +149,23 @@ function printOptions( $courseid, $modality, $groupid = NULL, $activities, $aver
 }
 
 function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, $average, $custom_title,
-                     $custom_weight_array = NULL, $averageonly, $viewtype ) {
+                     $custom_weight_array = NULL, $averageonly, $viewtype, $course_has_groups, $context ) {
+
     global $OUTPUT, $CFG;
 
     if ( isset($modality) && $modality == 'intra' ) {
 
-        // Get users from choosen group
-        $users = getUsersFromGroup($groupid);           // Get users from this group
-        $usernames = getUsernamesFromGroup($groupid);   // Get usernames from this group
+        if ( $course_has_groups == true ) {
+            // Get users from choosen group
+            $users = getUsersFromGroup($groupid);               // Get users from this group
+            $users = stripTutorsFromUsers($users, $context);    // Strip tutors from users
+            $usernames = getUsernamesFromUsers($users);         // Get usernames from users
+        } else {
+            // Get users from course
+            $users = getUsersFromContext($context);
+            $users = stripTutorsFromUsers($users, $context);            // Strip tutors from users
+            $usernames = getUsernamesFromUsers($users);                 // Get usernames from users
+        }
 
         if ( $custom_title ) {
             echo html_writer::tag('h1', $custom_title );
@@ -397,7 +418,7 @@ function stripTutorsFromUsers($users, $context) {
 
         foreach ( $user_roles as $role ) {
 
-            if ( $role->shortname == 'teacher' ) {
+            if ( $role->shortname == 'teacher' || $role->shortname == 'editingteacher' ) {
                 $ignore_user = true;
             }
 
@@ -787,6 +808,20 @@ function getUsersFromGroup($groupid) {
     return $users_array;
 }
 
+function getUsersFromContext($context) {
+    $fields = 'u.id, u.username';              //return these fields
+    $users_array = array();
+
+    $users = get_enrolled_users($context, '', NULL, $fields);    // Get users from course (context)
+
+    foreach ( $users as $user ) {
+        array_push($users_array, intval($user->id));
+    }
+
+    return $users_array;
+
+}
+
 /*
  * getUsernamesFromGroup
  *
@@ -809,6 +844,25 @@ function getUsernamesFromGroup($groupid) {
     }
 
     return $usernames;
+}
+
+function getUsernamesFromUsers($users) {
+    $usernames = array();
+
+    foreach ($users as $user) {
+        array_push($usernames, getUsernameFromUserID($user) );
+    }
+
+    return $usernames;
+}
+
+function getUsernameFromUserID($userid) {
+    global $DB;
+
+    $user = $DB->get_record('user', array('id'=> $userid ));
+
+    return $user->username;
+
 }
 
 /*

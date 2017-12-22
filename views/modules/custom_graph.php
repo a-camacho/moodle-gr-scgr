@@ -23,23 +23,16 @@ echo html_writer::tag('hr', '');
 require_once('custom_graph_form.php');
 
 // Check if group feature is activated on this course
-$groupsactivated = explode(",", $CFG->scgr_course_groups_activation_choice);
-$aregroupsactivated = false;
-
-if ( in_array( $courseid, $groupsactivated , false ) ) {
-    // Set parameter at true
-    $aregroupsactivated = true;
-    // Get groups
+if ( $course_has_groups == true ) {
     $groups = getGroups($courseid);
 } else {
-    // Set groups at NULL
     $groups = NULL;
 }
 
 // Create form action url
 $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&graph=' . $mode;
 
-$mform = new customhtml_form( $forms_action_url, array( $courseid, $activities, $groups, $aregroupsactivated, $user_groups ) );
+$mform = new customhtml_form( $forms_action_url, array( $courseid, $activities, $groups, $course_has_groups, $user_groups ) );
 
 // Handle form cancel operation, if cancel button is present on form
 if ($mform->is_cancelled()) {
@@ -124,7 +117,7 @@ if ($mform->is_cancelled()) {
         printOptions(    $courseid, $modality, $group_id, $activities,
                          $average, $custom_title, $viewtype );
         printGraph( $courseid, $modality, $group_id, $activities, $average, $custom_title, $custom_weight_array,
-                    $averageonly, $viewtype );
+                    $averageonly, $viewtype, $course_has_groups, $context );
 
     }
 
