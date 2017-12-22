@@ -92,8 +92,7 @@ function printCustomNav( $courseid, $role, $view, $course_has_groups ) {
 
 }
 
-function printOptions( $courseid, $modality, $groupid = NULL, $activities, $average, $custom_title, $viewtype ) {
-
+function printOptions( $courseid, $modality, $groupid = NULL, $activities, $average, $custom_title, $viewtype, $gradesinpercentage = false ) {
 
     $groupname = groups_get_group_name($groupid);
 
@@ -111,6 +110,12 @@ function printOptions( $courseid, $modality, $groupid = NULL, $activities, $aver
         echo html_writer::tag('li', 'Modality : ' . $modality);
     } else {
         echo html_writer::tag('li', 'Modality : ignored');
+    }
+
+    if ( $gradesinpercentage == true ) {
+        echo html_writer::tag('li', 'Grades in % : yes');
+    } else {
+        echo html_writer::tag('li', 'Grades in % : no');
     }
 
     if ( $average ) {
@@ -149,7 +154,7 @@ function printOptions( $courseid, $modality, $groupid = NULL, $activities, $aver
 }
 
 function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, $average, $custom_title,
-                     $custom_weight_array = NULL, $averageonly, $viewtype, $course_has_groups, $context ) {
+                     $custom_weight_array = NULL, $averageonly, $viewtype, $course_has_groups, $context, $gradesinpercentage ) {
 
     global $OUTPUT, $CFG;
 
@@ -176,13 +181,12 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
         // Get grades for each activity
         $grades_array = array();
         $activities_names = array();
-        $average_grades = array();
 
         // Get grades from user array and item_id
         foreach ( $activities as $activity ) {
 
             // Push user grades for the activity
-            $activity_grades = getGrades($users, $courseid, $activity);
+            $activity_grades = getGrades($users, $courseid, $activity, $gradesinpercentage);
             array_push($grades_array, $activity_grades);
 
             // Push the name of activity in array
@@ -215,7 +219,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
                 $average_array = array();
 
                 foreach ( $users as $user ) {
-                    $user_grades = getActivitiesGradeFromUserID($user, $courseid, $activities);
+                    $user_grades = getActivitiesGradeFromUserID($user, $courseid, $activities, $gradesinpercentage);
                     array_push($average_array, getAverage($user_grades, NULL));
                 }
 
@@ -447,15 +451,11 @@ function stripTutorsFromUsers($users, $context) {
 function getAverage( $grades, $weights = NULL ) {
 
     if ( !$weights & $grades ) {
-
         $result = array_sum($grades) / count($grades);
-
-    } else {
-
+        $result = round($result, 2);
     }
 
     return $result;
-
 }
 
 /*
@@ -569,23 +569,44 @@ function getActivitiesNames($activities) {
  * @return (array)
  */
 
-function getGrades($users, $courseid, $activity) {
-
+function getGrades($users, $courseid, $activity, $inpercentage = false) {
     $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $users);
     $grades = array();
+    $max_grade = floatval($grading_info->items[0]->grademax);
 
     foreach ($users as $user) {
-
         if ( !empty($grading_info->items) ) {
             $grade = $grading_info->items[0]->grades[$user]->grade;
+
+            if ($inpercentage == true) {
+                $grade = $grade / $max_grade * 100;
+                $grade = round($grade, 2);
+            }
+
             array_push($grades, floatval($grade));
         }
-
     }
-
     return $grades;
-
 }
+
+function getGrade($userid, $courseid, $activity, $inpercentage = false) {
+    $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
+    $grade = NULL;
+    $max_grade = floatval($grading_info->items[0]->grademax);
+
+    if ( !empty($grading_info->items) ) {
+        $grade = $grading_info->items[0]->grades[$userid]->grade;
+
+        if ($inpercentage == true) {
+            $grade = $grade / $max_grade * 100;
+            $grade = round($grade, 2);
+        }
+
+        return $grade;
+    }
+}
+
+
 
 function getEnrolledUsersFromContext($context) {
 
@@ -641,31 +662,33 @@ function getActivitiesGradeFromGroupID($groupid, $courseid, $activities) {
 
 }
 
-function getActivityGradeFromUserID($userid, $courseid, $activity) {
+function getActivityGradeFromUsers($users, $courseid, $activity) {
 
-    $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
-    $grade = NULL;
+    $grades_array = array();
 
-    if ( !empty($grading_info->items) ) {
-        $grade = $grading_info->items[0]->grades[$userid]->grade;
-        return $grade;
-    }
-
-}
-
-function getActivitiesGradeFromUserID($userid, $courseid, $activities) {
-
-    $grades = array();
-
-    foreach ($activities as $activity) {
+    foreach ( $users as $userid ) {
 
         $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
+        $grade = NULL;
 
         if ( !empty($grading_info->items) ) {
             $grade = $grading_info->items[0]->grades[$userid]->grade;
-            array_push($grades, floatval($grade));
         }
 
+        array_push($grades_array, $grade);
+
+    }
+
+    return $grades_array;
+
+}
+
+function getActivitiesGradeFromUserID($userid, $courseid, $activities, $inpercentage = false) {
+    $grades = array();
+
+    foreach ($activities as $activity) {
+        $grade = getGrade($userid, $courseid, $activity, $inpercentage);
+        array_push($grades, $grade);
     }
 
     return $grades;
@@ -781,6 +804,7 @@ function getActivitiesFromCourseID($courseid, $categoryid) {
 
     foreach ( $records as $record ) {
         $activities_list[$record->iteminstance] = $record->itemname . ' (' . $record->iteminstance . ')';
+
     }
 
     return $activities_list;

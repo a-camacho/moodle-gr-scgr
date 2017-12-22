@@ -42,15 +42,17 @@ $string['form_button_submit'] = 'Submit';
 
 // Predefined graphs - Descriptions
 
-$string['student_intra_description'] = 'L\'étudiant peut voir une visualisation de ses résultats au travers différentes
-activités (à son choix) contrastées avec la moyenne de son propre groupe.';
+$string['student_intra_description'] = 'Student can see a chart presenting his progress (success) over the chosen
+activities and compare it with the group/classroom average.';
 
-$string['student_inter_description'] = 'L\'étudiant peut voir une visualisation comparant les résultats des différents
-groupes à travers différentes activités.';
+$string['student_inter_description'] = 'Student can see a chart comparing results of his group with results of other groups.';
 
-$string['teacher_progression_description'] = 'Le tuteur peut voir la progression de ses apprenants (leur réussite sur
-différentes activités au choix)';
+$string['teacher_progression_description'] = 'Teacher can watch students progression (success) over chosen activities.';
 
+$string['teacher_comparison_description'] = 'Teacher can see students comparison over chosen activities.';
+
+$string['custom_group_restriction_desc'] = '<strong><u>Information</u></strong> : Teachers will only be able to generate
+charts from students in groups that they belong in. <br />Groups are <strong>active</strong>. You belong to following group(s) : ';
 
 
 // Predefined graphs - Customize
@@ -65,9 +67,8 @@ $string['predefined_customize_label_activity'] = 'Activities';
 
 // Forms - Custom
 
-$string['form_custom_title'] = 'Custom graph';
-$string['form_custom_subtitle'] = 'Generate a graph using one value (grade or average) for one entity (person or group)';
-$string['form_custom_subtitle2'] = '';
+$string['form_custom_title'] = 'Custom chart';
+$string['form_custom_subtitle'] = 'Generate a chart comparing students (or groups of students) over chosen activities.';
 
 // Forms - Custom - Labels
 
@@ -80,6 +81,8 @@ $string['form_custom_label_group'] = 'Group';
 $string['form_custom_label_average'] = 'Calculate average';
 $string['form_custom_label_averageonly'] = 'Show only average';
 $string['form_custom_label_custom_weighting'] = 'Custom weighting';
+$string['form_custom_label_gradesinpercentage'] = 'Grades in %';
+$string['form_custom_label_gradesinpercentage_desc'] = 'Grades are calculated in percentage';
 
 // Forms - Custom - Values
 
@@ -94,8 +97,11 @@ $string['helper_customtitle'] = 'Add a custom title?';
 $string['helper_customtitle_help'] = 'If enabled, this will show a custom title in heading of graph.';
 $string['helper_viewtype'] = 'Choose view type';
 $string['helper_viewtype_help'] = 'Choose view type for the graph.';
+$string['helper_gradesinpercentage'] = 'Calculates grades in percentage';
+$string['helper_gradesinpercentage_help'] = 'Important if your activities max grade does not match';
 $string['helper_modality'] = 'Choose modality';
-$string['helper_modality_help'] = 'Intra-group will show you comparison of students of a group.<br />Inter-group will show you comparison of groups in course.';
+$string['helper_modality_help'] = 'Intra-group will show you comparison of students of a group.<br />
+                                   Inter-group will show you comparison of groups in course.';
 $string['helper_average'] = 'Calculate average?';
 $string['helper_averageonly'] = 'Show average only';
 $string['helper_averageonly_help'] = 'If enabled, the series used to calculate average will be hidden and only average will be showed.';
