@@ -129,3 +129,7 @@ $string['nav_student_intra'] = 'Me vs others';
 $string['nav_student_inter'] = 'My group vs other groups';
 $string['nav_teacher_progression'] = 'Progression';
 $string['nav_teacher_comparison'] = 'Comparison';
+
+// Help page
+
+$string['help_title'] = 'Help page';

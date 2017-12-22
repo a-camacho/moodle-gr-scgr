@@ -135,7 +135,7 @@ class customhtml_form extends moodleform {
         $mform->addElement('header', 'scgr-activities', 'Activities');
 
         $ACTIVITIES_LIST = $this->_customdata[1];
-        $START_REPETITIONS = 3;
+        $START_REPETITIONS = 1;
         $MAX_ACTIVITIES = count($ACTIVITIES_LIST);
 
         $attributes = array('size'=>'20');
