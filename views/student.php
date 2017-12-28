@@ -10,6 +10,7 @@ if ( in_array($courseid, $courses_with_groups) ) {
     $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
     $user_groups_clean = '(groups: ' . implode(",", $user_groups) . ')';
     $course_has_groups = true;
+    $user_first_group = $user_groups[0];
 } else {
     $user_groups = NULL;
     $user_groups_clean = '';
