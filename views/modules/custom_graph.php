@@ -20,7 +20,7 @@ if ( $role == 'teacher' ) {
 echo html_writer::tag('hr', '');
 
 // Include the form
-require_once('custom_graph_form.php');
+require_once($CFG->dirroot.'/grade/report/scgr/forms/custom_graph_form.php');
 
 // Check if group feature is activated on this course
 if ( $course_has_groups == true ) {
