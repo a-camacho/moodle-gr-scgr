@@ -27,7 +27,7 @@ printCustomNav( $courseid, $role, $view, $course_has_groups );
 // printPluginConfig();
 
 // Include the form
-require_once('modules/choose_activities_form.php');
+require_once($CFG->dirroot.'/grade/report/scgr/forms/choose_activities_form.php');
 
 if ($view != 'inter') {
 
