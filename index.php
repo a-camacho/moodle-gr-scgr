@@ -171,7 +171,8 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
 
         include_once('views/teacher.php');
 
-    } elseif ( current(get_user_roles($context, $USER->id))->shortname == 'editingteacher' ) {
+    } elseif ( current(get_user_roles($context, $USER->id))->shortname == 'editingteacher' ||
+               current(get_user_roles($context, $USER->id))->shortname == 'manager' ) {
         $role = 'editingteacher';
 
         if ( isset($_GET['view']) ) {
