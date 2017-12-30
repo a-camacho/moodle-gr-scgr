@@ -117,17 +117,25 @@ if ($view != 'inter') {
             $chart = new \core\chart_line();
             $chart->set_smooth(true);
 
+            // Axes
+            $xaxis = $chart->get_xaxis(0, true);
+            $yaxis = $chart->get_yaxis(0, true);
+
+            $yaxis->set_label("Grade in %");
+            $yaxis->set_min(1);
+            $yaxis->set_max(100);
+
             // Try to set this color : 11ad55 to our user group
-            $color_array = array(   '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6',
+            $color_array = array(   '#d6d6d6', '#26A65B', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6',
                 '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6','#d6d6d6','#d6d6d6' );
 
             $groupnames = getGroupNames($courseid);
             $groups = getGroupsIDS($courseid);
 
             // Trouver la position de $user_first_group dans $groups
-            $pos = array_search($user_first_group, $groups);
+            // $pos = array_search($user_first_group, $groups);
             // Fixer la couleur en position POS+1 dans $color_array à 11ad55
-            $color_array[$pos+1] = '11ad55';
+            // $color_array[$pos+1] = '11ad55';
             $CFG->chart_colorset = $color_array;
 
             $activities = $data->activity;
@@ -135,8 +143,12 @@ if ($view != 'inter') {
             $i = 0;
             foreach ( $groups as $groupid ) {
 
-                $group_grades = getActivitiesGradeFromGroupID($groupid, $courseid, $activities);
-                $group_serie = new core\chart_series($groupnames[$i], $group_grades);
+                $users = getUsersFromGroup($groupid);
+                $group_grades = getActivitiesGradeFromUsers($users, $courseid, $activities, true);
+                $group_serie = new \core\chart_series($groupnames[$i], $group_grades);
+
+                // $group_grades = getActivitiesGradeFromGroupID($groupid, $courseid, $activities);
+                // $group_serie = new core\chart_series($groupnames[$i], $group_grades);
                 $chart->add_series($group_serie);
 
                 $i++;
