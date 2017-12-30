@@ -59,18 +59,18 @@ if ($view != 'inter') {
 
         if ( in_array($courseid, $courses_with_groups) ) {
             $users = getUsersFromGroup($user_first_group);
-            $group_average = new \core\chart_series('Moyenne de mon groupe', getActivitiesGradeFromUsers($users, $courseid, $activities));
+            $group_average = new \core\chart_series('Moyenne de mon groupe', getActivitiesGradeFromUsers($users, $courseid, $activities, true));
             $group_average->set_type(\core\chart_series::TYPE_LINE);
             $group_average->set_smooth(true);
         } else {
             $users = getEnrolledUsersFromContext($context);
-            $group_average = new \core\chart_series('Moyenne de la classe', getActivitiesGradeFromUsers($users, $courseid, $activities));
+            $group_average = new \core\chart_series('Moyenne de la classe', getActivitiesGradeFromUsers($users, $courseid, $activities, true));
             $group_average->set_type(\core\chart_series::TYPE_LINE);
             $group_average->set_smooth(true);
         }
 
         $chart = new core\chart_bar();
-        $user_grades = new core\chart_series('Mes résultats', getActivitiesGradeFromUserID($userid, $courseid, $activities) );
+        $user_grades = new core\chart_series('Mes résultats', getActivitiesGradeFromUserID($userid, $courseid, $activities, true) );
 
         $chart->set_labels(getActivitiesNames($activities));
         $chart->add_series($group_average);

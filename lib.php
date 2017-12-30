@@ -622,10 +622,12 @@ function getEnrolledUsersFromContext($context) {
 
 }
 
-function getActivityGradeFromGroupID($groupid, $courseid, $activity) {
+function getActivityGradeFromGroupID($groupid, $courseid, $activity, $inpercentage = false) {
 
+    $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, 0);
     $users = getUsersFromGroup($groupid);
     $grades = array();
+    $max_grade = floatval($grading_info->items[0]->grademax);
 
     foreach ($users as $userid) {
 
@@ -634,6 +636,12 @@ function getActivityGradeFromGroupID($groupid, $courseid, $activity) {
 
         if ( !empty($grading_info->items) ) {
             $grade = $grading_info->items[0]->grades[$userid]->grade;
+
+            if ($inpercentage == true) {
+                $grade = $grade / $max_grade * 100;
+                $grade = round($grade, 2);
+            }
+
             array_push($grades, $grade);
         }
 
@@ -654,7 +662,7 @@ function getActivitiesGradeFromGroupID($groupid, $courseid, $activities) {
     $grades = array();
 
     foreach ( $activities as $activity ) {
-        $grade = getActivityGradeFromGroupID($groupid, $courseid, $activity);
+        $grade = getActivityGradeFromGroupID($groupid, $courseid, $activity, true);
         array_push($grades, $grade);
     }
 
@@ -695,7 +703,7 @@ function getActivitiesGradeFromUserID($userid, $courseid, $activities, $inpercen
 
 }
 
-function getActivitiesGradeFromUsers($users, $courseid, $activities) {
+function getActivitiesGradeFromUsers($users, $courseid, $activities, $inpercentage = false) {
 
     $average_grades = array();
 
@@ -703,15 +711,17 @@ function getActivitiesGradeFromUsers($users, $courseid, $activities) {
 
         $grades = array();
 
+        $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, 0);
+
         foreach ( $users as $user ) {
 
-            $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $user);
+            $grading_user_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $user);
 
-            if ( !empty($grading_info->items) ) {
+            if ( !empty($grading_user_info->items) ) {
 
-                if ( !empty($grading_info->items[0]->grades[$user]->grade) ) {
+                if ( !empty($grading_user_info->items[0]->grades[$user]->grade) ) {
 
-                    $grade = $grading_info->items[0]->grades[$user]->grade;
+                    $grade = $grading_user_info->items[0]->grades[$user]->grade;
                     array_push($grades, floatval($grade));
 
                 }
@@ -720,9 +730,19 @@ function getActivitiesGradeFromUsers($users, $courseid, $activities) {
         }
 
         if ( count($grades) != 0 ) {
+
             $average_grade = array_sum($grades) / count($grades);
+
+            if ($inpercentage == true) {
+                $max_grade = floatval($grading_info->items[0]->grademax);
+                $average_grade = $average_grade / $max_grade * 100;
+                $average_grade = round($average_grade, 2);
+            }
+
         } else {
+
             $average_grade = 0;
+            
         }
 
         array_push($average_grades, number_format(floatval($average_grade), 2));
