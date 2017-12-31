@@ -201,6 +201,11 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
             $CFG->chart_colorset = ['#001f3f', '#D6CFCB', '#CCB7AE', '#A6808C', '#706677', '#565264', '#D9F0FF', '#A3D5FF', '#d6d6d6'];
 
+            // Axes
+            $yaxis = $chart->get_yaxis(0, true);
+            $yaxis->set_min(0);
+            $yaxis->set_max(100);
+
             // Iterate over the activities final grades
             $i = 0;
             foreach ( $grades_array as $activity_grades) {
@@ -265,9 +270,8 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             $chart = new \core\chart_bar(); // Create a bar chart instance.
 
             // Axes
-            $xaxis = $chart->get_xaxis(0, true);
             $yaxis = $chart->get_yaxis(0, true);
-            $yaxis->set_min(1);
+            $yaxis->set_min(0);
             $yaxis->set_max(100);
 
             foreach ( $activities as $activity ) {
