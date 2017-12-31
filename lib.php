@@ -840,8 +840,7 @@ function getActivitiesFromCourseID($courseid, $categoryid) {
     $activities_list = array();
 
     foreach ( $records as $record ) {
-        $activities_list[$record->iteminstance] = $record->itemname . ' (' . $record->iteminstance . ')';
-
+        $activities_list[$record->iteminstance] = $record->itemname . ' (item:' . $record->iteminstance . ', weight:'. $record->aggregationcoef2 .')';
     }
 
     return $activities_list;

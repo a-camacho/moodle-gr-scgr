@@ -65,8 +65,12 @@ if ($mform->is_cancelled()) {                                               // I
 
     $activities = array();
     if ( property_exists($data, "activity") ) {
-        foreach ( $data->activity as $activity ) { array_push($activities, intval($activity)); }
-    } else { $activities = NULL; }
+        foreach ( $data->activity as $activity ) {
+            array_push($activities, intval($activity));
+        }
+    } else {
+        $activities = NULL;
+    }
 
     $averageonly = ( intval($data->averageonly) == 1 ) ? true : false;
     $custom_weight_array = array();
