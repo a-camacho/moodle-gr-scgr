@@ -101,19 +101,6 @@ $gpr = new grade_plugin_return(array('type'=>'report', 'plugin'=>'scgr', 'course
 // Set URL of plugin page
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
 
-// Set page header
-    // FIX : Needs to be set dynamically
-    $header = get_string('grades', 'grades') . ': Social Comparison GR';
-$PAGE->set_title($header);
-
-// Set page heading
-    // FIX : Needs to be set dynamically
-$PAGE->set_heading('UniTICE 2016-2017: Social Comparison GR');
-
-// Include custom JS and CSS
-$PAGE->requires->css('/grade/report/scgr/styles.css');
-// $PAGE->requires->js_call_amd('formcontrol', 'init');
-
 $forms_action_url = new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid));
 
 
@@ -135,7 +122,8 @@ $config = get_config('grade_report_scgr');
 /* ################################################################################################################ */
 
 // Print header
-echo $OUTPUT->header();
+// echo $OUTPUT->header();
+print_grade_page_head($courseid, 'report', 'scgr', 'UniTICE 2016-2017: Social Comparison GR', false, '');
 
 // Check if plugin is activated for this course
 $activated_on = explode(",", $CFG->scgr_course_activation_choice);

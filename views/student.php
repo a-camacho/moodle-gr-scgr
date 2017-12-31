@@ -18,8 +18,8 @@ if ( in_array($courseid, $courses_with_groups) ) {
 }
 
 // Print title
-echo html_writer::tag(  'h2', get_string('plugintitle', 'gradereport_scgr') . ' : ' . $role . ' - ' . $USER->firstname .
-    ' ' . $USER->lastname . ' ' . $user_groups_clean);
+/* echo html_writer::tag(  'h2', get_string('plugintitle', 'gradereport_scgr') . ' : ' . $role . ' - ' . $USER->firstname .
+    ' ' . $USER->lastname . ' ' . $user_groups_clean); */
 
 // Print navigation
 printCustomNav( $courseid, $role, $view, $course_has_groups );
