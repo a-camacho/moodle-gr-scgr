@@ -275,7 +275,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             $yaxis->set_max(100);
 
             foreach ( $activities as $activity ) {
-                $grades = getGradesFromGroups($courseid, $activity, $gradesinpercentage);
+                $grades = getGradesFromGroups($courseid, $activity, $gradesinpercentage, $context);
                 $series = new \core\chart_series(getActivityName($activity), $grades);
                 $chart->add_series($series);
             }
@@ -478,7 +478,7 @@ function getAverage( $grades, $weights = NULL ) {
  * @return (array)
  */
 
-function getGradesFromGroups( $courseid, $activity, $inpercentage = false ) {
+function getGradesFromGroups( $courseid, $activity, $inpercentage = false, $context ) {
 
     $groups = getGroupsIDS($courseid);
     $groups_grades = array();
@@ -486,17 +486,14 @@ function getGradesFromGroups( $courseid, $activity, $inpercentage = false ) {
     foreach ( $groups as $groupid ) {
 
         $users = getUsersFromGroup($groupid);
-        $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $users);
+        $users = stripTutorsFromUsers($users, $context);    // Strip tutors from users
+
         $users_grades = array();
         $total = 0;
 
         foreach ($users as $user) {
-
             $user_grade = getGrade($user, $courseid, $activity, $inpercentage);
-
-            // $user_grade = $grading_info->items[0]->grades[$user]->grade;
             array_push( $users_grades, floatval($user_grade) );
-
             $total = $total + floatval($user_grade);
         }
 
