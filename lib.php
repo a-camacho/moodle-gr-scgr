@@ -274,6 +274,12 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             $yaxis->set_min(0);
             $yaxis->set_max(100);
 
+            if ($gradesinpercentage) {
+                $yaxis->set_label("Grade in %");
+            } else {
+                $yaxis->set_label("Grade in points");
+            }
+
             foreach ( $activities as $activity ) {
                 $grades = getGradesFromGroups($courseid, $activity, $gradesinpercentage, $context);
                 $series = new \core\chart_series(getActivityName($activity), $grades);
@@ -493,12 +499,14 @@ function getGradesFromGroups( $courseid, $activity, $inpercentage = false, $cont
 
         foreach ($users as $user) {
             $user_grade = getGrade($user, $courseid, $activity, $inpercentage);
-            array_push( $users_grades, floatval($user_grade) );
+            $user_grade = round(floatval($user_grade), 2);
+            array_push( $users_grades, $user_grade);
             $total = $total + floatval($user_grade);
         }
 
         $count = count( $users_grades );
         $average = $total / $count;
+        $average = round($average, 2);
 
         // Push average grade of group in array
         array_push($groups_grades, $average);
