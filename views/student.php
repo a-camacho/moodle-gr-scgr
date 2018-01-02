@@ -126,7 +126,7 @@ if ($view != 'inter') {
             $yaxis->set_max(100);
 
             // Try to set this color : 11ad55 to our user group
-            $color_array = array(   '#d6d6d6', '#26A65B', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6',
+            $color_array = array(   '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6',
                 '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6', '#d6d6d6','#d6d6d6','#d6d6d6' );
 
             $groupnames = getGroupNames($courseid);
@@ -135,7 +135,22 @@ if ($view != 'inter') {
             // Trouver la position de $user_first_group dans $groups
             // $pos = array_search($user_first_group, $groups);
             // Fixer la couleur en position POS+1 dans $color_array à 11ad55
-            // $color_array[$pos+1] = '11ad55';
+
+            // Check the position of user groups in groups array
+            $p = 0;
+            $positions = array();
+            foreach ( $groups as $groupid ) {
+                if ( groups_is_member($groupid, $userid) ) {
+                    array_push($positions, $p);
+                }
+                $p++;
+            }
+
+            // Fix green color on groups that user belongs too
+            foreach ( $positions as $position ) {
+                $color_array[$position+1] = '#11ad55';
+            }
+
             $CFG->chart_colorset = $color_array;
 
             $activities = $data->activity;
