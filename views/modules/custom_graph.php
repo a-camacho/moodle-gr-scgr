@@ -14,7 +14,7 @@ echo html_writer::tag('h3', get_string('form_custom_title', 'gradereport_scgr') 
 echo html_writer::tag('p', get_string('form_custom_subtitle', 'gradereport_scgr') );
 
 if ( $role == 'teacher' ) {
-    echo html_writer::tag('p', get_string('custom_group_restriction_desc', 'gradereport_scgr') . $user_groups_clean );
+    echo html_writer::tag('p', get_string('custom_group_restriction_desc', 'gradereport_scgr') . $user_groups_names_clean );
 }
 
 echo html_writer::tag('hr', '');

@@ -8,11 +8,17 @@ $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups
 if ( in_array($courseid, $courses_with_groups) ) {
     $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
     $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
+    $user_groups_names = array();
+    foreach ( $user_groups as $group ) {
+        array_push($user_groups_names, groups_get_group_name($group));
+    }
     $user_groups_clean = implode(", ", $user_groups);
+    $user_groups_names_clean = implode(", ", $user_groups_names);
     $course_has_groups = true;
 } else {
     $user_groups = NULL;
     $user_groups_clean = '';
+    $user_groups_names_clean = '';
     $course_has_groups = false;
 }
 
