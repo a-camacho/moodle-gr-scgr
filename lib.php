@@ -142,7 +142,7 @@ function printOptions( $courseid, $modality, $groupid = NULL, $activities, $aver
         echo html_writer::tag('h6', 'Activities');
         echo '<ul>';
         foreach ( $activities as $activity ) {
-            echo html_writer::tag('li', 'Activity : ' . getActivityName( $activity ) . ' (#' . $activity . ')');
+            echo html_writer::tag('li', 'Activity : ' . getActivityName($activity, $courseid) . ' (#' . $activity . ')');
         }
         echo '</ul>';
     } else {
@@ -190,7 +190,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             array_push($grades_array, $activity_grades);
 
             // Push the name of activity in array
-            array_push($activities_names, getActivityName($activity));
+            array_push($activities_names, getActivityName($activity, $courseid));
 
         }
 
@@ -547,28 +547,24 @@ function getGroupsIDS( $courseid ) {
  * @return (string)
  */
 
-function getActivityName($instanceitem) {
+function getActivityName($instanceitem, $courseid) {
     global $DB;
 
-    $sql = "SELECT * FROM unitice_assign WHERE id = $instanceitem";           // SQL Query
+    $sql = "SELECT itemname FROM unitice_grade_items WHERE iteminstance = $instanceitem AND courseid = $courseid";   // SQL Query
     $records = $DB->get_records_sql($sql);
 
-    foreach ($records as $record) {
-        return $record->name;
-    }
+    return key($records);
 }
 
-function getActivitiesNames($activities) {
+function getActivitiesNames($activities, $courseid) {
     global $DB;
 
     $activities_names = array();
 
     foreach ( $activities as $activity) {
-        $sql = "SELECT * FROM unitice_assign WHERE id = $activity";           // SQL Query
+        $sql = "SELECT itemname FROM unitice_grade_items WHERE iteminstance = $instanceitem AND courseid = $courseid";
         $records = $DB->get_records_sql($sql);
-        foreach ($records as $record) {
-            array_push($activities_names, $record->name);
-        }
+        array_push($activities_names, key($records));
     }
 
     return $activities_names;
