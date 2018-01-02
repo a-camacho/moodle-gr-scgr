@@ -550,7 +550,7 @@ function getGroupsIDS( $courseid ) {
 function getActivityName($instanceitem, $courseid) {
     global $DB, $CFG;
 
-    $sql = "SELECT itemname FROM ' . $CFG->prefix . 'grade_items WHERE iteminstance = $instanceitem AND courseid = $courseid";   // SQL Query
+    $sql = "SELECT itemname FROM " . $CFG->prefix . "grade_items WHERE iteminstance = $instanceitem AND courseid = $courseid";   // SQL Query
     $records = $DB->get_records_sql($sql);
 
     return key($records);
@@ -562,7 +562,7 @@ function getActivitiesNames($activities, $courseid) {
     $activities_names = array();
 
     foreach ( $activities as $activity) {
-        $sql = "SELECT itemname FROM ' . $CFG->prefix . 'grade_items WHERE iteminstance = $activity AND courseid = $courseid";
+        $sql = "SELECT itemname FROM " . $CFG->prefix . "grade_items WHERE iteminstance = $activity AND courseid = $courseid";
         $records = $DB->get_records_sql($sql);
         array_push($activities_names, key($records));
     }
@@ -827,7 +827,7 @@ function getCoursesIDandNames() {
 function getSectionsFromCourseID($courseid) {
     global $DB, $CFG;
 
-    $sql = "SELECT * FROM ' . $CFG->prefix . 'course_sections
+    $sql = "SELECT * FROM " . $CFG->prefix . "course_sections
             WHERE course = $courseid";         // SQL Query
     $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
     $sections_list = array();                               // Initialize sections array (empty)
@@ -852,10 +852,9 @@ function getSectionsFromCourseID($courseid) {
 function getActivitiesFromCourseID($courseid, $categoryid) {
     global $DB, $CFG;
 
-    $sql = "SELECT * FROM ' . $CFG->prefix . 'grade_items
-                    WHERE courseid = " . $courseid . "
-                    AND hidden != 1
-                    AND categoryid = " . $categoryid . " ORDER BY iteminstance";       // SQL Query
+    $sql = "SELECT * FROM " . $CFG->prefix . "grade_items WHERE courseid = " . $courseid . " AND hidden != 1 AND categoryid =
+           " . $categoryid . " ORDER BY iteminstance";
+
     $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
     $activities_list = array();
 
