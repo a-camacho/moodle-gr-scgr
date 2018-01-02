@@ -72,7 +72,7 @@ if ($view != 'inter') {
         $chart = new core\chart_bar();
         $user_grades = new core\chart_series('Mes résultats', getActivitiesGradeFromUserID($userid, $courseid, $activities, true) );
 
-        $chart->set_labels(getActivitiesNames($activities));
+        $chart->set_labels(getActivitiesNames($activities, $courseid));
         $chart->add_series($group_average);
         $chart->add_series($user_grades);
 
@@ -154,7 +154,7 @@ if ($view != 'inter') {
                 $i++;
             }
 
-            $chart->set_labels(getActivitiesNames($activities));
+            $chart->set_labels(getActivitiesNames($activities, $courseid));
 
             echo $OUTPUT->render($chart);
 

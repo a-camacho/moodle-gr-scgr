@@ -282,7 +282,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             foreach ( $activities as $activity ) {
                 $grades = getGradesFromGroups($courseid, $activity, $gradesinpercentage, $context);
-                $series = new \core\chart_series(getActivityName($activity), $grades);
+                $series = new \core\chart_series(getActivityName($activity, $courseid), $grades);
                 $chart->add_series($series);
             }
 
@@ -548,21 +548,21 @@ function getGroupsIDS( $courseid ) {
  */
 
 function getActivityName($instanceitem, $courseid) {
-    global $DB;
+    global $DB, $CFG;
 
-    $sql = "SELECT itemname FROM unitice_grade_items WHERE iteminstance = $instanceitem AND courseid = $courseid";   // SQL Query
+    $sql = "SELECT itemname FROM ' . $CFG->prefix . 'grade_items WHERE iteminstance = $instanceitem AND courseid = $courseid";   // SQL Query
     $records = $DB->get_records_sql($sql);
 
     return key($records);
 }
 
 function getActivitiesNames($activities, $courseid) {
-    global $DB;
+    global $DB, $CFG;
 
     $activities_names = array();
 
     foreach ( $activities as $activity) {
-        $sql = "SELECT itemname FROM unitice_grade_items WHERE iteminstance = $instanceitem AND courseid = $courseid";
+        $sql = "SELECT itemname FROM ' . $CFG->prefix . 'grade_items WHERE iteminstance = $activity AND courseid = $courseid";
         $records = $DB->get_records_sql($sql);
         array_push($activities_names, key($records));
     }
@@ -583,9 +583,9 @@ function getActivitiesNames($activities, $courseid) {
  */
 
 function getGrades($users, $courseid, $activity, $inpercentage = false) {
-    global $DB;
+    global $DB, $CFG;
 
-    $modulename = $DB->get_records_sql('SELECT itemmodule FROM unitice_grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
+    $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
     $modulename = key($modulename);
 
     $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $users);
@@ -610,7 +610,12 @@ function getGrades($users, $courseid, $activity, $inpercentage = false) {
 }
 
 function getGrade($userid, $courseid, $activity, $inpercentage = false) {
-    $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
+    global $DB, $CFG;
+
+    $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
+    $modulename = key($modulename);
+
+    $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $userid);
     $grade = NULL;
     $max_grade = floatval($grading_info->items[0]->grademax);
 
@@ -643,15 +648,19 @@ function getEnrolledUsersFromContext($context) {
 }
 
 function getActivityGradeFromGroupID($groupid, $courseid, $activity, $inpercentage = false) {
+    global $DB, $CFG;
 
-    $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, 0);
+    $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
+    $modulename = key($modulename);
+
+    $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, 0);
     $users = getUsersFromGroup($groupid);
     $grades = array();
     $max_grade = floatval($grading_info->items[0]->grademax);
 
     foreach ($users as $userid) {
 
-        $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
+        $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $userid);
         $grade = NULL;
 
         if ( !empty($grading_info->items) ) {
@@ -691,12 +700,16 @@ function getActivitiesGradeFromGroupID($groupid, $courseid, $activities) {
 }
 
 function getActivityGradeFromUsers($users, $courseid, $activity) {
+    global $DB, $CFG;
+
+    $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
+    $modulename = key($modulename);
 
     $grades_array = array();
 
     foreach ( $users as $userid ) {
 
-        $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $userid);
+        $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $userid);
         $grade = NULL;
 
         if ( !empty($grading_info->items) ) {
@@ -724,18 +737,22 @@ function getActivitiesGradeFromUserID($userid, $courseid, $activities, $inpercen
 }
 
 function getActivitiesGradeFromUsers($users, $courseid, $activities, $inpercentage = false) {
+    global $DB, $CFG;
 
     $average_grades = array();
 
     foreach ($activities as $activity) {
 
+        $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
+        $modulename = key($modulename);
+
         $grades = array();
 
-        $grading_info = grade_get_grades($courseid, 'mod', 'assign', $activity, 0);
+        $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, 0);
 
         foreach ( $users as $user ) {
 
-            $grading_user_info = grade_get_grades($courseid, 'mod', 'assign', $activity, $user);
+            $grading_user_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $user);
 
             if ( !empty($grading_user_info->items) ) {
 
@@ -808,9 +825,9 @@ function getCoursesIDandNames() {
  */
 
 function getSectionsFromCourseID($courseid) {
-    global $DB;
+    global $DB, $CFG;
 
-    $sql = "SELECT * FROM unitice_course_sections
+    $sql = "SELECT * FROM ' . $CFG->prefix . 'course_sections
             WHERE course = $courseid";         // SQL Query
     $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
     $sections_list = array();                               // Initialize sections array (empty)
@@ -833,9 +850,9 @@ function getSectionsFromCourseID($courseid) {
  */
 
 function getActivitiesFromCourseID($courseid, $categoryid) {
-    global $DB;
+    global $DB, $CFG;
 
-    $sql = "SELECT * FROM unitice_grade_items
+    $sql = "SELECT * FROM ' . $CFG->prefix . 'grade_items
                     WHERE courseid = " . $courseid . "
                     AND hidden != 1
                     AND categoryid = " . $categoryid . " ORDER BY iteminstance";       // SQL Query
