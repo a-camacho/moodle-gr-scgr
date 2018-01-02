@@ -589,14 +589,10 @@ function getActivitiesNames($activities) {
 function getGrades($users, $courseid, $activity, $inpercentage = false) {
     global $DB;
 
-    // How to get that dynamicly ??
-    // $modname = $DB->get_record_sql('SELECT itemmodule FROM unitice_grade_items WHERE id = :activity', array('activity'=>$activity));
-    // $modname = $modname->itemmodule;
-    $modname = 'assign';
+    $modulename = $DB->get_records_sql('SELECT itemmodule FROM unitice_grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
+    $modulename = key($modulename);
 
-    // var_dump($modname);
-
-    $grading_info = grade_get_grades($courseid, 'mod', $modname, $activity, $users);
+    $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $users);
 
     $max_grade = floatval($grading_info->items[0]->grademax);
 
