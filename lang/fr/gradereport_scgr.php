@@ -118,7 +118,9 @@ $string['helper_customweight'] = 'Pondération personnalisée pour moyenne';
 $string['helper_customweight_help'] = 'Si activé, permet de définir des pondérations personnalisées pour chacune des
 activités choisies, afin que la moyenne soit calculer selon celles-ci.';
 $string['helper_chooseactivity'] = 'Choisir une activité';
-$string['helper_chooseactivity_help'] = 'Choisissez une activité que vous voulez inclure au graphique.';
+$string['helper_chooseactivity_help'] = 'Choisissez une activité que vous voulez inclure au graphique.<br />La
+                                         pondération de l\'activité est recupérée depuis la base de données. <br />
+                                         Vous pouvez la changer en allant sur Notes > Paramètres.';
 $string['helper_group'] = 'Choisir un groupe';
 $string['helper_group_help'] = 'Choisissez le groupe dont vous voulez voir les étudiants affichés.';
 
