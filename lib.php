@@ -293,8 +293,9 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
                 foreach ( $groups as $group ) {
 
-                    $group_grades = getActivitiesGradeFromGroupID($group, $courseid, $activities);
+                    $group_grades = getActivitiesGradeFromGroupID($group, $courseid, $activities, $gradesinpercentage, $context);
                     $group_average = getAverage($group_grades, NULL);
+
                     array_push($averages, $group_average);
                 }
 
@@ -647,7 +648,7 @@ function getEnrolledUsersFromContext($context) {
 
 }
 
-function getActivityGradeFromGroupID($groupid, $courseid, $activity, $inpercentage = false) {
+function getActivityGradeFromGroupID($groupid, $courseid, $activity, $inpercentage = false, $context) {
     global $DB, $CFG;
 
     $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
@@ -655,6 +656,8 @@ function getActivityGradeFromGroupID($groupid, $courseid, $activity, $inpercenta
 
     $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, 0);
     $users = getUsersFromGroup($groupid);
+    $users = stripTutorsFromUsers($users, $context);
+
     $grades = array();
     $max_grade = floatval($grading_info->items[0]->grademax);
 
@@ -686,12 +689,12 @@ function getActivityGradeFromGroupID($groupid, $courseid, $activity, $inpercenta
 
 }
 
-function getActivitiesGradeFromGroupID($groupid, $courseid, $activities) {
+function getActivitiesGradeFromGroupID($groupid, $courseid, $activities, $gradeinpercentage, $context) {
 
     $grades = array();
 
     foreach ( $activities as $activity ) {
-        $grade = getActivityGradeFromGroupID($groupid, $courseid, $activity, true);
+        $grade = getActivityGradeFromGroupID($groupid, $courseid, $activity, $gradeinpercentage, $context);
         array_push($grades, $grade);
     }
 
