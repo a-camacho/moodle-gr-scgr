@@ -140,3 +140,7 @@ $string['nav_teacher_comparison'] = 'Comparison';
 // Help page
 
 $string['help_title'] = 'Help page';
+$string['help_introduction'] = 'This page gives you some information about how this plugin work.';
+$string['help_striptutors'] = 'The plugin "Social comparison grade report" ignores by default all users that have
+"teacher" role when creating custom and predefined charts. <br />That way, when you generate charts with user groups grades or
+users grades, only students will be considered. You can then have "teachers" in your user-groups without breaking the charts.';

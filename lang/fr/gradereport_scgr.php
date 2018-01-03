@@ -150,3 +150,8 @@ $string['nav_teacher_comparison'] = 'Comparaison';
 // Help page
 
 $string['help_title'] = 'Page d\'aide';
+$string['help_introduction'] = 'Cette page vous donne quelques informations sur le fonctionnement du plugin.';
+$string['help_striptutors'] = 'Le module "Social comparison grade report" ignore par défaut tous les utilisateurs porteurs
+du rôle "teacher" lors de la création de visualisations personnalisées ou prédéfinies. <br />Ainsi, lorsque le module souhaite
+afficher les résultats des groupes du cours, ou des apprenants du groupe-classe tout utilisateur porteur du rôle "teacher"
+sera ignoré.';
