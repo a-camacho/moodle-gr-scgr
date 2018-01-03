@@ -711,10 +711,11 @@ function getActivitiesGradeFromGroupID($groupid, $courseid, $activities, $gradei
 
 }
 
-function getActivityGradeFromUsers($users, $courseid, $activity) {
+function getActivityGradeFromUsers($users, $courseid, $activity, $inpercentage = false) {
     global $DB, $CFG;
 
-    $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
+    $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ?
+                                        AND iteminstance = ?', array($courseid, $activity));
     $modulename = key($modulename);
 
     $grades_array = array();
@@ -722,10 +723,16 @@ function getActivityGradeFromUsers($users, $courseid, $activity) {
     foreach ( $users as $userid ) {
 
         $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $userid);
+        $max_grade = floatval($grading_info->items[0]->grademax);
         $grade = NULL;
 
         if ( !empty($grading_info->items) ) {
             $grade = $grading_info->items[0]->grades[$userid]->grade;
+        }
+
+        if ($inpercentage == true) {
+            $grade = $grade / $max_grade * 100;
+            $grade = round($grade, 2);
         }
 
         array_push($grades_array, $grade);

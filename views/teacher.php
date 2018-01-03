@@ -78,7 +78,7 @@ if ( $view == 'progression' || $view == 'default' ) {
             foreach ($users as $user) {
                 $user_object = $DB->get_record('user', array('id'=>$user));
                 $username = $user_object->firstname . $user_object->lastname;
-                $series = new core\chart_series($username, getActivitiesGradeFromUserID($user, $courseid, $activities));
+                $series = new core\chart_series($username, getActivitiesGradeFromUserID($user, $courseid, $activities, true));
                 $series->set_type(\core\chart_series::TYPE_LINE);
                 $chart->add_series($series);
             }
@@ -134,7 +134,7 @@ if ( $view == 'progression' || $view == 'default' ) {
             $CFG->chart_colorset = ['#001f3f', '#d2d2d2', '#c2c2c2', '#b2b2b2', '#a2a2a2', '#929292', '#828282', '#727272'];
 
             foreach ( $activities as $activity ) {
-                $series = new core\chart_series(getActivityName($activity, $courseid), getActivityGradeFromUsers($users, $courseid, $activity));
+                $series = new core\chart_series(getActivityName($activity, $courseid), getActivityGradeFromUsers($users, $courseid, $activity, true));
                 $chart->add_series($series);
             }
 
