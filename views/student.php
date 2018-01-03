@@ -33,7 +33,7 @@ if ($view != 'inter') {
 
     echo html_writer::tag('p', get_string('student_intra_description', 'gradereport_scgr') );
 
-    $activities = getActivitiesFromCourseID($courseid, $categoryid);
+    $activities = getActivitiesFromCourseID($courseid, $categoryid, false);
 
     $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=intra';
     $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );

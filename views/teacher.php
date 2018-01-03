@@ -36,7 +36,7 @@ if ( $view == 'progression' || $view == 'default' ) {
 
     echo html_writer::tag('p', get_string('teacher_progression_description', 'gradereport_scgr') );
 
-    $activities = getActivitiesFromCourseID($courseid, $categoryid);
+    $activities = getActivitiesFromCourseID($courseid, $categoryid, false);
 
     $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=progression';
     $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );

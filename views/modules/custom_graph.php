@@ -3,7 +3,7 @@
 /* ######################  GENERATION FORM  ###################### */
 
 // Initialize activities
-$activities = getActivitiesFromCourseID($courseid, $categoryid);        // Activities
+$activities = getActivitiesFromCourseID($courseid, $categoryid, true);        // Activities
 
 // Start container
 echo '<div class="temp">';

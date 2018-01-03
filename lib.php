@@ -849,17 +849,21 @@ function getSectionsFromCourseID($courseid) {
  * @return (array)
  */
 
-function getActivitiesFromCourseID($courseid, $categoryid) {
+function getActivitiesFromCourseID($courseid, $categoryid, $extended = false) {
     global $DB, $CFG;
 
-    $sql = "SELECT * FROM " . $CFG->prefix . "grade_items WHERE courseid = " . $courseid . " AND hidden != 1 AND categoryid =
-           " . $categoryid . " ORDER BY id";
+    $sql = "SELECT iteminstance, itemname, aggregationcoef2 FROM " . $CFG->prefix . "grade_items WHERE
+            courseid = " . $courseid . " AND hidden != 1 AND categoryid = " . $categoryid . " ORDER BY id";
 
     $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
     $activities_list = array();
 
     foreach ( $records as $record ) {
-        $activities_list[$record->iteminstance] = $record->itemname . ' (item:' . $record->iteminstance . ', weight:'. $record->aggregationcoef2 .')';
+        if ( $extended ) {
+            $activities_list[$record->iteminstance] = $record->itemname . ' (item:' . $record->iteminstance . ', weight:'. $record->aggregationcoef2 .')';
+        } else {
+            $activities_list[$record->iteminstance] = $record->itemname;
+        }
     }
 
     return $activities_list;
