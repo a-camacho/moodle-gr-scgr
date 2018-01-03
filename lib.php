@@ -455,6 +455,15 @@ function stripTutorsFromUsers($users, $context) {
 
 }
 
+function collapseHeaders() { ?>
+    <script>
+        var d = document.getElementById("id_scgr-general");
+        d.className += " collapsed";
+        var c = document.getElementById("id_scgr-general");
+        c.className += " collapsed";
+    </script>
+<?php }
+
 /*
  * getAverage
  *
@@ -863,7 +872,7 @@ function getActivitiesFromCourseID($courseid, $categoryid, $extended = false) {
 
     foreach ( $records as $record ) {
         if ( $extended ) {
-            $activities_list[$record->iteminstance] = $record->itemname . ' (item:' . $record->iteminstance . ', weight:'. $record->aggregationcoef2 .')';
+            $activities_list[$record->iteminstance] = $record->itemname . ' (coef: '. $record->aggregationcoef2 .')';
         } else {
             $activities_list[$record->iteminstance] = $record->itemname;
         }

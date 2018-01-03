@@ -77,7 +77,14 @@ if ($mform->is_cancelled()) {                                               // I
 
     /*********************** PRINT GRAPH ***********************/
 
-    printOptions( $courseid, $modality, $group_id, $activities, $average, $custom_title, $viewtype, $gradesinpercentage);
+    // printOptions( $courseid, $modality, $group_id, $activities, $average, $custom_title, $viewtype, $gradesinpercentage);
+
+    $toform = '';
+    $mform->set_data($toform);
+    //displays the form
+    $mform->display();
+
+    collapseHeaders();
 
     printGraph( $courseid, $modality, $group_id, $activities, $average, $custom_title, $custom_weight_array,
         $averageonly, $viewtype, $course_has_groups, $context, $gradesinpercentage );
