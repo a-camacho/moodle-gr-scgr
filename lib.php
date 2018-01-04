@@ -199,8 +199,6 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             // Create chart and set some settings
             $chart = new \core\chart_bar(); // Create a bar chart instance.
-            $CFG->chart_colorset = ['#001f3f', '#D6CFCB', '#CCB7AE', '#A6808C', '#706677', '#565264', '#D9F0FF', '#A3D5FF', '#d6d6d6'];
-
             // Axes
             $yaxis = $chart->get_yaxis(0, true);
 
@@ -247,6 +245,13 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             if ($viewtype == 'horizontal-bars') {
                 $chart->set_horizontal(true);
             }
+
+            // Chart colors
+            $colors_array = array('#001f3f', '#d2d2d2', '#c2c2c2', '#b2b2b2', '#a2a2a2', '#929292', '#828282', '#727272');
+            if ( $average ) {
+                $colors_array[count($activities)+1] = '#7fa4e0';
+            }
+            $CFG->chart_colorset = $colors_array;
 
             // Output chart
             echo $OUTPUT->render_chart($chart);
