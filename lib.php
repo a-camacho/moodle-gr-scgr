@@ -203,8 +203,14 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             // Axes
             $yaxis = $chart->get_yaxis(0, true);
-            $yaxis->set_min(0);
-            $yaxis->set_max(100);
+
+            if ($gradesinpercentage) {
+                $yaxis->set_label("Grade in %");
+                $yaxis->set_min(0);
+                $yaxis->set_max(100);
+            } else {
+                $yaxis->set_label("Grade in points");
+            }
 
             // Iterate over the activities final grades
             $i = 0;
@@ -271,11 +277,11 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             // Axes
             $yaxis = $chart->get_yaxis(0, true);
-            $yaxis->set_min(0);
-            $yaxis->set_max(100);
 
             if ($gradesinpercentage) {
                 $yaxis->set_label("Grade in %");
+                $yaxis->set_min(0);
+                $yaxis->set_max(100);
             } else {
                 $yaxis->set_label("Grade in points");
             }
@@ -294,7 +300,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
                 foreach ( $groups as $group ) {
 
                     $group_grades = getActivitiesGradeFromGroupID($group, $courseid, $activities, $gradesinpercentage, $context);
-                    $group_average = getAverage($group_grades, NULL);
+                    $group_average = getAverage($group_grades, $custom_weight_array);
 
                     array_push($averages, $group_average);
                 }
