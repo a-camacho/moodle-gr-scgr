@@ -225,7 +225,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
                 foreach ( $users as $user ) {
                     $user_grades = getActivitiesGradeFromUserID($user, $courseid, $activities, $gradesinpercentage);
-                    array_push($average_array, getAverage($user_grades, NULL));
+                    array_push($average_array, getAverage($user_grades, $custom_weight_array));
                 }
 
                 $average_series = new \core\chart_series('Average', $average_array);
@@ -476,9 +476,27 @@ function collapseHeaders() { ?>
 
 function getAverage( $grades, $weights = NULL ) {
 
-    if ( !$weights & $grades ) {
-        $result = array_sum($grades) / count($grades);
-        $result = round($result, 2);
+    if ( $grades ) {
+
+        if ( $weights ) {
+
+            $weights_sum = array_sum($weights);
+            $total = 0;
+            $i = 0;
+
+            foreach ($grades as $grade) {
+                $user_grade_weighted = ( $grade * $weights[$i] );
+                $total = $user_grade_weighted + $total;
+                $i++;
+            }
+
+            $result = $total / $weights_sum;
+            $result = round($result, 2);
+
+        } else {
+            $result = array_sum($grades) / count($grades);
+            $result = round($result, 2);
+        }
     }
 
     return $result;

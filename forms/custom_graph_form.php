@@ -161,12 +161,6 @@ class customhtml_form extends moodleform {
         // ******************************************
 
 
-        // ************** CUSTOM WEIGHTING settings **************
-        $mform->setDefault('custom_weighting_activity1', 1);
-        $mform->setDefault('custom_weighting_activity2', 1);
-        $mform->disabledIf('custom_weighting_activity1', 'custom_weighting', $condition = 'eq', $value=0);
-        $mform->disabledIf('custom_weighting_activity2', 'custom_weighting', $condition = 'eq', $value=0);
-
         // Add buttons
 
         $this->add_action_buttons(false, get_string('form_button_submit', 'gradereport_scgr') );

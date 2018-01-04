@@ -54,8 +54,12 @@ if ($mform->is_cancelled()) {                                               // I
     if ( property_exists($data, "modality") ) { $modality = $data->modality;
     } else { $modality = NULL; }
 
-    if ( property_exists($data, "average") && $data->average == '1' ) { $average = true;
-    } else { $average = false; }
+    if ( property_exists($data, "average") && $data->average == '1' ) {
+        $average = true;
+        $custom_weight_array = $data->custom_weighting_activity;
+        $custom_weight_array = array_map('floatval', $custom_weight_array);
+    } else {
+        $average = false; }
 
     if ( property_exists($data, "graph_custom_title") ) { $custom_title = $data->graph_custom_title;
     } else { $custom_title = NULL; }
@@ -73,7 +77,6 @@ if ($mform->is_cancelled()) {                                               // I
     }
 
     $averageonly = ( intval($data->averageonly) == 1 ) ? true : false;
-    $custom_weight_array = array();
 
     /*********************** PRINT GRAPH ***********************/
 
