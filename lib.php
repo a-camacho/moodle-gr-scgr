@@ -314,6 +314,12 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             if ($viewtype == 'horizontal-bars') { $chart->set_horizontal(true); }
             $chart->set_labels($groupnames);
 
+            $colors_array = array('#001f3f', '#d2d2d2', '#c2c2c2', '#b2b2b2', '#a2a2a2', '#929292', '#828282', '#727272');
+            if ( $average ) {
+                $colors_array[count($activities)+1] = '#7fa4e0';
+            }
+            $CFG->chart_colorset = $colors_array;
+
             echo $OUTPUT->render_chart($chart);
 
             echo '<hr />';
