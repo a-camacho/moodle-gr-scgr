@@ -21,7 +21,7 @@ class customhtml_form extends moodleform {
         // ************** PRINT HEADER **************
         // ******************************************
 
-        $mform->addElement('header', 'scgr-general', 'General Parameters');
+        $mform->addElement('header', 'scgr-general', get_string('form_custom_section_parameters', 'gradereport_scgr'));
 
         // ******************************************
         // ************** CUSTOM TITLE **************
@@ -122,7 +122,7 @@ class customhtml_form extends moodleform {
         // ***************** ACTIVITIES *****************
         // **********************************************
 
-        $mform->addElement('header', 'scgr-activities', 'Activities');
+        $mform->addElement('header', 'scgr-activities', get_string('form_custom_section_activities', 'gradereport_scgr'));
 
         $ACTIVITIES_LIST = $this->_customdata[1];
         $START_REPETITIONS = 1;

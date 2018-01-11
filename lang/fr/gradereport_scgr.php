@@ -74,6 +74,8 @@ $string['predefined_customize_label_activity'] = 'Activités';
 $string['form_custom_title'] = 'Graphique personnalisé';
 $string['form_custom_subtitle'] = 'Génère un graphique personnalisé comparant des étudiants (ou groupes d\'étudiants)
 à travers les activités choisies.';
+$string['form_custom_section_parameters'] = 'Paramètres du graphique';
+$string['form_custom_section_activities'] = 'Activités';
 
 // Forms - Custom - Labels
 
