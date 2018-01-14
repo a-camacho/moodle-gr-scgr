@@ -125,7 +125,7 @@ $string['helper_chooseactivity_help'] = 'Choix de l\'activité à inclure au gra
                                          paramétré dans le cours est affiché entre parenthèses. Il doit être renseigné
                                          dans le champ de droite pour être pris en considération (à la place de 1).';
 $string['helper_group'] = 'Choisir un groupe';
-$string['helper_group_help'] = 'Choisissez le groupe dont vous voulez voir les étudiants affichés.';
+$string['helper_group_help'] = 'Choisissez le groupe d\'étudiants que vous souhaitez comparer.';
 
 
 /* ################################################################################################################ */

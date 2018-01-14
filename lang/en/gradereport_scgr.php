@@ -116,7 +116,7 @@ $string['helper_chooseactivity_help'] = 'Choose an activity to include in chart.
                                          in gradebook is showed in parentheses. If you want a custom aggregation
                                          coefficient, you need to set it up in the field on the right (replacing 1).';
 $string['helper_group'] = 'Choose a group';
-$string['helper_group_help'] = 'Choose the group you want the users to be included in graph.';
+$string['helper_group_help'] = 'Choose the group of students you want to compare.';
 
 
 /* ################################################################################################################ */
