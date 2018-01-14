@@ -96,8 +96,8 @@ $string['form_custom_label_gradesinpercentage_desc'] = 'Notes sont calculées en
 
 $string['form_custom_value_viewtype_horizontalbars'] = 'Barres horizontales';
 $string['form_custom_value_viewtype_verticalbars'] = 'Barres verticales';
-$string['form_custom_value_mod_intra'] = 'Intra-group';
-$string['form_custom_value_mod_inter'] = 'Inter-group';
+$string['form_custom_value_mod_intra'] = 'Intra-groupe';
+$string['form_custom_value_mod_inter'] = 'Inter-groupe';
 
 // Form helpers
 
