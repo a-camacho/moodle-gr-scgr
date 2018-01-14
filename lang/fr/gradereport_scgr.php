@@ -147,8 +147,8 @@ $string['nav_help'] = 'Aide';
 $string['nav_custom'] = 'Graphique personnalisé';
 $string['nav_student_intra'] = 'Moi et mon groupe';
 $string['nav_student_inter'] = 'Mon groupe et les autres';
-$string['nav_teacher_progression'] = 'Progression';
-$string['nav_teacher_comparison'] = 'Comparaison';
+$string['nav_teacher_progression'] = 'Progression (mes groupes)';
+$string['nav_teacher_comparison'] = 'Comparaison (mes groupes)';
 
 // Help page
 
