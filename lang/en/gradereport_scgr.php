@@ -142,10 +142,54 @@ $string['nav_student_inter'] = 'My group vs other groups';
 $string['nav_teacher_progression'] = 'Progression (my groups)';
 $string['nav_teacher_comparison'] = 'Comparison (my groups)';
 
+
+/* ################################################################################################################ */
+/* #############################################      HELP PAGE        ############################################ */
+/* ################################################################################################################ */
+
 // Help page
 
 $string['help_title'] = 'Help page';
 $string['help_introduction'] = 'This page gives you some information about how this plugin work.';
-$string['help_striptutors'] = 'The plugin "Social comparison grade report" ignores by default all users that have
-"teacher" role when creating custom and predefined charts. <br />That way, when you generate charts with user groups grades or
-users grades, only students will be considered. You can then have "teachers" in your user-groups without breaking the charts.';
+
+$string['help_section_plugin'] = 'Information and set up';
+$string['help_section_usage'] = 'Usage';
+
+$string['help_plugin_enablegroups_title'] = 'Groups of students';
+$string['help_plugin_enablegroups'] = 'If you want to use the "group" functionnality of this plugin, you have to
+                                       select this course in plugin settings. <strong>Location</strong> : Site
+                                       administration > Grades > Report settings > Social comparison grade report';
+
+$string['help_plugin_teachersignored_title'] = 'Teachers (tutors) in groups of students';
+$string['help_plugin_teachersignored'] = 'We wanted to be able to have teacher in groups of students, for tutoring. As
+                                          so, when requesting group users or group grades, users with "teacher" role will
+                                          always be ignored.';
+
+$string['help_plugin_nothingequalzero_title'] = 'No grade VS Zero (0)';
+$string['help_plugin_nothingequalzero'] = 'For the moment, this plugin can\'t make the difference between an activity
+                                           that has not been granted, and an activity with an user grade of 0. <br /><u>
+                                           This functionnality will be added soon</u>.';
+
+$string['help_usage_modality_title'] = 'Modality (intra vs inter)';
+$string['help_usage_modality'] = 'Modalities are a way of saying if you want to watch what happens inside a group or
+                                  outside (between the groups). If you choose <strong>inter-group</strong> modality you
+                                  will be comparing groups of students and average grades. If you choose
+                                  <strong>intra-group</strong> modality you will be comparing students grades of a
+                                  specific group.';
+
+$string['help_usage_aggregationcoef_title'] = 'Custom activity weighting (by aggregation coefficient)';
+$string['help_usage_aggregationcoef'] = 'Custom aggregation coefficients are a way to tell that activities do not weight
+                                         the same, when calculating average grade. If you need to set custom weights,
+                                         just enter numeric values (eg: 2 or 0.25) for each category and they will be
+                                         taken in account.';
+
+$string['help_usage_savecharts_title'] = 'Save chart';
+$string['help_usage_savecharts'] = 'You can save the chart for using it again. All you need is a right click on the chart
+                                    with a modern web browser (tested with Chrome, Firefox and Safari).';
+
+$string['help_usage_mouseonover_title'] = 'Chart interaction';
+$string['help_usage_mouseonover'] = 'You can interact with the chart in a few ways. You can hide a series of data by
+                                     clicking on the series name (or color) on top of the chart. You can also obtain
+                                     informations about a node by putting your mouse on the point of intersection (node)
+                                     for which you want information. Finally, you can also show the data used to create
+                                     the chart by hitting the "Show chart data" link under the chart itself.';

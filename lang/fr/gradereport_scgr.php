@@ -149,11 +149,60 @@ $string['nav_student_inter'] = 'Mon groupe et les autres';
 $string['nav_teacher_progression'] = 'Progression (mes groupes)';
 $string['nav_teacher_comparison'] = 'Comparaison (mes groupes)';
 
+
+/* ################################################################################################################ */
+/* #############################################      HELP PAGE        ############################################ */
+/* ################################################################################################################ */
+
 // Help page
 
 $string['help_title'] = 'Page d\'aide';
 $string['help_introduction'] = 'Cette page vous donne quelques informations sur le fonctionnement du plugin.';
-$string['help_striptutors'] = 'Le module "Social comparison grade report" ignore par défaut tous les utilisateurs porteurs
-du rôle "teacher" lors de la création de visualisations personnalisées ou prédéfinies. <br />Ainsi, lorsque le module souhaite
-afficher les résultats des groupes du cours, ou des apprenants du groupe-classe tout utilisateur porteur du rôle "teacher"
-sera ignoré.';
+
+$string['help_section_plugin'] = 'Informations et paramétrage';
+$string['help_section_usage'] = 'Utilisation';
+
+$string['help_plugin_enablegroups_title'] = 'Groupes d\'étudiants';
+$string['help_plugin_enablegroups'] = 'Pour utiliser la fonctionnalité de groupes du plugin, il est tout d\'abord
+                                       nécessaire de selectionner le cours dans les paramètres du plugin. <strong>
+                                       Emplacement</strong> : Administration du site > Notes > Réglages des rapports
+                                       > Rapport de comparaison sociale.';
+
+$string['help_plugin_teachersignored_title'] = 'Enseignants (tuteurs) dans groupes d\'étudiants';
+$string['help_plugin_teachersignored'] = 'Afin de pouvoir avoir des enseignants (teacher) dans des groupes d\'étudiants
+                                          lorsque des graphiques seront générés, les utilisateurs portant le rôle de
+                                          enseignant/tuteur (teacher) seront ignorés.';
+
+$string['help_plugin_nothingequalzero_title'] = 'Devoir non rendu VS Zéro (0)';
+$string['help_plugin_nothingequalzero'] = 'Actuellement ce plugin ne fait pas la différence entre un devoir non rendu et
+                                           la note minimale (0) pour une activité. Lorsque la moyenne d\'un groupe est
+                                           calculée il est important de vérifier que les devoirs aient été rendus.
+                                           <br /><u>Cette fonctionnalité sera cependant rajoutée très bientôt</u>.';
+
+$string['help_usage_modality_title'] = 'Modalités (intra vs inter)';
+$string['help_usage_modality'] = 'Les modalités font référence aux entités qui seront comparées ou mises en contraste.
+                                  Lorsque vous choisissez la modalité <strong>inter-groupe</strong> vous souhaitez
+                                  comparer la réussite de différents groupes au sein d\'un cours. Lorsque vous choisissez
+                                  <strong>intra-groupe</strong> vous vous situez au niveau d\'<strong>un</strong> et
+                                  comparez donc la réussite des étudiants de ce groupe.';
+
+$string['help_usage_aggregationcoef_title'] = 'Pondération personnalisée (par coefficients)';
+$string['help_usage_aggregationcoef'] = 'Les coefficients de pondération correspondent au poids d\'une activité au sein
+                                         d\'une formation. Lorsque vous demandez à calculer et afficher la moyenne des
+                                         activités choisies, une moyenne non pondérée sera calculée : chaque activité 
+                                         aura la même importance dans le calcul. Lorsque vous définissez des coefficients
+                                         de pondération, vous pouvez définir le poids de chaque activité. Vous pouvez
+                                         entrer n\'importe quelle valeur numérique (entiers ou décimaux).';
+
+$string['help_usage_savecharts_title'] = 'Sauvegarde de graphique';
+$string['help_usage_savecharts'] = 'Pour sauvegarder ou copier un graphique, afin de le réutiliser, il vous suffit
+                                    d\'effectuer un clic droit sur celui-ci avec un navigateur moderne (testé sous
+                                    Chrome, Firefox, Safari).';
+
+$string['help_usage_mouseonover_title'] = 'Interaction avec le graphique';
+$string['help_usage_mouseonover'] = 'Vous pouvez interagir légèrement avec les graphiques générés. Vous pouvez masquer
+                                     une série de données en cliquant sur son nom (ou couleur) dans le haut du graphique.
+                                     Vous pouvez également obtenir des informations sur une intersection, en passant
+                                     la souris sur un des points du graphique. Vous pouvez également afficher les données
+                                     utilisées pour construire le graphique en cliquant sur le lien prévu à cet effet
+                                     en dessous du graphique.';
