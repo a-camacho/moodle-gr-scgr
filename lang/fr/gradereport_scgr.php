@@ -143,7 +143,7 @@ $string['settings_page_title'] = 'Paramètres de SCGR';
 // Navigation
 
 $string['nav_help'] = 'Aide';
-$string['nav_custom'] = 'Graph personnalisé';
+$string['nav_custom'] = 'Graphique personnalisé';
 $string['nav_student_intra'] = 'Moi et mon groupe';
 $string['nav_student_inter'] = 'Mon groupe et les autres';
 $string['nav_teacher_progression'] = 'Progression';
