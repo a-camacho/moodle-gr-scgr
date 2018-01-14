@@ -85,7 +85,7 @@ $string['form_custom_label_average'] = 'Calculate and show average';
 $string['form_custom_label_averageonly'] = 'Hide activities grades (and show only average)';
 $string['form_custom_label_custom_weighting'] = 'Custom weighting';
 $string['form_custom_label_gradesinpercentage'] = 'Grades in %';
-$string['form_custom_label_gradesinpercentage_desc'] = 'Grades are calculated in percentage';
+$string['form_custom_label_gradesinpercentage_desc'] = 'Calculate grades in percentage';
 
 // Forms - Custom - Values
 
@@ -97,24 +97,25 @@ $string['form_custom_value_mod_inter'] = 'Inter-group';
 // Form helpers
 
 $string['helper_customtitle'] = 'Add a custom title?';
-$string['helper_customtitle_help'] = 'If enabled, this will show a custom title in heading of graph.';
+$string['helper_customtitle_help'] = 'If filled, the value will be used as the title of the chart.';
 $string['helper_viewtype'] = 'Choose view type';
-$string['helper_viewtype_help'] = 'Choose view type for the graph.';
+$string['helper_viewtype_help'] = 'Choose a view type.';
 $string['helper_gradesinpercentage'] = 'Calculates grades in percentage';
-$string['helper_gradesinpercentage_help'] = 'Important if your activities max grade does not match';
+$string['helper_gradesinpercentage_help'] = 'Grades will be calculated in percentage. This is important if your
+                                             activities max grade does not match';
 $string['helper_modality'] = 'Choose modality';
-$string['helper_modality_help'] = 'Intra-group will show you comparison of students of a group.<br />
-                                   Inter-group will show you comparison of groups in course.';
+$string['helper_modality_help'] = 'Choose a modality (more information in "Help" tab)';
 $string['helper_average'] = 'Calculate average?';
 $string['helper_averageonly'] = 'Show average only';
 $string['helper_averageonly_help'] = 'If enabled, the series used to calculate average will be hidden and only average will be showed.';
-$string['helper_average_help'] = 'If enabled, a series of data will be created with average of other activity grades.';
+$string['helper_average_help'] = 'Do you want to calculate and show the average grade of chosen activities ?';
 $string['helper_customweight'] = 'Custom average weight';
-$string['helper_customweight_help'] = 'If enabled, you will be able to set a weight value to each activity for the average calc.';
+$string['helper_customweight_help'] = 'Do you want to set a custom aggregation coefficient (weight) for each chosen
+activity ? This will be used when calculating average grade.';
 $string['helper_chooseactivity'] = 'Choose an activity';
 $string['helper_chooseactivity_help'] = 'Choose an activity to include in chart. The aggregation coefficient set up
                                          in gradebook is showed in parentheses. If you want a custom aggregation
-                                         coefficient, you need to set it up in the field on the right (replacing 1).';
+                                         coefficient, you need to set it up in the field on the right.';
 $string['helper_group'] = 'Choose a group';
 $string['helper_group_help'] = 'Choose the group of students you want to compare.';
 

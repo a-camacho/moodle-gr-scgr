@@ -90,7 +90,7 @@ $string['form_custom_label_average'] = 'Calculer et afficher la moyenne';
 $string['form_custom_label_averageonly'] = 'Masquer les séries d\'activités (et n\'afficher que la moyenne)';
 $string['form_custom_label_custom_weighting'] = 'Pondération personnalisée';
 $string['form_custom_label_gradesinpercentage'] = 'Notes en %';
-$string['form_custom_label_gradesinpercentage_desc'] = 'Notes sont calculées en pourcentage';
+$string['form_custom_label_gradesinpercentage_desc'] = 'Calculer les notes en pourcentage';
 
 // Forms - Custom - Values
 
@@ -102,28 +102,27 @@ $string['form_custom_value_mod_inter'] = 'Inter-groupe';
 // Form helpers
 
 $string['helper_customtitle'] = 'Ajouter un titre personnalisé ?';
-$string['helper_customtitle_help'] = 'Si activé, ceci affichera un titre personnalisé dans le graphique.';
+$string['helper_customtitle_help'] = 'Utilisez ce champ pour définir un titre personnalisé qui s\'affichera en haut
+                                      du graphique.';
 $string['helper_viewtype'] = 'Choisir type de graphique';
-$string['helper_viewtype_help'] = 'Choisissez le type de graphique souhaité.';
+$string['helper_viewtype_help'] = 'Choisissez le type de visualisation du graphique.';
 $string['helper_gradesinpercentage'] = 'Calcule les notes en pourcentage';
-$string['helper_gradesinpercentage_help'] = 'Important si vos activités n\'ont pas toutes les mêmes notes maximales et
-minimales.';
+$string['helper_gradesinpercentage_help'] = 'Les notes seront converties en pourcentage. Ceci est important si vos
+activités n\'ont pas toutes les mêmes notes maximales et minimales.';
 $string['helper_modality'] = 'Choisir modalité';
-$string['helper_modality_help'] = 'Intra-group montrera une comparaison des étudiants d\'un groupe.<br />
-                                   Inter-group montrera une comparaison des différents groupes d\'un cours.';
+$string['helper_modality_help'] = 'Choisir une modalité (plus d\'informations dans l\'onglet "Aide").';
 $string['helper_average'] = 'Calculer la moyenne?';
 $string['helper_averageonly'] = 'Montrer uniquement la moyenne';
-$string['helper_averageonly_help'] = 'Si activé, les séries utilisées pour calculer la moyenne seront cachées et seule
-la série de la moyenne sera visible.';
-$string['helper_average_help'] = 'Si activé, une série sera créée avec la moyenne calculée à partir des notes des 
-activités choisies.';
+$string['helper_averageonly_help'] = 'Si coché, la note des activités utilisées pour calculer la moyenne seront cachées
+et seule la note moyenne sera visible.';
+$string['helper_average_help'] = 'Voulez-vous calculer la note moyenne des activités choisies et l\'afficher ?';
 $string['helper_customweight'] = 'Pondération personnalisée pour moyenne';
-$string['helper_customweight_help'] = 'Si activé, permet de définir des pondérations personnalisées pour chacune des
-activités choisies, afin que la moyenne soit calculer selon celles-ci.';
+$string['helper_customweight_help'] = 'Souhaitez-vous définir un coefficient de pondération (poids) différent pour chaque
+activité choisie ? Ceux-ci sont utilisées lorsqu\'une moyenne est calculée.';
 $string['helper_chooseactivity'] = 'Choisir une activité';
 $string['helper_chooseactivity_help'] = 'Choix de l\'activité à inclure au graphique. Le coefficient de pondération
                                          paramétré dans le cours est affiché entre parenthèses. Il doit être renseigné
-                                         dans le champ de droite pour être pris en considération (à la place de 1).';
+                                         dans le champ de droite pour être pris en considération.';
 $string['helper_group'] = 'Choisir un groupe';
 $string['helper_group_help'] = 'Choisissez le groupe d\'étudiants que vous souhaitez comparer.';
 
