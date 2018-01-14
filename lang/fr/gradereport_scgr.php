@@ -48,11 +48,11 @@ $string['student_intra_description'] = 'L\'étudinat peut voir une visualisation
 $string['student_inter_description'] = 'L\'étudiant peut voir une visualisation comparant la réussite de son groupe
 avec celle des autres groupes du cours.';
 
-$string['teacher_progression_description'] = 'L\'enseignant peut voir la progression de ses étudiants à travers les
+$string['teacher_progression_description'] = 'L\'enseignant peut suiver la progression de ses étudiants à travers les
 activités de son choix.';
 
-$string['teacher_comparison_description'] = 'L\'enseignant peut voir la comparaison entre ses étudiants à travers les
-activités de son choix.';
+$string['teacher_comparison_description'] = 'L\'enseignant peut comparer la réussite des étudiants de ses groupes à
+travers les activités de son choix.';
 
 $string['custom_group_restriction_desc'] = '<strong><u>Information</u></strong> : Les enseignants peuvent uniquement 
 générer des visualisations d\'étudiants du (ou des) groupe(s) au(x)quel(s) ils appartiennent. <br />Les groupes sont
@@ -72,8 +72,8 @@ $string['predefined_customize_label_activity'] = 'Activités';
 // Forms - Custom
 
 $string['form_custom_title'] = 'Graphique personnalisé';
-$string['form_custom_subtitle'] = 'Génère un graphique personnalisé comparant des étudiants (ou groupes d\'étudiants)
-à travers les activités choisies.';
+$string['form_custom_subtitle'] = 'Génère un graphique personnalisé comparant la réussite des étudiants (ou groupes
+d\'étudiants) sur des activités au choix.';
 $string['form_custom_section_parameters'] = 'Paramètres du graphique';
 $string['form_custom_section_activities'] = 'Activités';
 

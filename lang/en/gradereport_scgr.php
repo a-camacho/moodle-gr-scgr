@@ -68,7 +68,7 @@ $string['predefined_customize_label_activity'] = 'Activities';
 // Forms - Custom
 
 $string['form_custom_title'] = 'Custom chart';
-$string['form_custom_subtitle'] = 'Generate a chart comparing students (or groups of students) over chosen activities.';
+$string['form_custom_subtitle'] = 'Generate a chart comparing students (or groups of students) success over chosen activities.';
 $string['form_custom_section_parameters'] = 'Chart settings';
 $string['form_custom_section_activities'] = 'Activities';
 
