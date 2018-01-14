@@ -82,7 +82,8 @@ $string['form_custom_section_activities'] = 'Activités';
 $string['form_custom_label_custom_title'] = 'Titre personnalisé';
 $string['form_custom_label_viewtype'] = 'Type de visualisation';
 $string['form_custom_label_modality'] = 'Modalité';
-$string['form_custom_label_activity'] = 'Choix d\'activités';
+$string['form_custom_label_activity'] = 'Activité';
+$string['form_custom_label_activity_coeff'] = 'Coeff. de pondération';
 $string['form_custom_label_activities'] = 'Activités';
 $string['form_custom_label_group'] = 'Groupe';
 $string['form_custom_label_average'] = 'Calculer et afficher la moyenne';
@@ -120,9 +121,9 @@ $string['helper_customweight'] = 'Pondération personnalisée pour moyenne';
 $string['helper_customweight_help'] = 'Si activé, permet de définir des pondérations personnalisées pour chacune des
 activités choisies, afin que la moyenne soit calculer selon celles-ci.';
 $string['helper_chooseactivity'] = 'Choisir une activité';
-$string['helper_chooseactivity_help'] = 'Choisissez une activité que vous voulez inclure au graphique.<br />La
-                                         pondération de l\'activité est recupérée depuis la base de données. <br />
-                                         Vous pouvez la changer en allant sur Notes > Paramètres.';
+$string['helper_chooseactivity_help'] = 'Choix de l\'activité à inclure au graphique. Le coefficient de pondération
+                                         paramétré dans le cours est affiché entre parenthèses. Il doit être renseigné
+                                         dans le champ de droite pour être pris en considération (à la place de 1).';
 $string['helper_group'] = 'Choisir un groupe';
 $string['helper_group_help'] = 'Choisissez le groupe dont vous voulez voir les étudiants affichés.';
 

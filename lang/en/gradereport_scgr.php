@@ -77,7 +77,8 @@ $string['form_custom_section_activities'] = 'Activities';
 $string['form_custom_label_custom_title'] = 'Custom title';
 $string['form_custom_label_viewtype'] = 'View type';
 $string['form_custom_label_modality'] = 'Modality';
-$string['form_custom_label_activity'] = 'Choose activity';
+$string['form_custom_label_activity'] = 'Activity';
+$string['form_custom_label_activity_coeff'] = 'Aggregation coeff.';
 $string['form_custom_label_activities'] = 'Activities';
 $string['form_custom_label_group'] = 'Group';
 $string['form_custom_label_average'] = 'Calculate and show average';
@@ -111,8 +112,9 @@ $string['helper_average_help'] = 'If enabled, a series of data will be created w
 $string['helper_customweight'] = 'Custom average weight';
 $string['helper_customweight_help'] = 'If enabled, you will be able to set a weight value to each activity for the average calc.';
 $string['helper_chooseactivity'] = 'Choose an activity';
-$string['helper_chooseactivity_help'] = 'Choose an activity that you want to be included in graph.<br />The aggregaction
-                                         coef is read from database. <br />You can change them in Grades > Setup';
+$string['helper_chooseactivity_help'] = 'Choose an activity to include in chart. The aggregation coefficient set up
+                                         in gradebook is showed in parentheses. If you want a custom aggregation
+                                         coefficient, you need to set it up in the field on the right (replacing 1).';
 $string['helper_group'] = 'Choose a group';
 $string['helper_group_help'] = 'Choose the group you want the users to be included in graph.';
 

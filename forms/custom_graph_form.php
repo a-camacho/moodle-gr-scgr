@@ -150,7 +150,7 @@ class customhtml_form extends moodleform {
 
         $repeatarray[] = $mform->createElement( 'group', 'activitygroup',
             get_string('form_custom_label_activity', 'gradereport_scgr'),
-            $activity_group, null, false);
+            $activity_group, get_string('form_custom_label_activity_coeff', 'gradereport_scgr'), false);
 
         $this->repeat_elements($repeatarray, $START_REPETITIONS,
             $repeatoptions, 'activitygroup_repeats', 'activitygroup_add_fields', 1, null, true);
