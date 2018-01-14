@@ -37,6 +37,12 @@ $mform = new customhtml_form( $forms_action_url, array( $courseid, $activities, 
 
 if ($mform->is_cancelled()) {                                               // If form is canceled
 
+    //Set default data (if any)
+    $toform = '';
+    $mform->set_data($toform);
+    //displays the form
+    $mform->display();
+
 } else if ($fromform = $mform->get_data()) {                                // If data has been passed trough form
 
     /******************** GET DATA FROM FORM *********************/
@@ -56,10 +62,17 @@ if ($mform->is_cancelled()) {                                               // I
 
     if ( property_exists($data, "average") && $data->average == '1' ) {
         $average = true;
-        $custom_weight_array = $data->custom_weighting_activity;
-        $custom_weight_array = array_map('floatval', $custom_weight_array);
+
+        if ( property_exists($data, "custom_weighting_activity") ) {
+            $custom_weight_array = $data->custom_weighting_activity;
+            $custom_weight_array = array_map('floatval', $custom_weight_array);
+        } else {
+            $custom_weight_array = array();
+        }
+
     } else {
-        $average = false; }
+        $average = false;
+        $custom_weight_array = array(); }
 
     if ( property_exists($data, "graph_custom_title") ) { $custom_title = $data->graph_custom_title;
     } else { $custom_title = NULL; }

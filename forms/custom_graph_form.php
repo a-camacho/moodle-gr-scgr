@@ -163,7 +163,7 @@ class customhtml_form extends moodleform {
 
         // Add buttons
 
-        $this->add_action_buttons(false, get_string('form_button_submit', 'gradereport_scgr') );
+        $this->add_action_buttons(true, get_string('form_button_submit', 'gradereport_scgr') );
 
     }
 
