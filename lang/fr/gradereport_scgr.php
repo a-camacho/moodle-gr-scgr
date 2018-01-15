@@ -42,7 +42,7 @@ $string['form_button_submit'] = 'Soumettre';
 
 // Predefined graphs - Descriptions
 
-$string['student_intra_description'] = 'L\'étudinat peut voir une visualisation présentant sa progression (réussite)
+$string['student_intra_description'] = 'L\'étudiant peut voir une visualisation présentant sa progression (réussite)
 à travers les activités de son choix, et la comparer à la réussite moyenne de son groupe ou de sa classe.';
 
 $string['student_inter_description'] = 'L\'étudiant peut voir une visualisation comparant la réussite de son groupe
