@@ -66,6 +66,8 @@ class customhtml_form extends moodleform {
 
         $mform->addHelpButton('gradesinpercentage', 'helper_gradesinpercentage', 'gradereport_scgr');
 
+        $mform->setDefault('gradesinpercentage', true);
+
         // ******************************************
         // ***************** AVERAGE ****************
         // ******************************************
