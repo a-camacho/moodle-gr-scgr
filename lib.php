@@ -299,8 +299,6 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a>';
 
-            exportAsJPEG();
-
         } else {
 
             echo html_writer::tag('h3', 'Error');
@@ -370,8 +368,6 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
 
-            exportAsJPEG();
-
         } else {
 
             echo html_writer::tag('h3', 'Error');
@@ -414,6 +410,13 @@ function printPluginConfig() {
 
 }
 
+/**
+ * stripTutorsGroupFromGroupIDS
+ * removes users with "tutor" role from groups id array
+ *
+ * @param $groups
+ * @return array
+ */
 function stripTutorsGroupFromGroupIDS($groups) {
 
     $groups_to_ignore = array(1);
@@ -430,34 +433,35 @@ function stripTutorsGroupFromGroupIDS($groups) {
     return $new_groups;
 }
 
+/**
+ * stripTutorsFromUsers
+ * removes users with "tutor" role from users array
+ *
+ * @param $users
+ * @param $context
+ * @return array
+ */
 function stripTutorsFromUsers($users, $context) {
-
-    $role_to_ignore = array(1);
     $new_users = array();
-
     foreach ($users as $userid) {
-
         $user_roles = get_user_roles($context, $userid, false);
         $ignore_user = false;
-
         foreach ( $user_roles as $role ) {
-
             if ( $role->shortname == 'teacher' || $role->shortname == 'editingteacher' ) {
                 $ignore_user = true;
             }
-
         }
-
         if ( $ignore_user == false ) {
             array_push($new_users, $userid);
         }
-
     }
-
     return $new_users;
-
 }
 
+/**
+ * collapseHeaders
+ * collapses header by default, so we can see the chart sooners
+ */
 function collapseHeaders() { ?>
     <script>
         var d = document.getElementById("id_scgr-general");
@@ -467,16 +471,13 @@ function collapseHeaders() { ?>
     </script>
 <?php }
 
-/*
+/**
  * getAverage
- *
  * returns an array with simple averages (automatic weighting) from two arrays with float values inside.
- *
- * @activity1 (array) array containing X float values inside
- * @activity2 (array) array containing X float values inside
- * @return (array)
+ * @param $grades
+ * @param null $weights
+ * @return float|int
  */
-
 function getAverage( $grades, $weights = NULL ) {
 
     if ( $grades ) {
@@ -505,16 +506,16 @@ function getAverage( $grades, $weights = NULL ) {
     return $result;
 }
 
-/*
+/**
  * getGradesFromGroups
- *
  * returns an array with X grades (average grade for each group) for a given activity.
  *
- * @courseid (int)
- * @activity (int) Moodle activity ID
- * @return (array)
+ * @param $courseid
+ * @param $activity
+ * @param bool $inpercentage
+ * @param $context
+ * @return array
  */
-
 function getGradesFromGroups( $courseid, $activity, $inpercentage = false, $context ) {
 
     $groups = getGroupsIDS($courseid);
@@ -548,36 +549,30 @@ function getGradesFromGroups( $courseid, $activity, $inpercentage = false, $cont
 
 }
 
-/*
+/**
  * getGroupsIDS
- *
  * returns an array with ID's of groups found in a course
  *
- * @courseid (int)
- * @return (array)
+ * @param $courseid
+ * @return array
  */
-
 function getGroupsIDS( $courseid ) {
     $groups = groups_get_all_groups($courseid);
     $groups_array = array();
-
     foreach ( $groups as $group ) {
         array_push( $groups_array, intval($group->id) );
     }
-
     return $groups_array;
-
 }
 
-/*
+/**
  * getActivityName
- *
  * returns the name of an activity (based on it's instance)
  *
- * @instanceitem (object)
- * @return (string)
+ * @param $instanceitem
+ * @param $courseid
+ * @return int|null|string
  */
-
 function getActivityName($instanceitem, $courseid) {
     global $DB, $CFG;
 
@@ -587,6 +582,14 @@ function getActivityName($instanceitem, $courseid) {
     return key($records);
 }
 
+/**
+ * getActivitiesNames
+ * returns an array with activities names from an array with activities ids
+ *
+ * @param $activities
+ * @param $courseid
+ * @return array
+ */
 function getActivitiesNames($activities, $courseid) {
     global $DB, $CFG;
 
@@ -601,18 +604,16 @@ function getActivitiesNames($activities, $courseid) {
     return $activities_names;
 }
 
-/*
+/**
  * getGrades
- *
  * returns the grade of users for a certain activity
  *
- * @users (array)
- * @courseid (int)
- * @activity (int?)
- *
- * @return (array)
+ * @param $users
+ * @param $courseid
+ * @param $activity
+ * @param bool $inpercentage
+ * @return array
  */
-
 function getGrades($users, $courseid, $activity, $inpercentage = false) {
     global $DB, $CFG;
 
@@ -640,6 +641,16 @@ function getGrades($users, $courseid, $activity, $inpercentage = false) {
     return $grades;
 }
 
+/**
+ * getGrade
+ * returns the grade of an user for a certain activity
+ *
+ * @param $userid
+ * @param $courseid
+ * @param $activity
+ * @param bool $inpercentage
+ * @return float|int|null
+ */
 function getGrade($userid, $courseid, $activity, $inpercentage = false) {
     global $DB, $CFG;
 
@@ -662,8 +673,13 @@ function getGrade($userid, $courseid, $activity, $inpercentage = false) {
     }
 }
 
-
-
+/**
+ * getEnrolledUsersFromContext
+ * returns an array of users enrolled in a given course
+ *
+ * @param $context
+ * @return array
+ */
 function getEnrolledUsersFromContext($context) {
 
     $fields = 'u.id, u.username';              //return these fields
@@ -678,6 +694,17 @@ function getEnrolledUsersFromContext($context) {
 
 }
 
+/**
+ * getActivityGradeFromGroupID
+ * returns the average grade of a group of users, for a given activity
+ *
+ * @param $groupid
+ * @param $courseid
+ * @param $activity
+ * @param bool $inpercentage
+ * @param $context
+ * @return float|int|null
+ */
 function getActivityGradeFromGroupID($groupid, $courseid, $activity, $inpercentage = false, $context) {
     global $DB, $CFG;
 
@@ -719,24 +746,40 @@ function getActivityGradeFromGroupID($groupid, $courseid, $activity, $inpercenta
 
 }
 
+/**
+ * getActivitiesGradeFromGroupID
+ * returns the average grades of a group of users, for an array of activities
+ *
+ * @param $groupid
+ * @param $courseid
+ * @param $activities
+ * @param $gradeinpercentage
+ * @param $context
+ * @return array
+ */
 function getActivitiesGradeFromGroupID($groupid, $courseid, $activities, $gradeinpercentage, $context) {
-
     $grades = array();
-
     foreach ( $activities as $activity ) {
         $grade = getActivityGradeFromGroupID($groupid, $courseid, $activity, $gradeinpercentage, $context);
         array_push($grades, $grade);
     }
-
     return $grades;
-
 }
 
+/**
+ * getActivityGradeFromUsers
+ * returns an array with users grade for a given activity
+ *
+ * @param $users
+ * @param $courseid
+ * @param $activity
+ * @param bool $inpercentage
+ * @return array
+ */
 function getActivityGradeFromUsers($users, $courseid, $activity, $inpercentage = false) {
     global $DB, $CFG;
 
-    $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ?
-                                        AND iteminstance = ?', array($courseid, $activity));
+    $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
     $modulename = key($modulename);
 
     $grades_array = array();
@@ -764,131 +807,111 @@ function getActivityGradeFromUsers($users, $courseid, $activity, $inpercentage =
 
 }
 
+/**
+ * getActivitiesGradeFromUserID
+ * returns an array with an user grades for given activities
+ *
+ * @param $userid
+ * @param $courseid
+ * @param $activities
+ * @param bool $inpercentage
+ * @return array
+ */
 function getActivitiesGradeFromUserID($userid, $courseid, $activities, $inpercentage = false) {
     $grades = array();
-
     foreach ($activities as $activity) {
         $grade = getGrade($userid, $courseid, $activity, $inpercentage);
         array_push($grades, $grade);
     }
-
     return $grades;
-
 }
 
+/**
+ * getActivitiesGradeFromUsers
+ * returns an array with grades for given activities and for given users
+ *
+ * @param $users
+ * @param $courseid
+ * @param $activities
+ * @param bool $inpercentage
+ * @return array
+ */
 function getActivitiesGradeFromUsers($users, $courseid, $activities, $inpercentage = false) {
     global $DB, $CFG;
-
     $average_grades = array();
-
     foreach ($activities as $activity) {
-
         $modulename = $DB->get_records_sql('SELECT itemmodule FROM ' . $CFG->prefix . 'grade_items WHERE courseid = ? AND iteminstance = ?', array($courseid, $activity));
         $modulename = key($modulename);
-
         $grades = array();
-
         $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, 0);
-
         foreach ( $users as $user ) {
-
             $grading_user_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $user);
-
             if ( !empty($grading_user_info->items) ) {
-
                 if ( !empty($grading_user_info->items[0]->grades[$user]->grade) ) {
-
                     $grade = $grading_user_info->items[0]->grades[$user]->grade;
                     array_push($grades, floatval($grade));
-
                 }
             }
-
         }
-
         if ( count($grades) != 0 ) {
-
             $average_grade = array_sum($grades) / count($grades);
-
             if ($inpercentage == true) {
                 $max_grade = floatval($grading_info->items[0]->grademax);
                 $average_grade = $average_grade / $max_grade * 100;
                 $average_grade = round($average_grade, 2);
             }
-
         } else {
-
             $average_grade = 0;
-            
         }
-
         array_push($average_grades, number_format(floatval($average_grade), 2));
-
     }
-
     return $average_grades;
-
 }
 
-/*
+/**
  * getCoursesIDandNames
- *
  * returns an array with courses ID's and names
  *
- * @return (array)
+ * @return array
  */
-
 function getCoursesIDandNames() {
     $courses = get_courses();
     $courses_array = array();
-
     foreach ( $courses as $course ) {
-
         if ( $course->format != 'site' ) {
-
             $courses_array[$course->id] = $course->fullname;
-
         }
     }
-
     return $courses_array;
 }
 
-/*
+/**
  * getSectionsFromCourseID
- *
  * returns the sections included in a course
  *
- * @courseid (int)
- *
- * @return (array)
+ * @param $courseid
+ * @return array
  */
-
 function getSectionsFromCourseID($courseid) {
     global $DB, $CFG;
-
-    $sql = "SELECT * FROM " . $CFG->prefix . "course_sections
-            WHERE course = $courseid";         // SQL Query
+    $sql = "SELECT * FROM " . $CFG->prefix . "course_sections WHERE course = $courseid";         // SQL Query
     $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
     $sections_list = array();                               // Initialize sections array (empty)
     foreach ( $records as $record ) {                       // This loop populates sections array
         $sections_list[$record->id] = $record->name . ' (' . $record->id . ')';
     }
-
     return $sections_list;
 }
 
-/*
+/**
  * getActivitiesFromCourseID
- *
  * returns the an array with all the activities included in a course
  *
- * @courseid (int)
- * @categoryid (int)
- *
- * @return (array)
+ * @param $courseid
+ * @param $categoryid
+ * @param bool $extended
+ * @return array
  */
-
 function getActivitiesFromCourseID($courseid, $categoryid, $extended = false) {
     global $DB, $CFG;
 
@@ -909,76 +932,79 @@ function getActivitiesFromCourseID($courseid, $categoryid, $extended = false) {
     return $activities_list;
 }
 
-/*
+/**
  * getUsersFromGroup
- *
  * returns an array with users from a given group
  *
- * @groupid (int)
- *
- * @return (array)
+ * @param $groupid
+ * @return array
  */
-
 function getUsersFromGroup($groupid) {
     $fields = 'u.id, u.username';              //return these fields
     $users = groups_get_members($groupid, $fields, $sort='lastname ASC');
     $users_array = array();
-
     foreach ( $users as $user ) {
         array_push($users_array, intval($user->id));
     }
-
     return $users_array;
 }
 
+/**
+ * getUsersFromContext
+ * returns an array with users ids enrolled in the course
+ *
+ * @param $context
+ * @return array
+ */
 function getUsersFromContext($context) {
     $fields = 'u.id, u.username';              //return these fields
     $users_array = array();
-
     $users = get_enrolled_users($context, '', NULL, $fields);    // Get users from course (context)
-
     foreach ( $users as $user ) {
         array_push($users_array, intval($user->id));
     }
-
     return $users_array;
-
 }
 
-/*
+/**
  * getUsernamesFromGroup
- *
  * returns an array with the user's names from a group
  *
- * @groupid (int)
- *
- * @return (array)
+ * @param $groupid
+ * @return array
  */
-
 function getUsernamesFromGroup($groupid) {
-
     $fields = 'u.username';              //return these fields
     $users = groups_get_members($groupid, $fields, $sort='lastname ASC');
-
     $usernames = array();
-
     foreach ( $users as $user ) {
         array_push($usernames, $user->username);
     }
-
     return $usernames;
 }
 
+/**
+ * getUsernamesFromUsers
+ * returns an array of usernames from an array of user ids
+ *
+ * @param $users
+ * @return array
+ */
 function getUsernamesFromUsers($users) {
     $usernames = array();
-
     foreach ($users as $user) {
         array_push($usernames, getUsernameFromUserID($user) );
     }
-
     return $usernames;
 }
 
+/**
+ * getUsernameFromUserID
+ * returns username for a given user id
+ *
+ * @param $userid
+ * @return mixed
+ */
 function getUsernameFromUserID($userid) {
     global $DB;
 
@@ -988,16 +1014,13 @@ function getUsernameFromUserID($userid) {
 
 }
 
-/*
+/**
  * getGroups
- *
  * returns an array with Groups id's and names
  *
- * @courseid (int)
- *
- * @return (array)
+ * @param $courseid
+ * @return array
  */
-
 function getGroups($courseid) {
     $groups = groups_get_all_groups($courseid);
     $groups_array = array();
@@ -1009,16 +1032,13 @@ function getGroups($courseid) {
     return $groups_array;
 }
 
-/*
+/**
  * getGroupNames
- *
  * returns an array with Groups names
  *
- * @courseid (int)
- *
- * @return (array)
+ * @param $courseid
+ * @return array
  */
-
 function getGroupNames($courseid) {
     $groups = groups_get_all_groups($courseid);
     $groups_array = array();
