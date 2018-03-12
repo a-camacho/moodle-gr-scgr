@@ -197,6 +197,8 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
     global $OUTPUT, $CFG;
 
+    $plugin_home_url = new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid));
+
     if ( isset($modality) && $modality == 'intra' ) {
 
         if ( $course_has_groups == true ) {
@@ -297,7 +299,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             echo '<hr />';
 
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a>';
+            echo '<a href="index.php?id=' . $courseid . '">Back</a>';
 
         } else {
 
@@ -366,13 +368,13 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             echo '<hr />';
 
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Back</a> - ';
+            echo '<a href="index.php?id=' . $courseid . '">Back</a> - ';
 
         } else {
 
             echo html_writer::tag('h3', 'Error');
             echo html_writer::tag('p', 'users or grades not avalaible.');
-            echo '<a href="http://d1abo.i234.me/labs/moodle/grade/report/scgr/index.php?id=' . $courseid . '">Revenir</a>';
+            echo '<a href="index.php?id=' . $courseid . '">Back</a>';
 
         }
 
@@ -530,9 +532,14 @@ function getGradesFromGroups( $courseid, $activity, $inpercentage = false, $cont
         $total = 0;
 
         foreach ($users as $user) {
+
+            /* We need to implement checking if grade is 0 or NULL to not count it in average */
+
             $user_grade = getGrade($user, $courseid, $activity, $inpercentage);
+
             $user_grade = round(floatval($user_grade), 2);
             array_push( $users_grades, $user_grade);
+
             $total = $total + floatval($user_grade);
         }
 
@@ -658,15 +665,20 @@ function getGrade($userid, $courseid, $activity, $inpercentage = false) {
     $modulename = key($modulename);
 
     $grading_info = grade_get_grades($courseid, 'mod', $modulename, $activity, $userid);
+
     $grade = NULL;
     $max_grade = floatval($grading_info->items[0]->grademax);
 
     if ( !empty($grading_info->items) ) {
         $grade = $grading_info->items[0]->grades[$userid]->grade;
 
-        if ($inpercentage == true) {
-            $grade = $grade / $max_grade * 100;
-            $grade = round($grade, 2);
+        if ( !$grade == NULL ) {
+
+            if ($inpercentage == true) {
+                $grade = $grade / $max_grade * 100;
+                $grade = round($grade, 2);
+            }
+
         }
 
         return $grade;
