@@ -15,6 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * printCustomNav
+ * prints the navigation tabs
+ *
+ * @param $courseid
+ * @param $role
+ * @param $view
+ * @param $course_has_groups
+ */
 function printCustomNav( $courseid, $role, $view, $course_has_groups ) {
 
     switch ($role) {
@@ -92,6 +101,19 @@ function printCustomNav( $courseid, $role, $view, $course_has_groups ) {
 
 }
 
+/**
+ * printOptions
+ * prints the options used for chart geneneration (for debug purpose)
+ *
+ * @param $courseid
+ * @param $modality
+ * @param null $groupid
+ * @param $activities
+ * @param $average
+ * @param $custom_title
+ * @param $viewtype
+ * @param bool $gradesinpercentage
+ */
 function printOptions( $courseid, $modality, $groupid = NULL, $activities, $average, $custom_title, $viewtype, $gradesinpercentage = false ) {
 
     $groupname = groups_get_group_name($groupid);
@@ -153,6 +175,23 @@ function printOptions( $courseid, $modality, $groupid = NULL, $activities, $aver
 
 }
 
+/**
+ * printGraph
+ * prints the chart based on parameters given in form
+ *
+ * @param $courseid
+ * @param $modality
+ * @param null $groupid
+ * @param null $activities
+ * @param $average
+ * @param $custom_title
+ * @param null $custom_weight_array
+ * @param $averageonly
+ * @param $viewtype
+ * @param $course_has_groups
+ * @param $context
+ * @param $gradesinpercentage
+ */
 function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, $average, $custom_title,
                      $custom_weight_array = NULL, $averageonly, $viewtype, $course_has_groups, $context, $gradesinpercentage ) {
 
@@ -345,6 +384,10 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
 }
 
+/**
+ * printPluginConfig
+ * prints the plugin options (for debug purpose)
+ */
 function printPluginConfig() {
     global $CFG;
 
@@ -368,63 +411,6 @@ function printPluginConfig() {
     echo '</ul>';
 
     echo '<hr>';
-
-}
-
-function exportAsJPEG() {
-
-    echo '<a onclick="canvasToImage(\'#FFFFFF\')" download="export.jpg" href="" id="chartdl">Export as JPG</a>';
-
-    // Improve heritage
-    echo '<script type="text/javascript">
-	    	function canvasToImage(backgroundColor)	{
-			var canvas = document.getElementsByTagName("canvas")[0];
-			var context = canvas.getContext("2d");
-			//cache height and width		
-			//var w = canvas.width;
-			//var h = canvas.height;
-			var w = 1920;
-			var h = 1080;
-
-			var data;
-
-			if(backgroundColor)
-			{
-				//get the current ImageData for the canvas.
-				data = context.getImageData(0, 0, w, h);
-
-				//store the current globalCompositeOperation
-				var compositeOperation = context.globalCompositeOperation;
-
-				//set to draw behind current content
-				context.globalCompositeOperation = "destination-over";
-
-				//set background color
-				context.fillStyle = backgroundColor;
-
-				//draw background / rect on entire canvas
-				context.fillRect(0,0,w,h);
-			}
-
-			//get the image data from the canvas
-			var imageData = canvas.toDataURL("image/jpeg");
-
-			if(backgroundColor)
-			{
-				//clear the canvas
-				context.clearRect (0,0,w,h);
-
-				//restore it with original / cached ImageData
-				context.putImageData(data, 0,0);
-
-				//reset the globalCompositeOperation to what it was
-				context.globalCompositeOperation = compositeOperation;
-			}
-
-			//return the Base64 encoded data url string
-			document.getElementById("chartdl").href=imageData;
-		}
-	    </script>';
 
 }
 
