@@ -368,7 +368,7 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
 
             echo '<hr />';
 
-            echo '<a href="index.php?id=' . $courseid . '">Back</a> - ';
+            echo '<a href="index.php?id=' . $courseid . '">Back</a>';
 
         } else {
 
@@ -533,12 +533,12 @@ function getGradesFromGroups( $courseid, $activity, $inpercentage = false, $cont
 
         foreach ($users as $user) {
 
-            /* We need to implement checking if grade is 0 or NULL to not count it in average */
-
             $user_grade = getGrade($user, $courseid, $activity, $inpercentage);
 
-            $user_grade = round(floatval($user_grade), 2);
-            array_push( $users_grades, $user_grade);
+            if ( $user_grade != NULL ) {
+                $user_grade = round(floatval($user_grade), 2);
+                array_push( $users_grades, $user_grade);
+            }
 
             $total = $total + floatval($user_grade);
         }
