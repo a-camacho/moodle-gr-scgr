@@ -32,9 +32,19 @@ $string['page_not_active_on_this_course'] = 'SCGR plugin is not activated for th
 $string['page_not_active_on_this_course_description'] = 'Before being able to use SCGR plugin you need to activate it
                                                          for this course in settings page.';
 
+$string['no_permission_to_view_report'] = 'Permission error.';
+$string['no_permission_to_view_report_description'] = 'SCGR is active but you do not have permission to view this report.';
+
 // Buttons
 
 $string['form_button_submit'] = 'Submit';
+
+// Permissions and capabilities
+
+$string['scgr:viewreport'] = 'View SCGR report';
+$string['scgr:viewstudentview'] = 'View the student\'s view';
+$string['scgr:viewtutorview'] = 'View the tutor\'s view';
+$string['scgr:viewcustomview'] = 'Generate a custom graph';
 
 /* ################################################################################################################ */
 /* ###########################################      PREDEFINED        ############################################# */

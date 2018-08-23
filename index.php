@@ -100,7 +100,6 @@ $gpr = new grade_plugin_return(array('type'=>'report', 'plugin'=>'scgr', 'course
 
 // Set URL of plugin page
 $PAGE->set_url(new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid)));
-
 $forms_action_url = new moodle_url('/grade/report/scgr/index.php', array('id'=>$courseid));
 
 
@@ -122,7 +121,6 @@ $config = get_config('grade_report_scgr');
 /* ################################################################################################################ */
 
 // Print header
-// echo $OUTPUT->header();
 print_grade_page_head($courseid, 'report', 'scgr', 'UniTICE 2016-2017: Social Comparison GR', false, '');
 
 // Check if plugin is activated for this course
@@ -130,13 +128,30 @@ $activated_on = explode(",", $CFG->scgr_course_activation_choice);
 
 if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable == '1' ) {
 
-    echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr') );
-    echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr') );
+    echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr'));
+    echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr'));
+
+} elseif ( !has_capability('gradebook/scgr:viewreport', $context, $USER->id, false) ) {
+
+    echo html_writer::tag('h3', get_string('no_permission_to_view_report', 'gradereport_scgr'));
+    echo html_writer::tag('p', get_string('no_permission_to_view_report_description', 'gradereport_scgr'));
 
 // If plugin is activated for this course
 } else {
 
+    /*
+    if (has_capability('moodle/legacy:student', $context, $USER->id, false) ) {
+        echo "is Student<br/>";
+    } */
+
+    echo '<hr><hr>';
+
     // Get user role to show the defined graphs
+
+    if (has_capability('gradebook/scgr:studentview', $context, $USER->id, false) ) {
+        echo "is Student<br/>";
+    }
+
     if ( current(get_user_roles($context, $USER->id))->shortname == 'student' ) {
         $role = 'student';
 
@@ -160,7 +175,9 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
         include_once('views/teacher.php');
 
     } elseif ( current(get_user_roles($context, $USER->id))->shortname == 'editingteacher' ||
-               current(get_user_roles($context, $USER->id))->shortname == 'manager' ) {
+               current(get_user_roles($context, $USER->id))->shortname == 'manager' ||
+               current(get_user_roles($context, $USER->id))->shortname == 'admin' ) {
+
         $role = 'editingteacher';
 
         if ( isset($_GET['view']) ) {

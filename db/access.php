@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-    'gradereport/scgr:view' => array(
+    'gradereport/scgr:viewreport' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
@@ -38,7 +38,7 @@ $capabilities = array(
             'coursecreator' => CAP_ALLOW
         )
     ),
-    'gradereport/scgr:viewall' => array(
+    'gradereport/scgr:viewstudentview' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
@@ -46,8 +46,32 @@ $capabilities = array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_PROHIBIT,
+            'student' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW
+        )
+    ),
+    'gradereport/scgr:viewtutorview' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'student' => CAP_PREVENT,
+            'coursecreator' => CAP_ALLOW
+        )
+    ),
+    'gradereport/scgr:viewcustomview' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'teacher' => CAP_PREVENT,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'student' => CAP_PREVENT,
+            'coursecreator' => CAP_PREVENT
         )
     )
 );
