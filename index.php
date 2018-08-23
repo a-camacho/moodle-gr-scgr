@@ -148,7 +148,7 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
 
     // Get user role to show the defined graphs
 
-    if (has_capability('gradebook/scgr:studentview', $context, $USER->id, false) ) {
+    if (has_capability('gradebook/scgr:viewstudentview', $context, $USER->id, false) ) {
         echo "is Student<br/>";
     }
 
