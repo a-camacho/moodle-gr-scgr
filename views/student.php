@@ -7,9 +7,6 @@ $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups
 
 if ( in_array($courseid, $courses_with_groups) ) {
     $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
-
-    var_dump($users_groups);
-
     $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
     $user_groups_clean = '(groups: ' . implode(",", $user_groups) . ')';
     $course_has_groups = true;
