@@ -43,11 +43,11 @@ $capabilities = array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
+            'teacher' => CAP_PREVENT,
+            'editingteacher' => CAP_PREVENT,
+            'manager' => CAP_PREVENT,
             'student' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW
+            'coursecreator' => CAP_PREVENT
         )
     ),
     'gradereport/scgr:viewtutorview' => array(
@@ -56,10 +56,10 @@ $capabilities = array(
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
             'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
+            'editingteacher' => CAP_PREVENT,
+            'manager' => CAP_PREVENT,
             'student' => CAP_PREVENT,
-            'coursecreator' => CAP_ALLOW
+            'coursecreator' => CAP_PREVENT
         )
     ),
     'gradereport/scgr:viewcustomview' => array(
