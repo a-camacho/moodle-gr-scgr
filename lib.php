@@ -16,6 +16,116 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * printNavigation
+ * prints the navigation tabs
+ *
+ */
+function printNavigation( $courseid, $course_has_groups, $studentview, $teacherview, $customview, $section, $view ) {
+
+    echo '<ul class="nav nav-tabs m-b-1">';
+
+        if ( $studentview == true ) {
+            echo '<li class="nav-item">
+                <a class="nav-link" href="index.php?id=' . $courseid . '&section=student"
+                    title="' . get_string('nav_section_student', 'gradereport_scgr') . '">
+                    ' . get_string('nav_section_student', 'gradereport_scgr') . '
+                </a>
+              </li>';
+        }
+
+        if ( $teacherview == true ) {
+            echo '<li class="nav-item">
+                <a class="nav-link" href="index.php?id=' . $courseid . '&section=teacher"
+                    title="' . get_string('nav_section_teacher', 'gradereport_scgr') . '">
+                    ' . get_string('nav_section_teacher', 'gradereport_scgr') . '
+                </a>
+              </li>';
+        }
+
+        if ( $customview == true ) {
+            echo '<li class="nav-item">
+                <a class="nav-link active" href="index.php?id=' . $courseid . '&section=custom"
+                    title="' . get_string('nav_section_custom', 'gradereport_scgr') . '">
+                    ' . get_string('nav_section_custom', 'gradereport_scgr') . '
+                </a>
+              </li>';
+        }
+
+        echo '<li class="nav-item">
+                <a class="nav-link" href="#" title="Test">Test</a>
+              </li>';
+
+        echo '</ul>';
+
+    /* echo '<hr><hr>';
+
+    echo '<ul class="nav nav-tabs m-b-1">';
+
+        if ( $view == 'default' || $view == 'intra' || $view == '' ) {
+            $intermode = '';
+            $intramode = 'active';
+        } elseif ( $view == 'inter' || $view == 'comparison' ) {
+            $intermode = 'active';
+            $intramode = '';
+        }
+
+        echo '<li class="nav-item"><a class="nav-link ' . $intramode . '" href="index.php?id=' . $courseid . '&view=intra"
+                              title="' . get_string('nav_student_intra', 'gradereport_scgr') . '">' . get_string('nav_student_intra', 'gradereport_scgr') . '</a></li>';
+
+        if ( $course_has_groups != false ) {
+
+            echo '<li class="nav-item"><a class="nav-link ' . $intermode . '" href="index.php?id=' . $courseid . '&view=inter"
+                              title="' . get_string('nav_student_inter', 'gradereport_scgr') . '">' . get_string('nav_student_inter', 'gradereport_scgr') . '</a></li>';
+
+        }
+
+        if ( $view == 'default' || $view == 'custom' ) {
+            $custom = 'active';
+            $help = '';
+        } elseif ( $view == 'help' ) {
+            $custom = '';
+            $help = 'active';
+        }
+
+        echo '<ul class="nav nav-tabs m-b-1">';
+
+            echo '<li class="nav-item"><a class="nav-link ' . $custom . '" title="' . get_string('nav_custom', 'gradereport_scgr') . '"
+                                                  href="index.php?id=' . $courseid . '&view=custom">' . get_string('nav_custom', 'gradereport_scgr') . '</a></li>';
+            echo '<li class="nav-item"><a class="nav-link ' . $help . '" title="' . get_string('nav_help', 'gradereport_scgr') . '"
+                                                  href="index.php?id=' . $courseid . '&view=help">' . get_string('nav_help', 'gradereport_scgr') . '</a></li>';
+
+        echo '</ul>';
+
+        $comparison = '';
+        $progression = '';
+        $custom = '';
+
+        if ( $view == 'default' || $view == 'progression' ) {
+            $progression = 'active';
+        } elseif ( $view == 'comparison' ) {
+            $comparison = 'active';
+        } elseif ( $view = 'custom' ) {
+            $custom = 'active';
+        }
+
+        echo '<ul class="nav nav-tabs m-b-1">';
+
+            echo '<li class="nav-item"><a class="nav-link ' . $progression . '" href="index.php?id=' . $courseid . '&view=progression"
+                                  title="' . get_string('nav_teacher_progression', 'gradereport_scgr') . '">' . get_string('nav_teacher_progression', 'gradereport_scgr') . '</a></li>';
+
+            echo '<li class="nav-item"><a class="nav-link ' . $comparison . '" href="index.php?id=' . $courseid . '&view=comparison"
+                                  title="' . get_string('nav_teacher_comparison', 'gradereport_scgr') . '">' . get_string('nav_teacher_comparison', 'gradereport_scgr') . '</a></li>';
+
+            echo '<li class="nav-item"><a class="nav-link ' . $custom . '" title="' . get_string('nav_custom', 'gradereport_scgr') . '" href="index.php?id=' . $courseid . '&view=custom">' . get_string('nav_custom', 'gradereport_scgr') . '</a></li>';
+
+        echo '</ul>';
+
+
+    echo '</ul>';
+    */
+}
+
+/**
  * printCustomNav
  * prints the navigation tabs
  *
@@ -924,7 +1034,6 @@ function getSectionsFromCourseID($courseid) {
  * returns the an array with all the activities included in a course
  *
  * @param $courseid
- * @param $categoryid
  * @param bool $extended
  * @return array
  */
