@@ -41,7 +41,7 @@ $string['form_button_submit'] = 'Submit';
 
 // Permissions and capabilities
 
-$string['scgr:viewreport'] = 'View SCGR report';
+$string['scgr:view'] = 'View SCGR report';
 $string['scgr:viewstudentview'] = 'View the student\'s view';
 $string['scgr:viewtutorview'] = 'View the tutor\'s view';
 $string['scgr:viewcustomview'] = 'Generate a custom graph';
@@ -142,6 +142,12 @@ $string['settings_page_title'] = 'SCGR Settings';
 /* ################################################################################################################ */
 /* #############################################      FUNCTIONS        ############################################ */
 /* ################################################################################################################ */
+
+// Navigation level 1
+
+$string['nav_section_student'] = 'Student\'s view';
+$string['nav_section_teacher'] = 'Tutor\'s view';
+$string['nav_section_custom'] = 'Custom chart';
 
 // Navigation
 

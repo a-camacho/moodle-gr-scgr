@@ -52,7 +52,7 @@ $PAGE->set_pagelayout('report');
 
 // Context
 $context = context_course::instance($course->id);
-require_capability('gradereport/user:view', $context);
+// require_capability('gradereport/user:view', $context);
 
 if (empty($userid)) {
     require_capability('moodle/grade:viewall', $context);
@@ -131,7 +131,7 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
     echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr'));
     echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr'));
 
-} elseif ( !has_capability('gradebook/scgr:viewreport', $context, $USER->id, false) ) {
+} elseif ( !has_capability('gradereport/scgr:view', $context, $USER->id, false) ) {
 
     echo html_writer::tag('h3', get_string('no_permission_to_view_report', 'gradereport_scgr'));
     echo html_writer::tag('p', get_string('no_permission_to_view_report_description', 'gradereport_scgr'));
@@ -139,60 +139,51 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
 // If plugin is activated for this course
 } else {
 
-    /*
-    if (has_capability('moodle/legacy:student', $context, $USER->id, false) ) {
-        echo "is Student<br/>";
-    } */
-
-    echo '<hr><hr>';
-
-    // Get user role to show the defined graphs
-
-    if (has_capability('gradebook/scgr:viewstudentview', $context, $USER->id, false) ) {
-        echo "is Student<br/>";
+    // Get courses that have groups (from SCGR settings)
+    $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups_activation_choice));
+    if ( in_array($courseid, $courses_with_groups) ) {
+        $course_has_groups = true;
     }
 
-    if ( current(get_user_roles($context, $USER->id))->shortname == 'student' ) {
-        $role = 'student';
-
-        if ( isset($_GET['view']) ) {
-            $view = $_GET['view'];
-        } else {
-            $view = 'default';
-        }
-
-        include_once('views/student.php');
-
-    } elseif ( current(get_user_roles($context, $USER->id))->shortname == 'teacher' ) {
-        $role = 'teacher';
-
-        if ( isset($_GET['view']) ) {
-            $view = $_GET['view'];
-        } else {
-            $view = 'default';
-        }
-
-        include_once('views/teacher.php');
-
-    } elseif ( current(get_user_roles($context, $USER->id))->shortname == 'editingteacher' ||
-               current(get_user_roles($context, $USER->id))->shortname == 'manager' ||
-               current(get_user_roles($context, $USER->id))->shortname == 'admin' ) {
-
-        $role = 'editingteacher';
-
-        if ( isset($_GET['view']) ) {
-            $view = $_GET['view'];
-        } else {
-            $view = 'default';
-        }
-
-        include_once('views/editingteacher.php');
-
+    // Set view or use default one
+    if ( isset($_GET['view']) ) {
+        $view = $_GET['view'];
     } else {
-
-        echo 'error : user role error';
-
+        $view = 'default';
     }
+
+    // Set view or use default one
+    if ( isset($_GET['section']) ) {
+        $section = $_GET['section'];
+    } else {
+        $section = 'empty';
+    }
+
+    // Print navigation parameters
+    $course_has_groups = false;
+    $studentview = false;
+    $teacherview = false;
+    $customview = false;
+
+    if ( has_capability('gradereport/scgr:viewstudentview', $context, $USER->id, false ) &&
+        has_capability('moodle/grade:view', $context) ) {
+        $studentview = true;
+    }
+
+    if ( has_capability('gradereport/scgr:viewteacherview', $context, $USER->id, false) ) {
+        $teacherview = true;
+    }
+
+    if ( has_capability('gradereport/scgr:viewcustomview', $context, $USER->id, false) ) {
+        $customview = true;
+    }
+
+    // Print navigation
+    printNavigation( $courseid, $course_has_groups, $studentview, $teacherview, $customview, $section, $view );
+
+    // include_once('views/student.php');
+    // include_once('views/teacher.php');
+    // include_once('views/editingteacher.php');
 
 }
 
