@@ -74,6 +74,9 @@ générer des visualisations d\'étudiants du (ou des) groupe(s) au(x)quel(s) il
 $string['predefined_customize_title'] = 'Personnaliser';
 $string['predefined_customize_label_activity'] = 'Activités';
 
+// graph axis labels
+$string['yaxislabel_points'] = 'Notes en points';
+$string['yaxislabel_percent'] = 'Notes en %';
 
 /* ################################################################################################################ */
 /* ##############################################      FORMS        ############################################### */

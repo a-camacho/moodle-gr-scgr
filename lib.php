@@ -323,11 +323,11 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             $yaxis = $chart->get_yaxis(0, true);
 
             if ($gradesinpercentage) {
-                $yaxis->set_label("Grade in %");
+                $yaxis->set_label(get_string('yaxislabel_percent', 'gradereport_scgr'));
                 $yaxis->set_min(0);
                 $yaxis->set_max(100);
             } else {
-                $yaxis->set_label("Grade in points");
+                $yaxis->set_label(get_string('yaxislabel_points', 'gradereport_scgr'));
             }
 
             foreach ( $activities as $activity ) {
