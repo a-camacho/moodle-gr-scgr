@@ -544,8 +544,12 @@ function getGradesFromGroups( $courseid, $activity, $inpercentage = false, $cont
         }
 
         $count = count( $users_grades );
-        $average = $total / $count;
-        $average = round($average, 2);
+        $average = 0;
+        if ($count > 0){
+            //if grades exist compute average, else 0;
+            $average = $total / $count;
+            $average = round($average, 2);
+        }
 
         // Push average grade of group in array
         array_push($groups_grades, $average);
