@@ -29,6 +29,7 @@ class customhtml_form extends moodleform {
 
         $mform->addElement('text', 'graph_custom_title', get_string('form_custom_label_custom_title', 'gradereport_scgr') );
         $mform->addHelpButton('graph_custom_title', 'helper_customtitle', 'gradereport_scgr');
+        $mform->setType('graph_custom_title', PARAM_TEXT);
 
         // ******************************************
         // ************ GRAPH VIEW TYPE *************
