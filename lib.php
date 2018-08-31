@@ -928,7 +928,7 @@ function getActivitiesFromCourseID($courseid, $categoryid, $extended = false) {
     global $DB, $CFG;
 
     $sql = "SELECT iteminstance, itemname, aggregationcoef2 FROM " . $CFG->prefix . "grade_items WHERE
-            courseid = " . $courseid . " AND hidden != 1 AND categoryid = " . $categoryid . " ORDER BY id";
+            courseid = " . $courseid . " AND hidden != 1 AND itemtype != 'course' ORDER BY id";
 
     $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
     $activities_list = array();
