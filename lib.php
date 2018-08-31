@@ -323,11 +323,11 @@ function printGraph( $courseid, $modality, $groupid = NULL, $activities = NULL, 
             $yaxis = $chart->get_yaxis(0, true);
 
             if ($gradesinpercentage) {
-                $yaxis->set_label("Grade in %");
+                $yaxis->set_label(get_string('yaxislabel_percent', 'gradereport_scgr'));
                 $yaxis->set_min(0);
                 $yaxis->set_max(100);
             } else {
-                $yaxis->set_label("Grade in points");
+                $yaxis->set_label(get_string('yaxislabel_points', 'gradereport_scgr'));
             }
 
             foreach ( $activities as $activity ) {
@@ -544,8 +544,12 @@ function getGradesFromGroups( $courseid, $activity, $inpercentage = false, $cont
         }
 
         $count = count( $users_grades );
-        $average = $total / $count;
-        $average = round($average, 2);
+        $average = 0;
+        if ($count > 0){
+            //if grades exist compute average, else 0;
+            $average = $total / $count;
+            $average = round($average, 2);
+        }
 
         // Push average grade of group in array
         array_push($groups_grades, $average);
@@ -928,7 +932,7 @@ function getActivitiesFromCourseID($courseid, $categoryid, $extended = false) {
     global $DB, $CFG;
 
     $sql = "SELECT iteminstance, itemname, aggregationcoef2 FROM " . $CFG->prefix . "grade_items WHERE
-            courseid = " . $courseid . " AND hidden != 1 AND categoryid = " . $categoryid . " ORDER BY id";
+            courseid = " . $courseid . " AND hidden != 1 AND itemtype != 'course' ORDER BY id";
 
     $records = $DB->get_records_sql($sql);                  // Get records with Moodle function
     $activities_list = array();

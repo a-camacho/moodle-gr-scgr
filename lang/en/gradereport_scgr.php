@@ -70,6 +70,10 @@ charts from students in groups that they belong in. <br />Groups are <strong>act
 $string['predefined_customize_title'] = 'Customize graph';
 $string['predefined_customize_label_activity'] = 'Activities';
 
+// graph axis labels
+$string['yaxislabel_points'] = 'Grade in points';
+$string['yaxislabel_percent'] = 'Grade in %';
+
 
 /* ################################################################################################################ */
 /* ##############################################      FORMS        ############################################### */
