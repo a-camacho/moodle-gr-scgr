@@ -143,6 +143,8 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
     $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups_activation_choice));
     if ( in_array($courseid, $courses_with_groups) ) {
         $course_has_groups = true;
+    } else {
+        $course_has_groups = false;
     }
 
     // Set view or use default one
@@ -156,11 +158,10 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
     if ( isset($_GET['section']) ) {
         $section = $_GET['section'];
     } else {
-        $section = 'empty';
+        $section = null;
     }
 
     // Print navigation parameters
-    $course_has_groups = false;
     $studentview = false;
     $teacherview = false;
     $customview = false;
@@ -178,12 +179,23 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
         $customview = true;
     }
 
-    // Print navigation
-    printNavigation( $courseid, $course_has_groups, $studentview, $teacherview, $customview, $section, $view );
 
-    // include_once('views/student.php');
-    // include_once('views/teacher.php');
-    // include_once('views/editingteacher.php');
+    // DEBUG : Set permissions manually
+    $studentview = true;
+    $teacherview = true;
+    $customview = true;
+
+    // Print navigation
+    printMainNavigation( $courseid, $course_has_groups, $studentview, $teacherview, $customview, $section, $view );
+
+    switch ($section) {
+        case 'student':
+            include_once('views/student.php');
+        case 'teacher':
+            include_once('views/teacher.php');
+        case 'custom':
+            include_once('views/editingteacher.php');
+    }
 
 }
 
