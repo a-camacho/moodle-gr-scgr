@@ -38,6 +38,7 @@ $string['no_permission_to_view_report_description'] = 'SCGR est actif mais vous 
 // Buttons
 
 $string['form_button_submit'] = 'Soumettre';
+$string['form_button_delete'] = 'Supprimer 1 champ du formulaire';
 
 // Permissions and capabilities
 
