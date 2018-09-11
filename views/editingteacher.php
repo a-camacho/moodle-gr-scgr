@@ -15,12 +15,8 @@ if ( in_array($courseid, $courses_with_groups) ) {
     $course_has_groups = false;
 }
 
-// Print title
-/* echo html_writer::tag(  'h2', get_string('plugintitle', 'gradereport_scgr') . ' : ' . $USER->firstname .
-    ' ' . $USER->lastname); */
-
 // Print navigation
-printCustomNav( $courseid, $role, $view, $course_has_groups );
+// printCustomNav( $courseid, $role, $view, $course_has_groups );
 
 if ( $view == 'default' || $view == 'custom' ) {
     include_once('modules/custom_graph.php');
