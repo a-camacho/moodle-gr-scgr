@@ -171,6 +171,7 @@ $string['nav_teacher_comparison'] = 'Comparaison (mes groupes)';
 // Navigation errors / notices
 
 $string['nav_info_choose_section'] = 'Merci de choisir une vue.';
+$string['nav_unauthorized_section'] = 'Vous n\'avez pas la permission de voir cette section.';
 
 
 /* ################################################################################################################ */
