@@ -191,10 +191,13 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
     switch ($section) {
         case 'student':
             include_once('views/student.php');
+            break;
         case 'teacher':
             include_once('views/teacher.php');
+            break;
         case 'custom':
             include_once('views/editingteacher.php');
+            break;
     }
 
 }
