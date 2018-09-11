@@ -20,42 +20,45 @@
  * prints the navigation tabs
  *
  */
-function printNavigation( $courseid, $course_has_groups, $studentview, $teacherview, $customview, $section, $view ) {
+function printMainNavigation( $courseid, $course_has_groups, $studentview, $teacherview, $customview, $section, $view ) {
 
     echo '<ul class="nav nav-tabs m-b-1">';
 
         if ( $studentview == true ) {
-            echo '<li class="nav-item">
-                <a class="nav-link" href="index.php?id=' . $courseid . '&section=student"
-                    title="' . get_string('nav_section_student', 'gradereport_scgr') . '">
-                    ' . get_string('nav_section_student', 'gradereport_scgr') . '
-                </a>
-              </li>';
+            $listitem='<li class="nav-item">';
+            $listitem.='<a class="nav-link';
+            $listitem.=($section == 'student') ? ' active' : '';
+            $listitem.='" href="index.php?id=' . $courseid . '&section=student" title="' . get_string('nav_section_student', 'gradereport_scgr') . '">';
+            $listitem.=get_string('nav_section_student', 'gradereport_scgr');
+            $listitem.='</a></li>';
+            echo $listitem;
         }
 
         if ( $teacherview == true ) {
-            echo '<li class="nav-item">
-                <a class="nav-link" href="index.php?id=' . $courseid . '&section=teacher"
-                    title="' . get_string('nav_section_teacher', 'gradereport_scgr') . '">
-                    ' . get_string('nav_section_teacher', 'gradereport_scgr') . '
-                </a>
-              </li>';
+            $listitem='<li class="nav-item">';
+            $listitem.='<a class="nav-link';
+            $listitem.=($section == 'teacher') ? ' active' : '';
+            $listitem.='" href="index.php?id=' . $courseid . '&section=teacher" title="' . get_string('nav_section_teacher', 'gradereport_scgr') . '">';
+            $listitem.=get_string('nav_section_teacher', 'gradereport_scgr');
+            $listitem.='</a></li>';
+            echo $listitem;
         }
 
         if ( $customview == true ) {
-            echo '<li class="nav-item">
-                <a class="nav-link active" href="index.php?id=' . $courseid . '&section=custom"
-                    title="' . get_string('nav_section_custom', 'gradereport_scgr') . '">
-                    ' . get_string('nav_section_custom', 'gradereport_scgr') . '
-                </a>
-              </li>';
+            $listitem='<li class="nav-item">';
+            $listitem.='<a class="nav-link';
+            $listitem.=($section == 'custom') ? ' active' : '';
+            $listitem.='" href="index.php?id=' . $courseid . '&section=custom" title="' . get_string('nav_section_custom', 'gradereport_scgr') . '">';
+            $listitem.=get_string('nav_section_custom', 'gradereport_scgr');
+            $listitem.='</a></li>';
+            echo $listitem;
         }
 
-        echo '<li class="nav-item">
-                <a class="nav-link" href="#" title="Test">Test</a>
-              </li>';
+    echo '</ul>';
 
-        echo '</ul>';
+    if (is_null($section) ) {
+        echo 'Please select a chart style above <br />';
+    }
 
     /* echo '<hr><hr>';
 
