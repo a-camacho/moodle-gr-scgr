@@ -13,7 +13,7 @@ echo html_writer::tag('h3', get_string('form_custom_title', 'gradereport_scgr') 
 
 echo html_writer::tag('p', get_string('form_custom_subtitle', 'gradereport_scgr') );
 
-if ( $role == 'teacher' ) {
+if ( $course_has_groups ) {
     echo html_writer::tag('p', get_string('custom_group_restriction_desc', 'gradereport_scgr') . $user_groups_names_clean );
 }
 
@@ -31,7 +31,7 @@ if ( $course_has_groups == true ) {
 
 /******************** CREATE FORM *********************/
 
-$forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=custom';
+$forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=custom';
 $mform = new customhtml_form( $forms_action_url, array( $courseid, $activities, $groups, $course_has_groups, $user_groups ) );
 
 
