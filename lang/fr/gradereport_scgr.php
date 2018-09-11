@@ -172,6 +172,7 @@ $string['nav_teacher_comparison'] = 'Comparaison (mes groupes)';
 
 $string['nav_info_choose_section'] = 'Merci de choisir une vue.';
 $string['nav_unauthorized_section'] = 'Vous n\'avez pas la permission de voir cette section.';
+$string['nav_invalid_mode'] = 'Il semble y avoir un problème entre la configuration de votre cours et les paramètres du plugin.';
 
 
 /* ################################################################################################################ */

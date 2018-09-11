@@ -166,6 +166,7 @@ $string['nav_teacher_comparison'] = 'Comparison (my groups)';
 
 $string['nav_info_choose_section'] = 'Please choose a view.';
 $string['nav_unauthorized_section'] = 'You do not have the permission to view this section.';
+$string['nav_invalid_mode'] = 'There seems to be a problem between your course configuration and the plugin\'s settings.';
 
 
 /* ################################################################################################################ */
