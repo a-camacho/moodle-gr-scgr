@@ -168,6 +168,10 @@ $string['nav_student_inter'] = 'Mon groupe et les autres';
 $string['nav_teacher_progression'] = 'Progression (mes groupes)';
 $string['nav_teacher_comparison'] = 'Comparaison (mes groupes)';
 
+// Navigation errors / notices
+
+$string['nav_info_choose_section'] = 'Merci de choisir une vue.';
+
 
 /* ################################################################################################################ */
 /* #############################################      HELP PAGE        ############################################ */
