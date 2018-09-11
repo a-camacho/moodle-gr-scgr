@@ -57,7 +57,7 @@ function printMainNavigation( $courseid, $course_has_groups, $studentview, $teac
     echo '</ul>';
 
     if (is_null($section) ) {
-        echo '' . get_string('nav_section_custom', 'gradereport_scgr') . '';
+        echo '' . get_string('nav_info_choose_section', 'gradereport_scgr') . '';
     }
 
     /* echo '<hr><hr>';
