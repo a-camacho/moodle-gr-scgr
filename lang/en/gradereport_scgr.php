@@ -53,9 +53,13 @@ $string['scgr:viewcustomview'] = 'Generate a custom graph';
 
 // Predefined graphs - Descriptions
 
+$string['student_intra_title'] = 'Intra-group';
+$string['switch_to_inter'] = 'go to inter-group';
 $string['student_intra_description'] = 'Student can see a chart presenting his progress (success) over the chosen
 activities and compare it with the group/classroom average.';
 
+$string['student_inter_title'] = 'Inter-group';
+$string['switch_to_intra'] = 'go to intra-group';
 $string['student_inter_description'] = 'Student can see a chart comparing results of his group with results of other groups.';
 
 $string['teacher_progression_description'] = 'Teacher can watch students progression (success) over chosen activities.';
@@ -169,6 +173,11 @@ $string['nav_info_choose_section'] = 'Please choose a view.';
 $string['nav_unauthorized_section'] = 'You do not have the permission to view this section.';
 $string['nav_invalid_mode'] = 'There seems to be a problem between your course configuration and the plugin\'s settings.';
 
+// Other errors
+
+$string['information'] = 'Information';
+$string['error'] = 'Error';
+$string['no_group_for_average'] = 'You are trying to view a chart including group-average grade but you belong to no group. Serie disabled.';
 
 /* ################################################################################################################ */
 /* #############################################      HELP PAGE        ############################################ */

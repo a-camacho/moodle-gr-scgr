@@ -53,9 +53,13 @@ $string['scgr:viewcustomview'] = 'Générer un graphique personnalisé';
 
 // Predefined graphs - Descriptions
 
+$string['student_intra_title'] = 'Intra-group';
+$string['switch_to_inter'] = 'voir la vue inter-group';
 $string['student_intra_description'] = 'L\'étudiant peut voir une visualisation présentant sa progression (réussite)
 à travers les activités de son choix, et la comparer à la réussite moyenne de son groupe ou de sa classe.';
 
+$string['student_inter_title'] = 'Inter-group';
+$string['switch_to_intra'] = 'voir la vue intra-group';
 $string['student_inter_description'] = 'L\'étudiant peut voir une visualisation comparant la réussite de son groupe
 avec celle des autres groupes du cours.';
 
@@ -175,6 +179,11 @@ $string['nav_info_choose_section'] = 'Merci de choisir une vue.';
 $string['nav_unauthorized_section'] = 'Vous n\'avez pas la permission de voir cette section.';
 $string['nav_invalid_mode'] = 'Il semble y avoir un problème entre la configuration de votre cours et les paramètres du plugin.';
 
+// Other errors
+
+$string['information'] = 'Information';
+$string['error'] = 'Error';
+$string['no_group_for_average'] = 'Vous souhaitez voir un graphe incluant la moyenne du groupe, mais n\'appartenez à aucun groupe. Série désactivée.';
 
 /* ################################################################################################################ */
 /* #############################################      HELP PAGE        ############################################ */
