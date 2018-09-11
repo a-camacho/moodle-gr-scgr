@@ -26,7 +26,7 @@ if ($view != 'inter') {
 
     $activities = getActivitiesFromCourseID($courseid, $categoryid, false);
 
-    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=intra';
+    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=intra';
     $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
 
     if ($mform->is_cancelled()) {
