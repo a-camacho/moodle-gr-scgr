@@ -190,13 +190,25 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
 
     switch ($section) {
         case 'student':
-            include_once('views/student.php');
+            if ( $studentview == true ) {
+                include_once('views/student.php');
+            } else {
+                echo html_writer::tag('p', get_string('nav_unauthorized_section', 'gradereport_scgr') );
+            }
             break;
         case 'teacher':
-            include_once('views/teacher.php');
+            if ( $studentview == true ) {
+                include_once('views/teacher.php');
+            } else {
+                echo html_writer::tag('p', get_string('nav_unauthorized_section', 'gradereport_scgr') );
+            }
             break;
         case 'custom':
-            include_once('views/editingteacher.php');
+            if ( $studentview == true ) {
+                include_once('views/editingteacher.php');
+            } else {
+                echo html_writer::tag('p', get_string('nav_unauthorized_section', 'gradereport_scgr') );
+            }
             break;
     }
 
