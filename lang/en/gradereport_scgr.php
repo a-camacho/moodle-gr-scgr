@@ -62,8 +62,12 @@ $string['student_inter_title'] = 'Inter-group';
 $string['switch_to_intra'] = 'go to intra-group';
 $string['student_inter_description'] = 'Student can see a chart comparing results of his group with results of other groups.';
 
+$string['teacher_progression_title'] = 'Progression';
+$string['switch_to_comparison'] = 'go to comparison';
 $string['teacher_progression_description'] = 'Teacher can watch students progression (success) over chosen activities.';
 
+$string['teacher_comparison_title'] = 'Comparison';
+$string['switch_to_progression'] = 'go to progression';
 $string['teacher_comparison_description'] = 'Teacher can see students comparison over chosen activities.';
 
 $string['custom_group_restriction_desc'] = '<strong><u>Information</u></strong> : Teachers will only be able to generate

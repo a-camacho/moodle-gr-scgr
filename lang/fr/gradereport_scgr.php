@@ -63,9 +63,13 @@ $string['switch_to_intra'] = 'voir la vue intra-group';
 $string['student_inter_description'] = 'L\'étudiant peut voir une visualisation comparant la réussite de son groupe
 avec celle des autres groupes du cours.';
 
+$string['teacher_progression_title'] = 'Progression';
+$string['switch_to_comparison'] = 'voir la vue comparaison';
 $string['teacher_progression_description'] = 'L\'enseignant peut suiver la progression de ses étudiants à travers les
 activités de son choix.';
 
+$string['teacher_comparison_title'] = 'Comparaison';
+$string['switch_to_progression'] = 'voir la vue progression';
 $string['teacher_comparison_description'] = 'L\'enseignant peut comparer la réussite des étudiants de ses groupes à
 travers les activités de son choix.';
 
