@@ -65,73 +65,7 @@ function printMainNavigation( $courseid, $course_has_groups, $studentview, $teac
     if (is_null($section) ) {
         echo '' . get_string('nav_info_choose_section', 'gradereport_scgr') . '';
     }
-
-    /* echo '<hr><hr>';
-
-    echo '<ul class="nav nav-tabs m-b-1">';
-
-        if ( $view == 'default' || $view == 'intra' || $view == '' ) {
-            $intermode = '';
-            $intramode = 'active';
-        } elseif ( $view == 'inter' || $view == 'comparison' ) {
-            $intermode = 'active';
-            $intramode = '';
-        }
-
-        echo '<li class="nav-item"><a class="nav-link ' . $intramode . '" href="index.php?id=' . $courseid . '&view=intra"
-                              title="' . get_string('nav_student_intra', 'gradereport_scgr') . '">' . get_string('nav_student_intra', 'gradereport_scgr') . '</a></li>';
-
-        if ( $course_has_groups != false ) {
-
-            echo '<li class="nav-item"><a class="nav-link ' . $intermode . '" href="index.php?id=' . $courseid . '&view=inter"
-                              title="' . get_string('nav_student_inter', 'gradereport_scgr') . '">' . get_string('nav_student_inter', 'gradereport_scgr') . '</a></li>';
-
-        }
-
-        if ( $view == 'default' || $view == 'custom' ) {
-            $custom = 'active';
-            $help = '';
-        } elseif ( $view == 'help' ) {
-            $custom = '';
-            $help = 'active';
-        }
-
-        echo '<ul class="nav nav-tabs m-b-1">';
-
-            echo '<li class="nav-item"><a class="nav-link ' . $custom . '" title="' . get_string('nav_custom', 'gradereport_scgr') . '"
-                                                  href="index.php?id=' . $courseid . '&view=custom">' . get_string('nav_custom', 'gradereport_scgr') . '</a></li>';
-            echo '<li class="nav-item"><a class="nav-link ' . $help . '" title="' . get_string('nav_help', 'gradereport_scgr') . '"
-                                                  href="index.php?id=' . $courseid . '&view=help">' . get_string('nav_help', 'gradereport_scgr') . '</a></li>';
-
-        echo '</ul>';
-
-        $comparison = '';
-        $progression = '';
-        $custom = '';
-
-        if ( $view == 'default' || $view == 'progression' ) {
-            $progression = 'active';
-        } elseif ( $view == 'comparison' ) {
-            $comparison = 'active';
-        } elseif ( $view = 'custom' ) {
-            $custom = 'active';
-        }
-
-        echo '<ul class="nav nav-tabs m-b-1">';
-
-            echo '<li class="nav-item"><a class="nav-link ' . $progression . '" href="index.php?id=' . $courseid . '&view=progression"
-                                  title="' . get_string('nav_teacher_progression', 'gradereport_scgr') . '">' . get_string('nav_teacher_progression', 'gradereport_scgr') . '</a></li>';
-
-            echo '<li class="nav-item"><a class="nav-link ' . $comparison . '" href="index.php?id=' . $courseid . '&view=comparison"
-                                  title="' . get_string('nav_teacher_comparison', 'gradereport_scgr') . '">' . get_string('nav_teacher_comparison', 'gradereport_scgr') . '</a></li>';
-
-            echo '<li class="nav-item"><a class="nav-link ' . $custom . '" title="' . get_string('nav_custom', 'gradereport_scgr') . '" href="index.php?id=' . $courseid . '&view=custom">' . get_string('nav_custom', 'gradereport_scgr') . '</a></li>';
-
-        echo '</ul>';
-
-
-    echo '</ul>';
-    */
+    
 }
 
 /**
