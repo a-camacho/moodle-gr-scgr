@@ -125,7 +125,7 @@ if ($view == 'intra') {
     if ( $course_has_groups != false ) {
 
         $title = get_string('student_inter_title', 'gradereport_scgr');
-        $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=inter';
+        $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=intra';
         $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">' . get_string('switch_to_intra', 'gradereport_scgr') . '</small></a>';
 
         echo html_writer::tag('h2', $title . ' ' . $switchview_text );
