@@ -69,7 +69,6 @@ $string['teacher_comparison_description'] = 'Teacher can see students comparison
 $string['custom_group_restriction_desc'] = '<strong><u>Information</u></strong> : Teachers will only be able to generate
 charts from students in groups that they belong in. <br />Groups are <strong>active</strong>. You belong to following group(s) : ';
 
-
 // Predefined graphs - Customize
 
 $string['predefined_customize_title'] = 'Customize graph';

@@ -73,7 +73,6 @@ $string['custom_group_restriction_desc'] = '<strong><u>Information</u></strong> 
 générer des visualisations d\'étudiants du (ou des) groupe(s) au(x)quel(s) ils appartiennent. <br />Les groupes sont
 <strong>activés</strong>. Vous appartenez au(x) groupe(s) suivant(s) : ';
 
-
 // Predefined graphs - Customize
 
 $string['predefined_customize_title'] = 'Personnaliser';
