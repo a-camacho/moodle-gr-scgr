@@ -179,12 +179,6 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
         $customview = true;
     }
 
-
-    // DEBUG : Set permissions manually
-    $studentview = true;
-    $teacherview = true;
-    $customview = true;
-
     // Print navigation
     printMainNavigation( $courseid, $course_has_groups, $studentview, $teacherview, $customview, $section, $view );
 
