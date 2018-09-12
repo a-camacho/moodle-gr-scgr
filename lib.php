@@ -65,7 +65,7 @@ function printMainNavigation( $courseid, $course_has_groups, $studentview, $teac
     if (is_null($section) ) {
         echo '' . get_string('nav_info_choose_section', 'gradereport_scgr') . '';
     }
-    
+
 }
 
 /**
@@ -663,6 +663,28 @@ function getActivitiesNames($activities, $courseid) {
         $sql = "SELECT itemname FROM " . $CFG->prefix . "grade_items WHERE iteminstance = $activity AND courseid = $courseid";
         $records = $DB->get_records_sql($sql);
         array_push($activities_names, key($records));
+    }
+
+    return $activities_names;
+}
+
+/**
+ * getShortActivitiesNames
+ * returns an array with activities names but shortened
+ *
+ * @param $activities_names
+ * @return array
+ */
+function getShortActivitiesNames($activities_names) {
+
+    for ( $i = 0; $i < count($activities_names); $i++ ) {
+
+        $activity_name = $activities_names[$i];
+
+        if ( strlen($activity_name) > 21 ) {
+            $activity_name = mb_substr($activity_name, 0, 18) . ' ...';
+            $activities_names[$i] = $activity_name;
+        }
     }
 
     return $activities_names;
