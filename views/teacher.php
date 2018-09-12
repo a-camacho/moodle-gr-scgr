@@ -5,6 +5,13 @@ global $USER, $CFG, $DB;
 // Check if this course has groups
 $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups_activation_choice));
 
+// Set view or use default one
+if ( isset($_GET['view']) ) {
+    $view = $_GET['view'];
+} else {
+    $view = 'comparison';
+}
+
 if ( in_array($courseid, $courses_with_groups) ) {
     $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
     $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
@@ -27,8 +34,13 @@ if ( $course_has_groups == false ) {
 } else {
     // Include the form
     require_once($CFG->dirroot.'/grade/report/scgr/forms/choose_activities_form.php');
-    if ( $view == 'progression' || $view == 'default' ) {
+    if ( $view == 'progression' ) {
 
+        $title = get_string('teacher_progression_title', 'gradereport_scgr');
+        $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=teacher&view=comparison';
+        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">' . get_string('switch_to_comparison', 'gradereport_scgr') . '</small></a>';
+
+        echo html_writer::tag('h2', $title . ' ' . $switchview_text );
         echo html_writer::tag('p', get_string('teacher_progression_description', 'gradereport_scgr') );
 
         $activities = getActivitiesFromCourseID($courseid, $categoryid, false);
@@ -92,6 +104,11 @@ if ( $course_has_groups == false ) {
 
     } elseif( $view == 'comparison' ) {
 
+        $title = get_string('teacher_comparison_title', 'gradereport_scgr');
+        $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=teacher&view=progression';
+        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">' . get_string('switch_to_progression', 'gradereport_scgr') . '</small></a>';
+
+        echo html_writer::tag('h2', $title . ' ' . $switchview_text );
         echo html_writer::tag('p', get_string('teacher_comparison_description', 'gradereport_scgr') );
 
         $activities = getActivitiesFromCourseID($courseid, $categoryid);
