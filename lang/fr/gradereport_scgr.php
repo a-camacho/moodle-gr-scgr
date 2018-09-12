@@ -186,7 +186,8 @@ $string['nav_invalid_mode'] = 'Il semble y avoir un problème entre la configura
 
 $string['information'] = 'Information';
 $string['error'] = 'Error';
-$string['no_group_for_average'] = 'Vous souhaitez voir un graphe incluant la moyenne du groupe, mais n\'appartenez à aucun groupe. Série désactivée.';
+$string['no_group_for_average'] = 'Vous souhaitez voir un graphe incluant la moyenne du groupe, <u>mais n\'appartenez à aucun groupe</u>. Série désactivée.';
+$string['no_group_for_comparison'] = 'Vous souhaitez voir un graphe présentant la progression des membres de votre group. Malheureusement, <u>vous n\'apartenez à aucun groupe</u>.';
 
 /* ################################################################################################################ */
 /* #############################################      HELP PAGE        ############################################ */

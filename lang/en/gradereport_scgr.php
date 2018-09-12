@@ -180,7 +180,8 @@ $string['nav_invalid_mode'] = 'There seems to be a problem between your course c
 
 $string['information'] = 'Information';
 $string['error'] = 'Error';
-$string['no_group_for_average'] = 'You are trying to view a chart including group-average grade but you belong to no group. Serie disabled.';
+$string['no_group_for_average'] = 'You are trying to view a chart including group-average grade but <u>you belong to no group</u>. Serie disabled.';
+$string['no_group_for_comparison'] = 'You are trying to view a chart showing your group members progression, <u>but you belong to no group</u>.';
 
 /* ################################################################################################################ */
 /* #############################################      HELP PAGE        ############################################ */
