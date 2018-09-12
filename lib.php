@@ -51,7 +51,7 @@ function printMainNavigation( $courseid, $course_has_groups, $studentview, $teac
             $listitem.='" href="index.php?id=' . $courseid . '&section=custom" title="' . get_string('nav_section_custom', 'gradereport_scgr') . '">';
             $listitem.=get_string('nav_section_custom', 'gradereport_scgr');
             $listitem.='</a></li>';
-            $listitem='<li class="nav-item">';
+            $listitem.='<li class="nav-item">';
             $listitem.='<a class="nav-link';
             $listitem.=($section == 'help') ? ' active' : '';
             $listitem.='" href="index.php?id=' . $courseid . '&section=help" title="' . get_string('nav_section_help', 'gradereport_scgr') . '">';
@@ -758,6 +758,7 @@ function getGrades($users, $courseid, $activity, $inpercentage = false) {
 
     foreach ($users as $user) {
         if ( !empty($grading_info->items) ) {
+
             $grade = $grading_info->items[0]->grades[$user]->grade;
 
             if ($inpercentage == true) {
