@@ -213,7 +213,7 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
         // Only users with "gradereport/scgr:viewcustomview" capability will be able to see Help page
         case 'help':
             if ( $customview == true ) {
-                include_once('modules/help.php');
+                include_once('views/modules/help.php');
             } else {
                 echo html_writer::tag('p', get_string('nav_unauthorized_section', 'gradereport_scgr') );
             }
