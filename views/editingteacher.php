@@ -23,13 +23,4 @@ if ( in_array($courseid, $courses_with_groups) ) {
 
 }
 
-// Print navigation
-// printCustomNav( $courseid, $role, $view, $course_has_groups );
-
-if ( $view == 'default' || $view == 'custom' ) {
-    include_once('modules/custom_graph.php');
-} elseif ( $view == 'help' ) {
-    include_once('modules/help.php');
-} else {
-    echo 'view error';
-}
+include_once('modules/custom_graph.php');
