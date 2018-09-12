@@ -52,10 +52,6 @@ if ($view == 'intra') {
 
     echo html_writer::tag('hr', '');
 
-    if ( $course_has_groups && !$user_groups ) {
-        echo html_writer::tag('p', get_string('information', 'gradereport_scgr') . ' : ' . get_string('no_group_for_average', 'gradereport_scgr'), array('class' => 'scgr-error') );
-    }
-
     $activities = getActivitiesFromCourseID($courseid, $categoryid, false);
 
     $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=intra';
@@ -70,6 +66,10 @@ if ($view == 'intra') {
         $toform = '';
         $mform->set_data($toform);
         $mform->display();
+
+        if ( $course_has_groups && !$user_groups ) {
+            echo html_writer::tag('p', get_string('information', 'gradereport_scgr') . ' : ' . get_string('no_group_for_average', 'gradereport_scgr'), array('class' => 'scgr-error') );
+        }
 
         $data = $mform->get_data();
 
