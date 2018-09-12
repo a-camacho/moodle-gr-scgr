@@ -13,7 +13,7 @@ echo html_writer::tag('h3', get_string('form_custom_title', 'gradereport_scgr') 
 
 echo html_writer::tag('p', get_string('form_custom_subtitle', 'gradereport_scgr') );
 
-if ( $course_has_groups ) {
+if ( $course_has_groups && $user_groups ) {
     echo html_writer::tag('p', get_string('custom_group_restriction_desc', 'gradereport_scgr') . $user_groups_names_clean );
 }
 
@@ -22,7 +22,7 @@ echo html_writer::tag('hr', '');
 // Include the form
 require_once($CFG->dirroot.'/grade/report/scgr/forms/custom_graph_form.php');
 
-// Check if group feature is activated on this course
+// Get groups if course_has_groups
 if ( $course_has_groups == true ) {
     $groups = getGroups($courseid);
 } else {
