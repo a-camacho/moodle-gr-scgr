@@ -9,7 +9,8 @@ $activities = getActivitiesFromCourseID($courseid, $categoryid, true);        //
 echo '<div class="temp">';
 
 // Print title, links and subtitles
-echo html_writer::tag('h3', get_string('form_custom_title', 'gradereport_scgr') );
+
+echo html_writer::tag('h2', get_string('form_custom_title', 'gradereport_scgr') );
 
 echo html_writer::tag('p', get_string('form_custom_subtitle', 'gradereport_scgr') );
 
@@ -33,7 +34,6 @@ if ( $course_has_groups == true ) {
 
 $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=custom';
 $mform = new customhtml_form( $forms_action_url, array( $courseid, $activities, $groups, $course_has_groups, $user_groups ) );
-
 
 if ($mform->is_cancelled()) {                                               // If form is canceled
 
