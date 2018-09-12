@@ -165,7 +165,7 @@ class customhtml_form extends moodleform {
 
         // Add buttons
 
-        $mform->addElement('button', 'intro', get_string('form_button_delete', 'gradereport_scgr') );
+        // $mform->addElement('button', 'intro', get_string('form_button_delete', 'gradereport_scgr') );
         $this->add_action_buttons(true, get_string('form_button_submit', 'gradereport_scgr') );
 
     }
