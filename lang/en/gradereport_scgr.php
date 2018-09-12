@@ -160,6 +160,7 @@ $string['settings_page_title'] = 'SCGR Settings';
 $string['nav_section_student'] = 'Student\'s view';
 $string['nav_section_teacher'] = 'Tutor\'s view';
 $string['nav_section_custom'] = 'Custom chart';
+$string['nav_section_help'] = 'Help';
 
 // Navigation
 

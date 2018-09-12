@@ -166,6 +166,7 @@ $string['settings_page_title'] = 'Paramètres de SCGR';
 $string['nav_section_student'] = 'Vue de l\'étudiant';
 $string['nav_section_teacher'] = 'Vue du tuteur';
 $string['nav_section_custom'] = 'Vue personnalisée';
+$string['nav_section_help'] = 'Aide';
 
 // Navigation
 
