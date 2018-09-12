@@ -38,7 +38,7 @@ if ( $course_has_groups == false ) {
 
         $title = get_string('teacher_progression_title', 'gradereport_scgr');
         $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=teacher&view=comparison';
-        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">' . get_string('switch_to_comparison', 'gradereport_scgr') . '</small></a>';
+        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">&rarr; ' . get_string('switch_to_comparison', 'gradereport_scgr') . '</small></a>';
 
         echo html_writer::tag('h2', $title . ' ' . $switchview_text );
         echo html_writer::tag('p', get_string('teacher_progression_description', 'gradereport_scgr') );
@@ -110,7 +110,7 @@ if ( $course_has_groups == false ) {
 
         $title = get_string('teacher_comparison_title', 'gradereport_scgr');
         $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=teacher&view=progression';
-        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">' . get_string('switch_to_progression', 'gradereport_scgr') . '</small></a>';
+        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">&rarr; ' . get_string('switch_to_progression', 'gradereport_scgr') . '</small></a>';
 
         echo html_writer::tag('h2', $title . ' ' . $switchview_text );
         echo html_writer::tag('p', get_string('teacher_comparison_description', 'gradereport_scgr') );

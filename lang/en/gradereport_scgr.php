@@ -54,20 +54,20 @@ $string['scgr:viewcustomview'] = 'Generate a custom graph';
 // Predefined graphs - Descriptions
 
 $string['student_intra_title'] = 'Intra-group';
-$string['switch_to_inter'] = 'go to inter-group';
+$string['switch_to_inter'] = 'switch to inter-group';
 $string['student_intra_description'] = 'Student can see a chart presenting his progress (success) over the chosen
 activities and compare it with the group/classroom average.';
 
 $string['student_inter_title'] = 'Inter-group';
-$string['switch_to_intra'] = 'go to intra-group';
+$string['switch_to_intra'] = 'switch to intra-group';
 $string['student_inter_description'] = 'Student can see a chart comparing results of his group with results of other groups.';
 
 $string['teacher_progression_title'] = 'Progression';
-$string['switch_to_comparison'] = 'go to comparison';
+$string['switch_to_comparison'] = 'switch to comparison';
 $string['teacher_progression_description'] = 'Teacher can watch students progression (success) over chosen activities.';
 
 $string['teacher_comparison_title'] = 'Comparison';
-$string['switch_to_progression'] = 'go to progression';
+$string['switch_to_progression'] = 'switch to progression';
 $string['teacher_comparison_description'] = 'Teacher can see students comparison over chosen activities.';
 
 $string['custom_group_restriction_desc'] = '<strong><u>Information</u></strong> : Teachers will only be able to generate

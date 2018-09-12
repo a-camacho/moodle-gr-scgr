@@ -45,7 +45,7 @@ if ($view == 'intra') {
 
     $title = get_string('student_intra_title', 'gradereport_scgr');
     $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=inter';
-    $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">' . get_string('switch_to_inter', 'gradereport_scgr') . '</small></a>';
+    $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">&rarr; ' . get_string('switch_to_inter', 'gradereport_scgr') . '</small></a>';
 
     echo html_writer::tag('h2', $title . ' ' . $switchview_text );
     echo html_writer::tag('p', get_string('student_intra_description', 'gradereport_scgr') );
@@ -126,7 +126,7 @@ if ($view == 'intra') {
 
         $title = get_string('student_inter_title', 'gradereport_scgr');
         $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=intra';
-        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">' . get_string('switch_to_intra', 'gradereport_scgr') . '</small></a>';
+        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">&rarr; ' . get_string('switch_to_intra', 'gradereport_scgr') . '</small></a>';
 
         echo html_writer::tag('h2', $title . ' ' . $switchview_text );
         echo html_writer::tag('p', get_string('student_inter_description', 'gradereport_scgr') );
