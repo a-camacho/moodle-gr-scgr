@@ -67,31 +67,35 @@ if ( $course_has_groups == false ) {
                 $activities = NULL;
             }
 
-            foreach ( $user_groups as $group ) {
+            if ( $user_groups ) {
+                foreach ( $user_groups as $group ) {
 
-                $users = getUsersFromGroup($group);
-                // Strip tutors from users
-                $users = stripTutorsFromUsers($users, $context);
+                    $users = getUsersFromGroup($group);
+                    // Strip tutors from users
+                    $users = stripTutorsFromUsers($users, $context);
 
-                // Create chart
-                $chart = new \core\chart_line();
-                $chart->set_smooth(true);
+                    // Create chart
+                    $chart = new \core\chart_line();
+                    $chart->set_smooth(true);
 
-                $color_array = array(   'd6d6d6', '#92ff80', '#ecff80', '#80ffc2', '#ffcb80', '#80cbff', '#8086ff',
-                    '#a480ff', '#fb80ff', '#ff80bf', '#ff8080' );
+                    $color_array = array(   'd6d6d6', '#92ff80', '#ecff80', '#80ffc2', '#ffcb80', '#80cbff', '#8086ff',
+                        '#a480ff', '#fb80ff', '#ff80bf', '#ff8080' );
 
-                $CFG->chart_colorset = $color_array;
+                    $CFG->chart_colorset = $color_array;
 
-                foreach ($users as $user) {
-                    $user_object = $DB->get_record('user', array('id'=>$user));
-                    $username = $user_object->firstname . $user_object->lastname;
-                    $series = new core\chart_series($username, getActivitiesGradeFromUserID($user, $courseid, $activities, true));
-                    $series->set_type(\core\chart_series::TYPE_LINE);
-                    $chart->add_series($series);
+                    foreach ($users as $user) {
+                        $user_object = $DB->get_record('user', array('id'=>$user));
+                        $username = $user_object->firstname . $user_object->lastname;
+                        $series = new core\chart_series($username, getActivitiesGradeFromUserID($user, $courseid, $activities, true));
+                        $series->set_type(\core\chart_series::TYPE_LINE);
+                        $chart->add_series($series);
+                    }
+
+                    $chart->set_labels(getActivitiesNames($activities, $courseid));
+                    echo $OUTPUT->render($chart);
                 }
-
-                $chart->set_labels(getActivitiesNames($activities, $courseid));
-                echo $OUTPUT->render($chart);
+            } else {
+                echo html_writer::tag('p', get_string('error', 'gradereport_scgr') . ' : ' . get_string('no_group_for_comparison', 'gradereport_scgr'), array('class' => 'scgr-error') );
             }
 
         } else {
@@ -113,7 +117,7 @@ if ( $course_has_groups == false ) {
 
         $activities = getActivitiesFromCourseID($courseid, $categoryid);
 
-        $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=comparison';
+        $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=teacher&view=comparison';
         $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
 
         if ($mform->is_cancelled()) {
@@ -133,27 +137,33 @@ if ( $course_has_groups == false ) {
                 $activities = NULL;
             }
 
-            foreach ( $user_groups as $group ) {
+            if ( $user_groups ) {
 
-                $users = getUsersFromGroup($group);
-                // Strip tutors from users
-                $users = stripTutorsFromUsers($users, $context);
-                $usernames = getUsernamesFromUsers($users);
+                foreach ( $user_groups as $group ) {
 
-                // Create chart
-                $chart = new core\chart_bar();
+                    $users = getUsersFromGroup($group);
+                    // Strip tutors from users
+                    $users = stripTutorsFromUsers($users, $context);
+                    $usernames = getUsernamesFromUsers($users);
 
-                $CFG->chart_colorset = ['#001f3f', '#d2d2d2', '#c2c2c2', '#b2b2b2', '#a2a2a2', '#929292', '#828282', '#727272'];
+                    // Create chart
+                    $chart = new core\chart_bar();
 
-                foreach ( $activities as $activity ) {
-                    $series = new core\chart_series(getActivityName($activity, $courseid), getActivityGradeFromUsers($users, $courseid, $activity, true));
-                    $chart->add_series($series);
+                    $CFG->chart_colorset = ['#001f3f', '#d2d2d2', '#c2c2c2', '#b2b2b2', '#a2a2a2', '#929292', '#828282', '#727272'];
+
+                    foreach ( $activities as $activity ) {
+                        $series = new core\chart_series(getActivityName($activity, $courseid), getActivityGradeFromUsers($users, $courseid, $activity, true));
+                        $chart->add_series($series);
+                    }
+
+                    $chart->set_labels($usernames);
+
+                    echo $OUTPUT->render($chart);
+
                 }
 
-                $chart->set_labels($usernames);
-
-                echo $OUTPUT->render($chart);
-
+            } else {
+                echo html_writer::tag('p', get_string('error', 'gradereport_scgr') . ' : ' . get_string('no_group_for_comparison', 'gradereport_scgr'), array('class' => 'scgr-error') );
             }
 
         } else {
