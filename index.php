@@ -82,6 +82,9 @@ if (has_capability('moodle/grade:viewall', $context)) {
 } else if (has_capability('moodle/grade:viewall', context_user::instance($userid)) and $course->showgrades) {
     // ok - can view grades of this user- parent most probably
     $access = true;
+} else if ( has_capability('moodle/site:config', $coursecontext) ) {
+    // User has a capability that only admins have
+    $access = true;
 }
 
 if (!$access) {
@@ -131,7 +134,7 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
     echo html_writer::tag('h3', get_string('page_not_active_on_this_course', 'gradereport_scgr'));
     echo html_writer::tag('p', get_string('page_not_active_on_this_course_description', 'gradereport_scgr'));
 
-} elseif ( !has_capability('gradereport/scgr:view', $context, $USER->id, false) ) {
+} elseif ( !has_capability('gradereport/scgr:view', $context, $USER->id, false) && !has_capability('moodle/site:config', $context) ) {
 
     echo html_writer::tag('h3', get_string('no_permission_to_view_report', 'gradereport_scgr'));
     echo html_writer::tag('p', get_string('no_permission_to_view_report_description', 'gradereport_scgr'));
@@ -176,6 +179,13 @@ if ( !in_array( $courseid, $activated_on , false ) || $CFG->scgr_plugin_disable 
     }
 
     if ( has_capability('gradereport/scgr:viewcustomview', $context, $USER->id, false) ) {
+        $customview = true;
+    }
+
+    if ( has_capability('moodle/site:config', $context) ) {
+        // If user is admin, set all capabilities to true
+        $studentview = true;
+        $teacherview = true;
         $customview = true;
     }
 
