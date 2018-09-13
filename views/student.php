@@ -204,12 +204,7 @@ if ($view == 'intra') {
                 $i++;
             }
 
-            $activities_names=getActivitiesNames($activities, $courseid);
-
-            // Uncomment this if you want to short activities names
-            // $activities_names=getShortActivitiesNames($activities_names);
-
-            $chart->set_labels($activities_names);
+            $chart->set_labels(getActivitiesNames($activities, $courseid));
 
             echo $OUTPUT->render($chart);
 
