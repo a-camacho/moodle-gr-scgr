@@ -718,8 +718,12 @@ function getGrades($users, $courseid, $activity, $inpercentage = false) {
             $grade = $grading_info->items[0]->grades[$user]->grade;
 
             if ($inpercentage == true) {
-                $grade = $grade / $max_grade * 100;
-                $grade = round($grade, 2);
+                if ( $grade > 0 ) {
+                    $grade = $grade / $max_grade * 100;
+                    $grade = round($grade, 2);
+                } else {
+                    $grade = 0;
+                }
             }
 
             array_push($grades, floatval($grade));
