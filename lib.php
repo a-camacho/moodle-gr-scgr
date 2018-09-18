@@ -891,8 +891,12 @@ function getActivityGradeFromUsers($users, $courseid, $activity, $inpercentage =
         }
 
         if ($inpercentage == true) {
-            $grade = $grade / $max_grade * 100;
-            $grade = round($grade, 2);
+            if ( $grade > 0 ) {
+                $grade = $grade / $max_grade * 100;
+                $grade = round($grade, 2);
+            } else {
+                $grade = 0;
+            }
         }
 
         array_push($grades_array, $grade);
