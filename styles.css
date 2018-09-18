@@ -15,6 +15,10 @@
 
 /* Graph CSS */
 
+small.h2-small-link {
+    font-size: 0.4em;
+}
+
 h4.scgr-graph-title {
     text-align: center;
     font-size: 4em;
@@ -22,4 +26,11 @@ h4.scgr-graph-title {
 
 div.chart-area {
     padding: 15px;
+}
+
+/* ERRORS */
+
+p.scgr-error {
+    font-style: italic;
+    color: orangered;
 }
