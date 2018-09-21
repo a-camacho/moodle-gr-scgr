@@ -5,37 +5,56 @@ global $USER, $CFG;
 // Check if this course has groups
 $courses_with_groups = array_map('intval', explode(',', $CFG->scgr_course_groups_activation_choice));
 
-if ( in_array($courseid, $courses_with_groups) ) {
-    $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
-    $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
-    $user_groups_clean = '(groups: ' . implode(",", $user_groups) . ')';
-    $course_has_groups = true;
-    $user_first_group = $user_groups[0];
+// Set view or use default one
+if ( isset($_GET['view']) ) {
+    $view = $_GET['view'];
 } else {
+    $view = 'intra';
+}
+
+if ( in_array($courseid, $courses_with_groups) ) {
+
+    // Get user groups for this course
+    $user_groups = groups_get_user_groups($courseid, $USER->id)[0];
+
+    // Check if user has any group, if not give error and show only user grades
+    if ( !empty($user_groups) ) {
+        // Set variables for group chart generation
+        $user_groups = stripTutorsGroupFromGroupIDS($user_groups);
+        $user_groups_clean = '(groups: ' . implode(",", $user_groups) . ')';
+        $course_has_groups = true;
+        $user_first_group = $user_groups[0];
+    } else {
+        // Set group status to NULL/empty/false
+        $user_groups = NULL;
+        $user_groups_clean = '';
+    }
+
+} else {
+
+    // Set group status to NULL/empty/false
     $user_groups = NULL;
     $user_groups_clean = '';
     $course_has_groups = false;
 }
 
-// Print title
-/* echo html_writer::tag(  'h2', get_string('plugintitle', 'gradereport_scgr') . ' : ' . $role . ' - ' . $USER->firstname .
-    ' ' . $USER->lastname . ' ' . $user_groups_clean); */
-
-// Print navigation
-printCustomNav( $courseid, $role, $view, $course_has_groups );
-
-// printPluginConfig();
-
 // Include the form
 require_once($CFG->dirroot.'/grade/report/scgr/forms/choose_activities_form.php');
 
-if ($view != 'inter') {
+if ($view == 'intra') {
 
+    $title = get_string('student_intra_title', 'gradereport_scgr');
+    $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=inter';
+    $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">&rarr; ' . get_string('switch_to_inter', 'gradereport_scgr') . '</small></a>';
+
+    echo html_writer::tag('h2', $title . ' ' . $switchview_text );
     echo html_writer::tag('p', get_string('student_intra_description', 'gradereport_scgr') );
+
+    echo html_writer::tag('hr', '');
 
     $activities = getActivitiesFromCourseID($courseid, $categoryid, false);
 
-    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=intra';
+    $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=intra';
     $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
 
     if ($mform->is_cancelled()) {
@@ -48,6 +67,10 @@ if ($view != 'inter') {
         $mform->set_data($toform);
         $mform->display();
 
+        if ( $course_has_groups && !$user_groups ) {
+            echo html_writer::tag('p', get_string('information', 'gradereport_scgr') . ' : ' . get_string('no_group_for_average', 'gradereport_scgr'), array('class' => 'scgr-error') );
+        }
+
         $data = $mform->get_data();
 
         // Set group_id variable
@@ -57,24 +80,29 @@ if ($view != 'inter') {
             $activities = NULL;
         }
 
-        if ( in_array($courseid, $courses_with_groups) ) {
-            $users = getUsersFromGroup($user_first_group);
-            $group_average = new \core\chart_series('Moyenne de mon groupe', getActivitiesGradeFromUsers($users, $courseid, $activities, true));
-            $group_average->set_type(\core\chart_series::TYPE_LINE);
-            $group_average->set_smooth(true);
-        } else {
-            $users = getEnrolledUsersFromContext($context);
-            $group_average = new \core\chart_series('Moyenne de la classe', getActivitiesGradeFromUsers($users, $courseid, $activities, true));
-            $group_average->set_type(\core\chart_series::TYPE_LINE);
-            $group_average->set_smooth(true);
-        }
-
+        // Create chart_bar and it's series
         $chart = new core\chart_bar();
         $user_grades = new core\chart_series('Mes résultats', getActivitiesGradeFromUserID($userid, $courseid, $activities, true) );
-
         $chart->set_labels(getActivitiesNames($activities, $courseid));
-        $chart->add_series($group_average);
         $chart->add_series($user_grades);
+
+        // Check if course has groups AND user belong to a group at least
+        if ( $user_groups ) {
+            if ( $course_has_groups ) {
+                $users = getUsersFromGroup($user_first_group);
+                $group_average = new \core\chart_series('Moyenne de mon groupe', getActivitiesGradeFromUsers($users, $courseid, $activities, true));
+                $group_average->set_type(\core\chart_series::TYPE_LINE);
+                $group_average->set_smooth(true);
+            } else {
+                $users = getEnrolledUsersFromContext($context);
+                $group_average = new \core\chart_series('Moyenne de la classe', getActivitiesGradeFromUsers($users, $courseid, $activities, true));
+                $group_average->set_type(\core\chart_series::TYPE_LINE);
+                $group_average->set_smooth(true);
+            }
+
+            // Add group average serie
+            $chart->add_series($group_average);
+        }
 
         // Set maximum Y Axis value
         $yaxis = $chart->get_yaxis(0, true);
@@ -92,15 +120,22 @@ if ($view != 'inter') {
 
         }
 
-} else {
+} elseif ( $view == 'inter' ) {
 
     if ( $course_has_groups != false ) {
 
+        $title = get_string('student_inter_title', 'gradereport_scgr');
+        $switchview_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=intra';
+        $switchview_text = '<a href="' . $switchview_url . '"><small class="h2-small-link">&rarr; ' . get_string('switch_to_intra', 'gradereport_scgr') . '</small></a>';
+
+        echo html_writer::tag('h2', $title . ' ' . $switchview_text );
         echo html_writer::tag('p', get_string('student_inter_description', 'gradereport_scgr') );
+
+        echo html_writer::tag('hr', '');
 
         $activities = getActivitiesFromCourseID($courseid, $categoryid);
 
-        $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&view=inter';
+        $forms_action_url = $CFG->wwwroot . '/grade/report/scgr/index.php?id=' . $courseid . '&section=student&view=inter';
         $mform = new chooseactivities_form( $forms_action_url, array( $activities ) );
 
         if ($mform->is_cancelled()) {
@@ -169,7 +204,12 @@ if ($view != 'inter') {
                 $i++;
             }
 
-            $chart->set_labels(getActivitiesNames($activities, $courseid));
+            $activities_names=getActivitiesNames($activities, $courseid);
+
+            // Uncomment this if you want to short activities names
+            // $activities_names=getShortActivitiesNames($activities_names);
+
+            $chart->set_labels($activities_names);
 
             echo $OUTPUT->render($chart);
 
@@ -186,8 +226,12 @@ if ($view != 'inter') {
 
     } else {
 
-        echo 'Error : this course has no groups in settings.';
+        echo 'Error : This course has no groups in settings.';
 
     }
+
+} else {
+
+    echo 'Error : you choosed a wrong view type.';
 
 }

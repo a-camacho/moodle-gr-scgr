@@ -16,6 +16,59 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * printNavigation
+ * prints the navigation tabs
+ *
+ */
+function printMainNavigation( $courseid, $course_has_groups, $studentview, $teacherview, $customview, $section, $view ) {
+
+    echo '<ul class="nav nav-tabs m-b-1">';
+
+        if ( $studentview == true ) {
+            $listitem='<li class="nav-item">';
+            $listitem.='<a class="nav-link';
+            $listitem.=($section == 'student') ? ' active' : '';
+            $listitem.='" href="index.php?id=' . $courseid . '&section=student" title="' . get_string('nav_section_student', 'gradereport_scgr') . '">';
+            $listitem.=get_string('nav_section_student', 'gradereport_scgr');
+            $listitem.='</a></li>';
+            echo $listitem;
+        }
+
+        if ( $teacherview == true ) {
+            $listitem='<li class="nav-item">';
+            $listitem.='<a class="nav-link';
+            $listitem.=($section == 'teacher') ? ' active' : '';
+            $listitem.='" href="index.php?id=' . $courseid . '&section=teacher" title="' . get_string('nav_section_teacher', 'gradereport_scgr') . '">';
+            $listitem.=get_string('nav_section_teacher', 'gradereport_scgr');
+            $listitem.='</a></li>';
+            echo $listitem;
+        }
+
+        if ( $customview == true ) {
+            $listitem='<li class="nav-item">';
+            $listitem.='<a class="nav-link';
+            $listitem.=($section == 'custom') ? ' active' : '';
+            $listitem.='" href="index.php?id=' . $courseid . '&section=custom" title="' . get_string('nav_section_custom', 'gradereport_scgr') . '">';
+            $listitem.=get_string('nav_section_custom', 'gradereport_scgr');
+            $listitem.='</a></li>';
+            $listitem.='<li class="nav-item">';
+            $listitem.='<a class="nav-link';
+            $listitem.=($section == 'help') ? ' active' : '';
+            $listitem.='" href="index.php?id=' . $courseid . '&section=help" title="' . get_string('nav_section_help', 'gradereport_scgr') . '">';
+            $listitem.=get_string('nav_section_help', 'gradereport_scgr');
+            $listitem.='</a></li>';
+            echo $listitem;
+        }
+
+    echo '</ul>';
+
+    if (is_null($section) ) {
+        echo '' . get_string('nav_info_choose_section', 'gradereport_scgr') . '';
+    }
+
+}
+
+/**
  * printCustomNav
  * prints the navigation tabs
  *
@@ -616,6 +669,28 @@ function getActivitiesNames($activities, $courseid) {
 }
 
 /**
+ * getShortActivitiesNames
+ * returns an array with activities names but shortened
+ *
+ * @param $activities_names
+ * @return array
+ */
+function getShortActivitiesNames($activities_names) {
+
+    for ( $i = 0; $i < count($activities_names); $i++ ) {
+
+        $activity_name = $activities_names[$i];
+
+        if ( strlen($activity_name) > 21 ) {
+            $activity_name = mb_substr($activity_name, 0, 18) . ' ...';
+            $activities_names[$i] = $activity_name;
+        }
+    }
+
+    return $activities_names;
+}
+
+/**
  * getGrades
  * returns the grade of users for a certain activity
  *
@@ -639,11 +714,16 @@ function getGrades($users, $courseid, $activity, $inpercentage = false) {
 
     foreach ($users as $user) {
         if ( !empty($grading_info->items) ) {
+
             $grade = $grading_info->items[0]->grades[$user]->grade;
 
             if ($inpercentage == true) {
-                $grade = $grade / $max_grade * 100;
-                $grade = round($grade, 2);
+                if ( $grade > 0 ) {
+                    $grade = $grade / $max_grade * 100;
+                    $grade = round($grade, 2);
+                } else {
+                    $grade = 0;
+                }
             }
 
             array_push($grades, floatval($grade));
@@ -811,8 +891,12 @@ function getActivityGradeFromUsers($users, $courseid, $activity, $inpercentage =
         }
 
         if ($inpercentage == true) {
-            $grade = $grade / $max_grade * 100;
-            $grade = round($grade, 2);
+            if ( $grade > 0 ) {
+                $grade = $grade / $max_grade * 100;
+                $grade = round($grade, 2);
+            } else {
+                $grade = 0;
+            }
         }
 
         array_push($grades_array, $grade);
@@ -924,7 +1008,6 @@ function getSectionsFromCourseID($courseid) {
  * returns the an array with all the activities included in a course
  *
  * @param $courseid
- * @param $categoryid
  * @param bool $extended
  * @return array
  */

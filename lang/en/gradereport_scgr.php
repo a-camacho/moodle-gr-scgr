@@ -38,10 +38,11 @@ $string['no_permission_to_view_report_description'] = 'SCGR is active but you do
 // Buttons
 
 $string['form_button_submit'] = 'Submit';
+$string['form_button_delete'] = 'Delete 1 field from form';
 
 // Permissions and capabilities
 
-$string['scgr:viewreport'] = 'View SCGR report';
+$string['scgr:view'] = 'View SCGR report';
 $string['scgr:viewstudentview'] = 'View the student\'s view';
 $string['scgr:viewtutorview'] = 'View the tutor\'s view';
 $string['scgr:viewcustomview'] = 'Generate a custom graph';
@@ -52,18 +53,25 @@ $string['scgr:viewcustomview'] = 'Generate a custom graph';
 
 // Predefined graphs - Descriptions
 
+$string['student_intra_title'] = 'Intra-group';
+$string['switch_to_inter'] = 'switch to inter-group';
 $string['student_intra_description'] = 'Student can see a chart presenting his progress (success) over the chosen
 activities and compare it with the group/classroom average.';
 
+$string['student_inter_title'] = 'Inter-group';
+$string['switch_to_intra'] = 'switch to intra-group';
 $string['student_inter_description'] = 'Student can see a chart comparing results of his group with results of other groups.';
 
+$string['teacher_progression_title'] = 'Progression';
+$string['switch_to_comparison'] = 'switch to comparison';
 $string['teacher_progression_description'] = 'Teacher can watch students progression (success) over chosen activities.';
 
+$string['teacher_comparison_title'] = 'Comparison';
+$string['switch_to_progression'] = 'switch to progression';
 $string['teacher_comparison_description'] = 'Teacher can see students comparison over chosen activities.';
 
 $string['custom_group_restriction_desc'] = '<strong><u>Information</u></strong> : Teachers will only be able to generate
 charts from students in groups that they belong in. <br />Groups are <strong>active</strong>. You belong to following group(s) : ';
-
 
 // Predefined graphs - Customize
 
@@ -147,6 +155,13 @@ $string['settings_page_title'] = 'SCGR Settings';
 /* #############################################      FUNCTIONS        ############################################ */
 /* ################################################################################################################ */
 
+// Navigation level 1
+
+$string['nav_section_student'] = 'Student\'s view';
+$string['nav_section_teacher'] = 'Tutor\'s view';
+$string['nav_section_custom'] = 'Custom chart';
+$string['nav_section_help'] = 'Help';
+
 // Navigation
 
 $string['nav_help'] = 'Help';
@@ -156,6 +171,18 @@ $string['nav_student_inter'] = 'My group vs other groups';
 $string['nav_teacher_progression'] = 'Progression (my groups)';
 $string['nav_teacher_comparison'] = 'Comparison (my groups)';
 
+// Navigation errors / notices
+
+$string['nav_info_choose_section'] = 'Please choose a view.';
+$string['nav_unauthorized_section'] = 'You do not have the permission to view this section.';
+$string['nav_invalid_mode'] = 'There seems to be a problem between your course configuration and the plugin\'s settings.';
+
+// Other errors
+
+$string['information'] = 'Information';
+$string['error'] = 'Error';
+$string['no_group_for_average'] = 'You are trying to view a chart including group-average grade but <u>you belong to no group</u>. Serie disabled.';
+$string['no_group_for_comparison'] = 'You are trying to view a chart showing your group members comparison/progression, <u>but you belong to no group</u>.';
 
 /* ################################################################################################################ */
 /* #############################################      HELP PAGE        ############################################ */

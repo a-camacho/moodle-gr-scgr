@@ -38,10 +38,11 @@ $string['no_permission_to_view_report_description'] = 'SCGR est actif mais vous 
 // Buttons
 
 $string['form_button_submit'] = 'Soumettre';
+$string['form_button_delete'] = 'Supprimer 1 champ du formulaire';
 
 // Permissions and capabilities
 
-$string['scgr:viewreport'] = 'Voir le rapport SCGR';
+$string['scgr:view'] = 'Voir le rapport SCGR';
 $string['scgr:viewstudentview'] = 'Voir la vue des étudiants';
 $string['scgr:viewtutorview'] = 'Voir la vue des tuteurs';
 $string['scgr:viewcustomview'] = 'Générer un graphique personnalisé';
@@ -52,22 +53,29 @@ $string['scgr:viewcustomview'] = 'Générer un graphique personnalisé';
 
 // Predefined graphs - Descriptions
 
+$string['student_intra_title'] = 'Intra-group';
+$string['switch_to_inter'] = 'voir la vue inter-group';
 $string['student_intra_description'] = 'L\'étudiant peut voir une visualisation présentant sa progression (réussite)
 à travers les activités de son choix, et la comparer à la réussite moyenne de son groupe ou de sa classe.';
 
+$string['student_inter_title'] = 'Inter-group';
+$string['switch_to_intra'] = 'voir la vue intra-group';
 $string['student_inter_description'] = 'L\'étudiant peut voir une visualisation comparant la réussite de son groupe
 avec celle des autres groupes du cours.';
 
+$string['teacher_progression_title'] = 'Progression';
+$string['switch_to_comparison'] = 'voir la vue comparaison';
 $string['teacher_progression_description'] = 'L\'enseignant peut suiver la progression de ses étudiants à travers les
 activités de son choix.';
 
+$string['teacher_comparison_title'] = 'Comparaison';
+$string['switch_to_progression'] = 'voir la vue progression';
 $string['teacher_comparison_description'] = 'L\'enseignant peut comparer la réussite des étudiants de ses groupes à
 travers les activités de son choix.';
 
 $string['custom_group_restriction_desc'] = '<strong><u>Information</u></strong> : Les enseignants peuvent uniquement 
 générer des visualisations d\'étudiants du (ou des) groupe(s) au(x)quel(s) ils appartiennent. <br />Les groupes sont
 <strong>activés</strong>. Vous appartenez au(x) groupe(s) suivant(s) : ';
-
 
 // Predefined graphs - Customize
 
@@ -153,6 +161,13 @@ $string['settings_page_title'] = 'Paramètres de SCGR';
 /* #############################################      FUNCTIONS        ############################################ */
 /* ################################################################################################################ */
 
+// Navigation level 1
+
+$string['nav_section_student'] = 'Vue de l\'étudiant';
+$string['nav_section_teacher'] = 'Vue du tuteur';
+$string['nav_section_custom'] = 'Vue personnalisée';
+$string['nav_section_help'] = 'Aide';
+
 // Navigation
 
 $string['nav_help'] = 'Aide';
@@ -162,6 +177,18 @@ $string['nav_student_inter'] = 'Mon groupe et les autres';
 $string['nav_teacher_progression'] = 'Progression (mes groupes)';
 $string['nav_teacher_comparison'] = 'Comparaison (mes groupes)';
 
+// Navigation errors / notices
+
+$string['nav_info_choose_section'] = 'Merci de choisir une vue.';
+$string['nav_unauthorized_section'] = 'Vous n\'avez pas la permission de voir cette section.';
+$string['nav_invalid_mode'] = 'Il semble y avoir un problème entre la configuration de votre cours et les paramètres du plugin.';
+
+// Other errors
+
+$string['information'] = 'Information';
+$string['error'] = 'Error';
+$string['no_group_for_average'] = 'Vous souhaitez voir un graphe incluant la moyenne du groupe, <u>mais n\'appartenez à aucun groupe</u>. Série désactivée.';
+$string['no_group_for_comparison'] = 'Vous souhaitez voir un graphe présentant la comparaison/progression des membres de votre group. Malheureusement, <u>vous n\'apartenez à aucun groupe</u>.';
 
 /* ################################################################################################################ */
 /* #############################################      HELP PAGE        ############################################ */

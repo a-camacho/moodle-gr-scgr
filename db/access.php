@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-    'gradereport/scgr:viewreport' => array(
+    'gradereport/scgr:view' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
@@ -50,7 +50,8 @@ $capabilities = array(
             'coursecreator' => CAP_PREVENT
         )
     ),
-    'gradereport/scgr:viewtutorview' => array(
+    // Capability for non-editing teacher (=teacher)
+    'gradereport/scgr:viewteacherview' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
