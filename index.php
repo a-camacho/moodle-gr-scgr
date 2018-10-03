@@ -124,7 +124,7 @@ $config = get_config('grade_report_scgr');
 /* ################################################################################################################ */
 
 // Print header
-print_grade_page_head($courseid, 'report', 'scgr', 'UniTICE 2016-2017: Social Comparison GR', false, '');
+print_grade_page_head($courseid, 'report', 'scgr', get_string('pluginname', 'gradereport_scgr'), false, '');
 
 // Check if plugin is activated for this course
 $activated_on = explode(",", $CFG->scgr_course_activation_choice);
