@@ -1,3 +1,10 @@
+
+# Important
+
+[![status: archive](https://github.com/GIScience/badges/raw/master/status/archive.svg)](https://github.com/GIScience/badges#archive)
+
+This project is no longer actively maintained
+
 # Social comparison grade report
 
 ### Description
